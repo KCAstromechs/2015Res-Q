@@ -15,7 +15,7 @@ public abstract class zAstromechsAuto extends LinearOpMode {
     DcMotor motorBackRight;
     DcMotor motorFrontLeft;
     DcMotor motorBackLeft;
-    Servo scythe;
+    Servo mjolnir;
 
 
     GyroSensor Gyro;
@@ -144,7 +144,7 @@ public abstract class zAstromechsAuto extends LinearOpMode {
     }
 
     public void reapClimbers () throws InterruptedException {
-        scythe.setPosition(1);
+        mjolnir.setPosition(1);
         sleep(50);
     }
 

@@ -57,7 +57,7 @@ public class tankDriveSpinnerLifterThing extends OpMode {
 	DcMotor motorWinch;
 	DcMotor motorDrawerSlide;
 	Servo hook;
-	Servo scythe;
+	Servo mjolnir;
 
 	/**
 	 * Constructor
@@ -89,7 +89,7 @@ public class tankDriveSpinnerLifterThing extends OpMode {
 		motorWinch = hardwareMap.dcMotor.get("wench");
 		motorDrawerSlide = hardwareMap.dcMotor.get("drawerSlide");
 		hook = hardwareMap.servo.get("hook");
-		scythe = hardwareMap.servo.get("scythe");
+		mjolnir = hardwareMap.servo.get("box");
 
 	}
 
@@ -149,15 +149,15 @@ public class tankDriveSpinnerLifterThing extends OpMode {
 		}
 
 		if(gamepad1.a){
-			scythe.setPosition(0.4);
+			mjolnir.setPosition(0.4);
 		}
 
 		if(gamepad1.b){
-			scythe.setPosition(0);
+			mjolnir.setPosition(0);
 		}
 
 		if(gamepad1.x){
-			scythe.setPosition(1);
+			mjolnir.setPosition(1);
 		}
 
 		motorWinch.setPower(left2);

@@ -7,21 +7,21 @@ import com.qualcomm.robotcore.hardware.Servo;
  */
 
 public class servoTest extends OpMode {
-    Servo scythe;
+    Servo mjolnir;
 
     @Override
     public void init() {
-        scythe=hardwareMap.servo.get("scythe");
+        mjolnir=hardwareMap.servo.get("box");
     }
 
 
     @Override
     public void loop() {
         if(gamepad1.a){
-            scythe.setPosition(0.45);
+            mjolnir.setPosition(0.45);
         }
         if(gamepad1.b){
-            scythe.setPosition(1.0);
+            mjolnir.setPosition(1.0);
         }
     }
 

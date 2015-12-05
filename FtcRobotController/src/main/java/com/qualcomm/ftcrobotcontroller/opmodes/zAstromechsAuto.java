@@ -40,10 +40,10 @@ public abstract class zAstromechsAuto extends LinearOpMode {
         while(motorFrontRight.getCurrentPosition()<targetDistance) {
             int variation = headingTarget - heading;
 
-            if(variation>20){
+            if(variation>60){
                 variation = variation - 360;
             }
-            if(variation<-20){
+            if(variation<-60){
                 variation = variation + 360;
             }
 

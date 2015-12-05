@@ -44,8 +44,10 @@ public class AutoTestGyro extends LinearOpMode {
   float leftPower;
   float rightPower;
   int stage = 0;
+  float startHeading;
+  int target;
   private static final int kClicksPerRev = 1100;
-  private static final int klongDrive = kClicksPerRev*5;
+  private static final int klongDrive = kClicksPerRev*4;
   private static final int kSlowApproach = kClicksPerRev*2;
 
 
@@ -72,6 +74,7 @@ public class AutoTestGyro extends LinearOpMode {
     motorFrontLeft.setMode(DcMotorController.RunMode.RESET_ENCODERS);
     motorBackRight.setMode(DcMotorController.RunMode.RESET_ENCODERS);
     motorBackLeft.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+    sleep(100);
 
    // motorFrontRight.setMode();
     motorFrontRight.setPower(0);
@@ -114,7 +117,6 @@ public class AutoTestGyro extends LinearOpMode {
     motorFrontLeft.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
     motorBackRight.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
     motorBackRight.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
-    //gyro.resetZAxisIntegrator();
     leftPower = 1;
     rightPower = 0;
     motorFrontLeft.setPower(leftPower);
@@ -134,28 +136,33 @@ public class AutoTestGyro extends LinearOpMode {
     telemetry.addData("rightPower", rightPower);
     telemetry.addData("gyro", gyro.getHeading());
 
-    sleep(10000);
+    //sleep(10000);
 
-    //Lo0ng straight drive - Main control is encoders on front right motor, us gyro for stabilization
+    //Long straight drive - Main control is encoders on front right motor, us gyro for stabilization
     stage = 2;
     telemetry.addData("Stage", stage);
     motorFrontRight.setMode(DcMotorController.RunMode.RESET_ENCODERS);
     motorFrontLeft.setMode(DcMotorController.RunMode.RESET_ENCODERS);
     motorBackRight.setMode(DcMotorController.RunMode.RESET_ENCODERS);
     motorBackLeft.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+    sleep(100);
     motorFrontRight.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
     motorFrontLeft.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
     motorBackRight.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
     motorBackLeft.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-    gyro.resetZAxisIntegrator(); //recalibrate gyro
-    sleep(100);
-    leftPower = (float)0.6;
-    rightPower = (float)0.6;
+
+    leftPower = 0.6f;
+    rightPower = 0.6f;
+      /*
     motorFrontRight.setTargetPosition(klongDrive);
     motorFrontLeft.setTargetPosition(klongDrive);
     motorBackRight.setTargetPosition(klongDrive);
     motorBackLeft.setTargetPosition(klongDrive);
+    */
+    target = klongDrive;
+    startHeading = gyro.getHeading();
     //gyro stabilization - PID
+
     stage = 3;
     telemetry.addData("Stage",stage);
 
@@ -163,6 +170,20 @@ public class AutoTestGyro extends LinearOpMode {
     motorFrontLeft.setPower(leftPower);
     motorBackRight.setPower(rightPower);
     motorBackLeft.setPower(leftPower);
+
+    while (motorFrontRight.getCurrentPosition()<target &&
+            motorFrontLeft.getCurrentPosition()<target &&
+            motorBackRight.getCurrentPosition()<target &&
+            motorBackLeft.getCurrentPosition()<target)
+    {
+        /*
+      if ((abs(gyro.getHeading()-startHeading)) <0.)
+      {
+
+      }
+      */
+      sleep(1);
+    }
 
 
     motorFrontRight.setPower(0);
@@ -177,9 +198,8 @@ public class AutoTestGyro extends LinearOpMode {
     motorFrontLeft.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
     motorBackRight.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
     motorBackLeft.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
-    gyro.resetZAxisIntegrator();
-    sleep(100);
-    while (gyro.getHeading() <= 60) {
+    startHeading = gyro.getHeading();
+    while (gyro.getHeading() <= 60-startHeading) {
       motorFrontLeft.setPower(leftPower);
       motorBackLeft.setPower(leftPower);
     }
@@ -189,13 +209,14 @@ public class AutoTestGyro extends LinearOpMode {
     //slow approach - use light sensor to follow line
     stage =5;
     telemetry.addData("Stage",stage);
-    rightPower = (float)0.5;
-    leftPower = (float)0.5;
+    rightPower = 0.5f;
+    leftPower = 0.5f;
 
     motorFrontRight.setMode(DcMotorController.RunMode.RESET_ENCODERS);
     motorFrontLeft.setMode(DcMotorController.RunMode.RESET_ENCODERS);
     motorBackRight.setMode(DcMotorController.RunMode.RESET_ENCODERS);
     motorBackLeft.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+    sleep(100);
     motorFrontRight.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
     motorFrontLeft.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
     motorBackRight.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);

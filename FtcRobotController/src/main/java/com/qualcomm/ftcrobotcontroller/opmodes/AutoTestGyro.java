@@ -35,214 +35,223 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.GyroSensor;
+import com.qualcomm.robotcore.util.Range;
 
 /**
  * Base Drive code
  * Blue side of field
  */
 public class AutoTestGyro extends LinearOpMode {
-  float leftPower;
-  float rightPower;
-  int stage = 0;
-  float startHeading;
-  int target;
-  private static final int kClicksPerRev = 1100;
-  private static final int klongDrive = kClicksPerRev*4;
-  private static final int kSlowApproach = kClicksPerRev*2;
+    float leftPower;
+    float rightPower;
+    int stage = 0;
+    float startHeading;
+    int targetPos;
+    float degErr;
+    float proportionalConst = 0.1f;
+    float correction;
 
 
-  DcMotor motorFrontRight;
-  DcMotor motorFrontLeft;
-  DcMotor motorBackRight;
-  DcMotor motorBackLeft;
-
-  GyroSensor gyro;
+    private static final int kClicksPerRev = 1100;
+    private static final int klongDrive = (int) (kClicksPerRev * 3.75);
+    private static final int kSlowApproach = kClicksPerRev * 2;
 
 
+    DcMotor motorFrontRight;
+    DcMotor motorFrontLeft;
+    DcMotor motorBackRight;
+    DcMotor motorBackLeft;
 
-  @Override
-  public void runOpMode() throws InterruptedException
-  {
-    //Motor init - use Config files
-    motorFrontRight = hardwareMap.dcMotor.get("frontRight");
-    motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
-    motorBackRight = hardwareMap.dcMotor.get("backRight");
-    motorBackLeft = hardwareMap.dcMotor.get("backLeft");
+    GyroSensor gyro;
 
-    //reset encoders
-    motorFrontRight.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-    motorFrontLeft.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-    motorBackRight.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-    motorBackLeft.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-    sleep(100);
 
-   // motorFrontRight.setMode();
-    motorFrontRight.setPower(0);
-    motorFrontLeft.setPower(0);
-    motorBackRight.setPower(0);
-    motorBackLeft.setPower(0);
+    @Override
+    public void runOpMode() throws InterruptedException {
+        //Motor init - use Config files
+        motorFrontRight = hardwareMap.dcMotor.get("frontRight");
+        motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
+        motorBackRight = hardwareMap.dcMotor.get("backRight");
+        motorBackLeft = hardwareMap.dcMotor.get("backLeft");
 
-    //reverse Motors
-    motorFrontRight.setDirection(DcMotor.Direction.REVERSE);
-    motorBackRight.setDirection(DcMotor.Direction.REVERSE);
+        //reset encoders
+        motorFrontRight.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+        motorFrontLeft.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+        motorBackRight.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+        motorBackLeft.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+        sleep(100);
 
-    //Sensor init
-    gyro = hardwareMap.gyroSensor.get("gyro");
-    gyro.calibrate();
+        // motorFrontRight.setMode();
+        motorFrontRight.setPower(0);
+        motorFrontLeft.setPower(0);
+        motorBackRight.setPower(0);
+        motorBackLeft.setPower(0);
 
-      sleep(100);
-      while(gyro.isCalibrating()) {
-          sleep(50);
-      }
+        //reverse Motors
+        motorFrontRight.setDirection(DcMotor.Direction.REVERSE);
+        motorBackRight.setDirection(DcMotor.Direction.REVERSE);
 
-    System.out.println("gyro (PreCalibration" + gyro.getHeading());
-    telemetry.addData("gyro (PreCalibration", gyro.getHeading());
-    gyro.resetZAxisIntegrator();
+        //Sensor init
+        gyro = hardwareMap.gyroSensor.get("gyro");
+        gyro.calibrate();
 
-    telemetry.addData("Stage", stage);
-    telemetry.addData("gyro", gyro.getHeading());
-      System.out.println("gyro (PostCalibration?" + gyro.getHeading());
+        sleep(100);
+        while (gyro.isCalibrating()) {
+            sleep(50);
+        }
 
-    waitForStart();
+        System.out.println("gyro (PreCalibration" + gyro.getHeading());
+        telemetry.addData("gyro (PreCalibration", gyro.getHeading());
+        gyro.resetZAxisIntegrator();
 
-    gyro.resetZAxisIntegrator();
-    //sleep(100);
+        telemetry.addData("Stage", stage);
+        telemetry.addData("gyro", gyro.getHeading());
+        System.out.println("gyro (PostCalibration?" + gyro.getHeading());
 
-    //turns away from wall - uses gyro to control length of turn (not encoders)
-    stage = 1;
-    telemetry.addData("Stage", stage);
-    telemetry.addData("gyro (PostCalibration)", gyro.getHeading());
-    sleep(5000);
-    motorFrontRight.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
-    motorFrontLeft.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
-    motorBackRight.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
-    motorBackRight.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
-    leftPower = 1;
-    rightPower = 0;
-    motorFrontLeft.setPower(leftPower);
-    motorBackLeft.setPower(leftPower);
-    while (gyro.getHeading() <= 45) {
-      //motorFrontLeft.setPower(leftPower);
-      //motorBackLeft.setPower(leftPower);
-      //telemetry.addData("leftPower", leftPower);
-      //telemetry.addData("rightPower", rightPower);
-      //telemetry.addData("gyro",gyro.getHeading());
-      //System.out.println("gyro="+gyro.getHeading());
-      sleep(1);
-    }
-    motorFrontLeft.setPower(0);
-    motorBackLeft.setPower(0);
-    telemetry.addData("leftPower", leftPower);
-    telemetry.addData("rightPower", rightPower);
-    telemetry.addData("gyro", gyro.getHeading());
+        waitForStart();
 
-    //sleep(10000);
+        //gyro.resetZAxisIntegrator();
+        //sleep(100);
 
-    //Long straight drive - Main control is encoders on front right motor, us gyro for stabilization
-    stage = 2;
-    telemetry.addData("Stage", stage);
-    motorFrontRight.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-    motorFrontLeft.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-    motorBackRight.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-    motorBackLeft.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-    sleep(100);
-    motorFrontRight.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-    motorFrontLeft.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-    motorBackRight.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-    motorBackLeft.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        //turns away from wall - uses gyro to control length of turn (not encoders)
+        stage = 1;
+        telemetry.addData("Stage", stage);
+        telemetry.addData("gyro (PostCalibration)", gyro.getHeading());
+        sleep(5000);
+        motorFrontRight.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+        motorFrontLeft.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+        motorBackRight.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+        motorBackRight.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+        leftPower = 1;
+        rightPower = 0;
+        motorFrontLeft.setPower(leftPower);
+        motorBackLeft.setPower(leftPower);
+        while (gyro.getHeading() <= 45) {
+            //motorFrontLeft.setPower(leftPower);
+            //motorBackLeft.setPower(leftPower);
+            //telemetry.addData("leftPower", leftPower);
+            //telemetry.addData("rightPower", rightPower);
+            //telemetry.addData("gyro",gyro.getHeading());
+            //System.out.println("gyro="+gyro.getHeading());
+            sleep(1);
+        }
+        motorFrontLeft.setPower(0);
+        motorBackLeft.setPower(0);
+        telemetry.addData("leftPower", leftPower);
+        telemetry.addData("rightPower", rightPower);
+        telemetry.addData("gyro", gyro.getHeading());
 
-    leftPower = 0.6f;
-    rightPower = 0.6f;
+        //sleep(10000);
+
+        //Long straight drive - Main control is encoders on front right motor, us gyro for stabilization
+        stage = 2;
+        telemetry.addData("Stage", stage);
+        motorFrontRight.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+        motorFrontLeft.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+        motorBackRight.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+        motorBackLeft.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+        sleep(100);
+        motorFrontRight.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        motorFrontLeft.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        motorBackRight.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        motorBackLeft.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+
+        leftPower = 0.6f;
+        rightPower = 0.6f;
       /*
     motorFrontRight.setTargetPosition(klongDrive);
     motorFrontLeft.setTargetPosition(klongDrive);
     motorBackRight.setTargetPosition(klongDrive);
     motorBackLeft.setTargetPosition(klongDrive);
     */
-    target = klongDrive;
-    startHeading = gyro.getHeading();
-    //gyro stabilization - PID
+        targetPos = klongDrive;
+        startHeading = 45;
+        //gyro stabilization - PID
 
-    stage = 3;
-    telemetry.addData("Stage",stage);
+        stage = 3;
+        telemetry.addData("Stage", stage);
 
-    motorFrontRight.setPower(rightPower);
-    motorFrontLeft.setPower(leftPower);
-    motorBackRight.setPower(rightPower);
-    motorBackLeft.setPower(leftPower);
+        float localLeftPower=leftPower;
+        float localRightPower=rightPower;
 
-    while (motorFrontRight.getCurrentPosition()<target &&
-            motorFrontLeft.getCurrentPosition()<target &&
-            motorBackRight.getCurrentPosition()<target &&
-            motorBackLeft.getCurrentPosition()<target)
-    {
-        /*
-      if ((abs(gyro.getHeading()-startHeading)) <0.)
-      {
+        while (motorFrontRight.getCurrentPosition() < targetPos &&
+                motorFrontLeft.getCurrentPosition() < targetPos &&
+                motorBackRight.getCurrentPosition() < targetPos &&
+                motorBackLeft.getCurrentPosition() < targetPos) {
 
-      }
-      */
-      sleep(1);
+
+            degErr = gyro.getHeading() - startHeading;
+            correction = degErr * proportionalConst;
+            localLeftPower= Range.clip(leftPower-correction,-1.0f,1.0f);
+            localRightPower=Range.clip(rightPower+correction,-1.0f,1.0f);
+
+                motorFrontRight.setPower(localRightPower);
+                motorFrontLeft.setPower(localLeftPower);
+                motorBackRight.setPower(localRightPower);
+                motorBackLeft.setPower(localLeftPower);
+
+            System.out.println(gyro.getHeading()+" correction:"+correction);
+
+            sleep(1);
+        }
+
+
+        motorFrontRight.setPower(0);
+        motorFrontLeft.setPower(0);
+        motorBackRight.setPower(0);
+        motorBackLeft.setPower(0);
+
+        //turns towards beacon use gyro, not encoders
+        stage = 4;
+        telemetry.addData("Stage", stage);
+        motorFrontRight.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+        motorFrontLeft.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+        motorBackRight.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+        motorBackLeft.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+        startHeading = gyro.getHeading();
+        while (gyro.getHeading() <= 60 - startHeading) {
+            motorFrontLeft.setPower(leftPower);
+            motorBackLeft.setPower(leftPower);
+        }
+        motorFrontLeft.setPower(0);
+        motorBackLeft.setPower(0);
+
+        //slow approach - use light sensor to follow line
+        stage = 5;
+        telemetry.addData("Stage", stage);
+        rightPower = 0.5f;
+        leftPower = 0.5f;
+
+        motorFrontRight.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+        motorFrontLeft.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+        motorBackRight.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+        motorBackLeft.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+        sleep(100);
+        motorFrontRight.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        motorFrontLeft.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        motorBackRight.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        motorBackLeft.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        motorFrontRight.setTargetPosition(kSlowApproach);
+        motorFrontLeft.setTargetPosition(kSlowApproach);
+        motorBackRight.setTargetPosition(kSlowApproach);
+        motorBackLeft.setTargetPosition(kSlowApproach);
+        //gyro stabilization - PID
+        stage = 6;
+        telemetry.addData("Stage", stage);
+
+        motorFrontRight.setPower(rightPower);
+        motorFrontLeft.setPower(leftPower);
+        motorBackRight.setPower(rightPower);
+        motorBackLeft.setPower(leftPower);
+
+
+        motorFrontRight.setPower(0);
+        motorFrontLeft.setPower(0);
+        motorBackRight.setPower(0);
+        motorBackLeft.setPower(0);
+
+        //Deliver climbers, and potentially light sensors
+        stage = 7;
+        telemetry.addData("Stage", stage);
     }
-
-
-    motorFrontRight.setPower(0);
-    motorFrontLeft.setPower(0);
-    motorBackRight.setPower(0);
-    motorBackLeft.setPower(0);
-
-    //turns towards beacon use gyro, not encoders
-    stage = 4;
-    telemetry.addData("Stage",stage);
-    motorFrontRight.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
-    motorFrontLeft.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
-    motorBackRight.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
-    motorBackLeft.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
-    startHeading = gyro.getHeading();
-    while (gyro.getHeading() <= 60-startHeading) {
-      motorFrontLeft.setPower(leftPower);
-      motorBackLeft.setPower(leftPower);
-    }
-    motorFrontLeft.setPower(0);
-    motorBackLeft.setPower(0);
-
-    //slow approach - use light sensor to follow line
-    stage =5;
-    telemetry.addData("Stage",stage);
-    rightPower = 0.5f;
-    leftPower = 0.5f;
-
-    motorFrontRight.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-    motorFrontLeft.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-    motorBackRight.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-    motorBackLeft.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-    sleep(100);
-    motorFrontRight.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-    motorFrontLeft.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-    motorBackRight.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-    motorBackLeft.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-    motorFrontRight.setTargetPosition(kSlowApproach );
-    motorFrontLeft.setTargetPosition(kSlowApproach);
-    motorBackRight.setTargetPosition(kSlowApproach);
-    motorBackLeft.setTargetPosition(kSlowApproach);
-    //gyro stabilization - PID
-    stage = 6;
-    telemetry.addData("Stage",stage);
-
-    motorFrontRight.setPower(rightPower);
-    motorFrontLeft.setPower(leftPower);
-    motorBackRight.setPower(rightPower);
-    motorBackLeft.setPower(leftPower);
-
-
-    motorFrontRight.setPower(0);
-    motorFrontLeft.setPower(0);
-    motorBackRight.setPower(0);
-    motorBackLeft.setPower(0);
-
-    //Deliver climbers, and potentially light sensors
-    stage=7;
-    telemetry.addData("Stage",stage);
-  }
 }
 

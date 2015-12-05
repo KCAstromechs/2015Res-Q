@@ -72,8 +72,8 @@ public class FtcOpModeRegister implements OpModeRegister {
 
     //manager.register("AdafruitRGBExample", AdafruitRGBExample.class);
     //manager.register("ColorSensorDriver", ColorSensorDriver.class);
-    
     /*manager.register("IrSeekerOp", IrSeekerOp.class);*/
+
     //manager.register("CompassCalibration", CompassCalibration.class);
     //manager.register("I2cAddressChangeExample", LinearI2cAddressChange.class);
 

@@ -33,4 +33,48 @@ public class RobotBase {
     public void setGrabberDown() {
         grabber.setPosition(0.1);
     }
+
+    public void setLeftZiplineUp() {
+        leftZipline.setPosition(0.5);
+    }
+
+    public void setLeftZiplineDown() {
+        leftZipline.setPosition(1.0);
+    }
+
+    public void setRightZiplineUp() {
+        rightZipline.setPosition(0.5);
+    }
+
+    public void setRightZiplineDown() {
+        rightZipline.setPosition(0.0);
+    }
+
+    public void setMjolnirDown(){
+        mjolnir.setPosition(1.0);
+    }
+
+    public void setMjolnirUp(){
+        mjolnir.setPosition(0.45);
+    }
+
+    public void setMjolnirAllClear(){
+        mjolnir.setPosition(0.0);
+    }
+
+    public void setLeftLockOpen(){
+
+    }
+
+    public void setRightLockOpen(){
+
+    }
+
+    public void setLeftLockClosed(){
+
+    }
+
+    public void setRightLockClosed(){
+
+    }
 }

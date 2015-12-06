@@ -48,7 +48,7 @@ public class AutoTestGyro extends LinearOpMode {
     float startHeading;
     int targetPos;
     float degErr;
-    float proportionalConst = 0.1f;
+    float proportionalConst = 0.05f;
     float correction;
 
     private static final int kClicksPerRev = 1100;
@@ -192,6 +192,10 @@ public class AutoTestGyro extends LinearOpMode {
 
             sleep(1);
         }
+        telemetry.addData("motorFrontRight",motorFrontRight.getCurrentPosition());
+        telemetry.addData("motorFrontLeft", motorFrontLeft.getCurrentPosition());
+        telemetry.addData("motorBackRight",motorBackRight.getCurrentPosition());
+        telemetry.addData("motorBackLeft",motorBackLeft.getCurrentPosition());
 
 
         motorFrontRight.setPower(0);
@@ -207,7 +211,7 @@ public class AutoTestGyro extends LinearOpMode {
         motorBackRight.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
         motorBackLeft.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
         startHeading = gyro.getHeading();
-        while (gyro.getHeading() <= 60 - startHeading) {
+        while (gyro.getHeading() <= 90) {
             motorFrontLeft.setPower(leftPower);
             motorBackLeft.setPower(leftPower);
         }

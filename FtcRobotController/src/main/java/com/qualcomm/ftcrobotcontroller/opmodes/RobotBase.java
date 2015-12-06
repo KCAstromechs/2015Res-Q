@@ -27,7 +27,7 @@ public class RobotBase {
     GyroSensor gyro;
 
     public RobotBase(HardwareMap hardwareMap) {
-        //motor intit
+        //motor init
         motorFrontRight = hardwareMap.dcMotor.get("frontRight");
         motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
         motorBackRight = hardwareMap.dcMotor.get("backRight");

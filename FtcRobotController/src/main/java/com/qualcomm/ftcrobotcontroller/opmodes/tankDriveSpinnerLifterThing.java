@@ -97,13 +97,29 @@ public class tankDriveSpinnerLifterThing extends OpMode {
 		if (Math.abs(right2)<0.1){
 			right2=0;
 		}
-		if (gamepad1.right_bumper)
+		if (gamepad2.right_bumper)
 		{
 			robotBase.setGrabberUp();
 		}
-		if (gamepad1.left_bumper)
+		if (gamepad2.left_bumper)
 		{
 			robotBase.setGrabberMiddle();
+		}
+
+		if(gamepad1.a){
+			robotBase.setLeftZiplineDown();
+		}
+
+		if(gamepad1.b){
+			robotBase.setRightZiplineDown();
+		}
+
+		if(gamepad1.x){
+			robotBase.setLeftZiplineUp();
+		}
+
+		if(gamepad1.y){
+			robotBase.setRightZiplineUp();
 		}
 
 		if(gamepad2.a){

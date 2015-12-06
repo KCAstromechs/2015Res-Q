@@ -90,19 +90,19 @@ public class RobotBase {
     }
 
     public void setLeftLockOpen(){
-        leftLock.setPosition(0.2);
+        leftLock.setPosition(0.01);
     }
 
     public void setRightLockOpen(){
-        rightLock.setPosition(0.68);
+        rightLock.setPosition(0.7);
     }
 
     public void setLeftLockClosed(){
-        leftLock.setPosition(0.8);
+        leftLock.setPosition(0.7);
     }
 
     public void setRightLockClosed(){
-        rightLock.setPosition(0.1);
+        rightLock.setPosition(0.01);
     }
     public void setRightPower(double rightPower){
         motorFrontRight.setPower(rightPower);

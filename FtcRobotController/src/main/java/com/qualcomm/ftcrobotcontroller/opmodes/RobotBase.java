@@ -94,4 +94,12 @@ public class RobotBase {
     public void setRightLockClosed(){
 
     }
+    public void setRightPower(double rightPower){
+        motorFrontRight.setPower(rightPower);
+        motorBackRight.setPower(rightPower);
+    }
+    public void setLeftPower(double leftPower){
+        motorFrontLeft.setPower(leftPower);
+        motorBackLeft.setPower(leftPower);
+    }
 }

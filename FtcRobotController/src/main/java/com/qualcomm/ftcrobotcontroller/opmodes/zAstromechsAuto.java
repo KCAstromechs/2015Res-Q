@@ -23,6 +23,7 @@ public abstract class zAstromechsAuto extends LinearOpMode {
     int heading = 0;
     long watchdogTimer = 0;
 
+    //Drives straight
     public void driveStraight (long targetDistance, int headingTarget, double drivePower) throws InterruptedException {
 
         motorFrontRight.setMode(DcMotorController.RunMode.RESET_ENCODERS);
@@ -62,6 +63,7 @@ public abstract class zAstromechsAuto extends LinearOpMode {
 
     }
 
+    //Turns
     public void pivotTurn (int headingTarget) throws InterruptedException{
         int variation = Math.abs(headingTarget-heading);
         boolean turnDirection = calcTurnDirection(headingTarget, variation);
@@ -88,6 +90,7 @@ public abstract class zAstromechsAuto extends LinearOpMode {
 
     }
 
+    //Finds weather to turn clockwise or anticlockwise
     private boolean calcTurnDirection (int target, int variation)throws InterruptedException {
 
         if(target>180){
@@ -122,6 +125,7 @@ public abstract class zAstromechsAuto extends LinearOpMode {
 
     }
 
+    //Prevents a task from running for too long
     public void watchdog () throws InterruptedException {
         if (watchdogTimer<7500){
             sleep(100);
@@ -131,10 +135,12 @@ public abstract class zAstromechsAuto extends LinearOpMode {
         }
     }
 
+    //Resets watchdog timer
     public void kickDaDog () {
         watchdogTimer = 0;
     }
 
+    //Updates gyro heading
     public void updateHeading () throws InterruptedException {
 
         while(true) {
@@ -143,7 +149,8 @@ public abstract class zAstromechsAuto extends LinearOpMode {
         }
     }
 
-    public void reapClimbers () throws InterruptedException {
+    //Scores climbers in the shelter
+    public void hammerTime () throws InterruptedException {
         mjolnir.setPosition(1);
         sleep(50);
     }

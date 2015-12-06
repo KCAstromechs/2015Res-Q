@@ -8,10 +8,11 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class servoTest extends OpMode {
     Servo mjolnir;
-
+    Servo grabber;
     @Override
     public void init() {
         mjolnir=hardwareMap.servo.get("box");
+        grabber=hardwareMap.servo.get("grabber");
     }
 
 

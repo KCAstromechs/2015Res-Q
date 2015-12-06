@@ -1,5 +1,7 @@
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -7,7 +9,13 @@ import com.qualcomm.robotcore.hardware.Servo;
  * Created by Kevin on 12/6/2015.
  */
 public class RobotBase {
+    //motors
+    DcMotor motorFrontRight;
+    DcMotor motorFrontLeft;
+    DcMotor motorBackRight;
+    DcMotor motorBackLeft;
 
+    //Servos
     Servo mjolnir;
     Servo grabber;
     Servo leftZipline;
@@ -15,8 +23,17 @@ public class RobotBase {
     Servo leftLock;
     Servo rightLock;
 
-    public RobotBase(HardwareMap hardwareMap) {
+    //sensors
+    GyroSensor gyro;
 
+    public RobotBase(HardwareMap hardwareMap) {
+        //motor intit
+        motorFrontRight = hardwareMap.dcMotor.get("frontRight");
+        motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
+        motorBackRight = hardwareMap.dcMotor.get("backRight");
+        motorBackLeft = hardwareMap.dcMotor.get("backLeft");
+
+        //Servo init
         mjolnir=hardwareMap.servo.get("box");
         grabber=hardwareMap.servo.get("grabber");
         leftZipline=hardwareMap.servo.get("leftZipline");

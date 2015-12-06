@@ -51,7 +51,6 @@ public class AutoTestGyro extends LinearOpMode {
     float proportionalConst = 0.1f;
     float correction;
 
-
     private static final int kClicksPerRev = 1100;
     private static final int klongDrive = (int) (kClicksPerRev * 3.75);
     private static final int kSlowApproach = kClicksPerRev * 2;

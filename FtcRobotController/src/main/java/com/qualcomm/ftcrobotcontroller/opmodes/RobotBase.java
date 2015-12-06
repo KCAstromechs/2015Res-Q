@@ -10,10 +10,12 @@ import com.qualcomm.robotcore.hardware.Servo;
  */
 public class RobotBase {
     //motors
-    DcMotor motorFrontRight;
-    DcMotor motorFrontLeft;
-    DcMotor motorBackRight;
-    DcMotor motorBackLeft;
+    public DcMotor motorFrontRight;
+    public DcMotor motorFrontLeft;
+    public DcMotor motorBackRight;
+    public DcMotor motorBackLeft;
+    public DcMotor motorWinch;
+    public DcMotor motorDrawerSlide;
 
     //Servos
     Servo mjolnir;
@@ -32,6 +34,10 @@ public class RobotBase {
         motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
         motorBackRight = hardwareMap.dcMotor.get("backRight");
         motorBackLeft = hardwareMap.dcMotor.get("backLeft");
+        motorFrontRight.setDirection(DcMotor.Direction.REVERSE);
+        motorBackRight.setDirection(DcMotor.Direction.REVERSE);
+        motorWinch = hardwareMap.dcMotor.get("winch");
+        motorDrawerSlide = hardwareMap.dcMotor.get("drawerSlide");
 
         //Servo init
         mjolnir=hardwareMap.servo.get("box");
@@ -44,7 +50,11 @@ public class RobotBase {
     }
 
     public void setGrabberUp() {
-        grabber.setPosition(0.6);
+        grabber.setPosition(0.7);
+    }
+
+    public void setGrabberMiddle() {
+        grabber.setPosition(0.4);
     }
 
     public void setGrabberDown() {
@@ -52,19 +62,19 @@ public class RobotBase {
     }
 
     public void setLeftZiplineUp() {
-        leftZipline.setPosition(0.5);
-    }
-
-    public void setLeftZiplineDown() {
         leftZipline.setPosition(1.0);
     }
 
+    public void setLeftZiplineDown() {
+        leftZipline.setPosition(0.5);
+    }
+
     public void setRightZiplineUp() {
-        rightZipline.setPosition(0.5);
+        rightZipline.setPosition(0.4);
     }
 
     public void setRightZiplineDown() {
-        rightZipline.setPosition(0.0);
+        rightZipline.setPosition(1.0);
     }
 
     public void setMjolnirDown(){
@@ -80,19 +90,19 @@ public class RobotBase {
     }
 
     public void setLeftLockOpen(){
-
+        leftLock.setPosition(0.2);
     }
 
     public void setRightLockOpen(){
-
+        rightLock.setPosition(0.68);
     }
 
     public void setLeftLockClosed(){
-
+        leftLock.setPosition(0.8);
     }
 
     public void setRightLockClosed(){
-
+        rightLock.setPosition(0.1);
     }
     public void setRightPower(double rightPower){
         motorFrontRight.setPower(rightPower);

@@ -43,68 +43,19 @@ import com.qualcomm.robotcore.util.Range;
  */
 public class tankDriveSpinnerLifterThing extends OpMode {
 
-	/*
-	 * Note: the configuration of the servos is such that
-	 * as the arm servo approaches 0, the arm position moves up (away from the floor).
-	 * Also, as the claw servo approaches 0, the claw opens up (drops the game element).
-	 */
-    // TETRIX VALUES.
+	RobotBase robotBase;
 
-	DcMotor motorFrontRight;
-	DcMotor motorFrontLeft;
-	DcMotor motorBackRight;
-	DcMotor motorBackLeft;
-	DcMotor motorWinch;
-	DcMotor motorDrawerSlide;
-	Servo grabber;
-	Servo mjolnir;
-	Servo leftZipline;
-	Servo rightZipline;
-	Servo leftLock;
-	Servo rightLock;
-
-	/**
-	 * Constructor
-	 */
 	public tankDriveSpinnerLifterThing() {
 
 	}
 
-	/*
-	 * Code to run when the op mode is first enabled goes here
-	 *
-	 * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#start()
-	 */
+
 	@Override
 	public void init() {
-		/*
-		 * Use the hardwareMap to get the dc motors and servos by name. Note
-		 * that the names of the devices must match the names used when you
-		 * configured your robot and created the configuration file.
-		 */
 
-		motorFrontRight = hardwareMap.dcMotor.get("frontRight");
-		motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
-		motorBackRight = hardwareMap.dcMotor.get("backRight");
-		motorBackLeft = hardwareMap.dcMotor.get("backLeft");
-		motorFrontRight.setDirection(DcMotor.Direction.REVERSE);
-		motorBackRight.setDirection(DcMotor.Direction.REVERSE);
-
-		motorWinch = hardwareMap.dcMotor.get("wench");
-		motorDrawerSlide = hardwareMap.dcMotor.get("drawerSlide");
-		grabber = hardwareMap.servo.get("grabber");
-		mjolnir = hardwareMap.servo.get("box");
-		leftZipline = hardwareMap.servo.get("leftZipline");
-		rightZipline = hardwareMap.servo.get("rightZipline");
-		leftLock = hardwareMap.servo.get("leftLock");
+		robotBase = new RobotBase(hardwareMap);
 
 	}
-
-	/*
-	 * This method will be called repeatedly in a loop
-	 *
-	 * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#run()
-	 */
 	@Override
 	public void loop() {
 
@@ -130,10 +81,10 @@ public class tankDriveSpinnerLifterThing extends OpMode {
 		left =  (float)scaleInput(left);
 
 		// write the values to the motors
-		motorFrontRight.setPower(right);
-		motorFrontLeft.setPower(left);
-		motorBackRight.setPower(right);
-		motorBackLeft.setPower(left);
+		robotBase.motorFrontRight.setPower(right);
+		robotBase.motorFrontLeft.setPower(left);
+		robotBase.motorBackRight.setPower(right);
+		robotBase.motorBackLeft.setPower(left);
 
 		// update the position of the arm.
 
@@ -148,27 +99,33 @@ public class tankDriveSpinnerLifterThing extends OpMode {
 		}
 		if (gamepad1.right_bumper)
 		{
-			grabber.setPosition(0);
+			robotBase.setGrabberUp();
 		}
 		if (gamepad1.left_bumper)
 		{
-			grabber.setPosition(0.5);
+			robotBase.setGrabberMiddle();
 		}
 
-		if(gamepad1.a){
-			mjolnir.setPosition(0.45);
+		if(gamepad2.a){
+			robotBase.setMjolnirUp();
 		}
 
-		if(gamepad1.b){
-			mjolnir.setPosition(1);
+		if(gamepad2.b){
+			robotBase.setMjolnirAllClear();
 		}
 
-		if(gamepad1.x){
-			mjolnir.setPosition(0);
+		if(gamepad2.x){
+			robotBase.setLeftLockClosed();
+			robotBase.setRightLockClosed();
 		}
 
-		motorWinch.setPower(left2);
-		motorDrawerSlide.setPower(right2);
+		if(gamepad2.y){
+			robotBase.setLeftLockOpen();
+			robotBase.setRightLockOpen();
+		}
+
+		robotBase.motorWinch.setPower(left2);
+		robotBase.motorDrawerSlide.setPower(right2);
 
 		/*telemetry.addData("Text", "*** Robot Data***");
         telemetry.addData("arm", "arm:  " + String.format("%.2f", armPosition));
@@ -177,21 +134,11 @@ public class tankDriveSpinnerLifterThing extends OpMode {
 		telemetry.addData("right tgt pwr", "right pwr: " + String.format("%.2f", right));*/
 	}
 
-	/*
-	 * Code to run when the op mode is first disabled goes here
-	 *
-	 * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#stop()
-	 */
 	@Override
 	public void stop() {
 
 	}
-
-	/*
-	 * This method scales the joystick input so for low joystick values, the
-	 * scaled value is less than linear.  This is to make it easier to drive
-	 * the robot more precisely at slower speeds.
-	 */
+	
 	double scaleInput(double dVal)  {
 		double[] scaleArray = { 0.0, 0.05, 0.09, 0.10, 0.12, 0.15, 0.18, 0.24,
 				0.30, 0.36, 0.43, 0.50, 0.60, 0.72, 0.85, 1.00, 1.00 };

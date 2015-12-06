@@ -31,9 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
-import com.qualcomm.ftcrobotcontroller.opmodes.archive.K9TeleOp;
 import com.qualcomm.ftcrobotcontroller.opmodes.archive.MRGyroTest;
-import com.qualcomm.ftcrobotcontroller.opmodes.archive.PushBotManual;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManager;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeRegister;
 
@@ -64,6 +62,6 @@ public class FtcOpModeRegister implements OpModeRegister {
 
     manager.register("MR Gyro Test", MRGyroTest.class);
 
-    manager.register("servoTest", servoTest.class);
+    manager.register("ServoTest", ServoTest.class);
   }
 }

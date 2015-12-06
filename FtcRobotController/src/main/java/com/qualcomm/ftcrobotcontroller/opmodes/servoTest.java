@@ -1,33 +1,36 @@
 package com.qualcomm.ftcrobotcontroller.opmodes;
+
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 
 /**
- * Created by Kevin on 11/19/2015.
+ * Created by Kevin on 12/6/2015.
  */
+public class ServoTest extends OpMode {
 
-public class servoTest extends OpMode {
-    Servo mjolnir;
-    Servo grabber;
+    RobotBase robotBase;
+
     @Override
     public void init() {
-        mjolnir=hardwareMap.servo.get("box");
-        grabber=hardwareMap.servo.get("grabber");
-    }
 
+        robotBase = new RobotBase(hardwareMap);
+
+    }
 
     @Override
     public void loop() {
-        if(gamepad1.a){
-            mjolnir.setPosition(0.45);
-        }
-        if(gamepad1.b){
-            mjolnir.setPosition(1.0);
-        }
-    }
 
-    @Override
-    public void stop() {
-        super.stop();
+        if (gamepad1.a) {
+            robotBase.setLeftLockOpen();
+            robotBase.setRightLockOpen();
+        }
+        if (gamepad1.b) {
+            robotBase.setLeftLockClosed();
+            robotBase.setRightLockClosed();
+        }
+
+        if(gamepad1.x){
+
+        }
     }
 }

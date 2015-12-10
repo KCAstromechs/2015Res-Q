@@ -85,10 +85,6 @@ public class RobotBase {
         mjolnir.setPosition(0.1);
     }
 
-    public void setMjolnirAllClear(){
-        mjolnir.setPosition(0.0);
-    }
-
     public void setLeftLockOpen(){
         leftLock.setPosition(0.2);
     }
@@ -104,6 +100,16 @@ public class RobotBase {
     public void setRightLockClosed(){
         rightLock.setPosition(0.18);
     }
+
+    public void initializeServos() {
+        setGrabberDown();
+        setLeftZiplineUp();
+        setRightZiplineUp();
+        setMjolnirDown();
+        setRightLockOpen();
+        setLeftLockOpen();
+    }
+
     public void setRightPower(double rightPower){
         motorFrontRight.setPower(rightPower);
         motorBackRight.setPower(rightPower);

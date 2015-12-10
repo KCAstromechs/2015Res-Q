@@ -160,7 +160,7 @@ public class AutoTestGyro extends LinearOpMode {
 
         //sleep(10000);
 
-        //Long straight drive - Main control is encoders on front right motor, us gyro for stabilization
+        //Long straight drive - Main control is encoders on back right motor, us gyro for stabilization
         stage = 2;
         telemetry.addData("Stage", stage);
         motorFrontRight.setMode(DcMotorController.RunMode.RESET_ENCODERS);
@@ -217,8 +217,9 @@ public class AutoTestGyro extends LinearOpMode {
                 telemetry.addData("motorBackLeft", motorBackLeft.getCurrentPosition());
                 */
 
-                sleep(1);
+
             }
+            sleep(50);
         }
         telemetry.addData("codeLoc", "motors turning off!");
         motorFrontRight.setPower(0);

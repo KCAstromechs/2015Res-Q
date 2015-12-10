@@ -78,11 +78,11 @@ public class RobotBase {
     }
 
     public void setMjolnirDown(){
-        mjolnir.setPosition(1.0);
+        mjolnir.setPosition(0.9);
     }
 
     public void setMjolnirUp(){
-        mjolnir.setPosition(0.45);
+        mjolnir.setPosition(0.1);
     }
 
     public void setMjolnirAllClear(){

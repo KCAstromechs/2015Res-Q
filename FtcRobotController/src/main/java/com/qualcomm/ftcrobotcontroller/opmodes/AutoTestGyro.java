@@ -136,7 +136,7 @@ public class AutoTestGyro extends LinearOpMode {
         motorBackRight.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
         motorBackRight.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
         leftPower = 1;
-        rightPower = -1;
+        rightPower = 0;
         motorFrontLeft.setPower(leftPower);
         motorBackLeft.setPower(leftPower);
         //motorFrontRight.setPower(rightPower);
@@ -195,9 +195,11 @@ public class AutoTestGyro extends LinearOpMode {
         degErr=0;
 
         while (motorBackRight.getCurrentPosition() < targetPos) {
-            lastDegErr=degErr;
+            telemetry.addData("EncoderVal", motorBackRight.getCurrentPosition());
+            System.out.println("Encoder= " +motorBackRight.getCurrentPosition());
+            lastDegErr = degErr;
             degErr = gyro.getHeading() - startHeading;
-            if (degErr!=lastDegErr) {
+            if (degErr != lastDegErr) {
                 correction = degErr * proportionalConst;
                 localLeftPower = Range.clip(leftPower - correction, -1.0f, 1.0f);
                 localRightPower = Range.clip(rightPower + correction, -1.0f, 1.0f);

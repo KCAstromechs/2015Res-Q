@@ -21,12 +21,10 @@ public class ServoTest extends OpMode {
     public void loop() {
 
         if (gamepad1.a) {
-            robotBase.setLeftLockOpen();
-            robotBase.setRightLockOpen();
+            robotBase.setMjolnirDown();
         }
         if (gamepad1.b) {
-            robotBase.setLeftLockClosed();
-            robotBase.setRightLockClosed();
+            robotBase.setMjolnirUp();
         }
 
         if(gamepad1.x){

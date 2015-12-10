@@ -78,11 +78,11 @@ public class RobotBase {
     }
 
     public void setMjolnirDown(){
-        mjolnir.setPosition(1.0);
+        mjolnir.setPosition(0.9);
     }
 
     public void setMjolnirUp(){
-        mjolnir.setPosition(0.45);
+        mjolnir.setPosition(0.1);
     }
 
     public void setMjolnirAllClear(){
@@ -90,19 +90,19 @@ public class RobotBase {
     }
 
     public void setLeftLockOpen(){
-        leftLock.setPosition(0.01);
+        leftLock.setPosition(0.2);
     }
 
     public void setRightLockOpen(){
-        rightLock.setPosition(0.7);
+        rightLock.setPosition(0.98);
     }
 
     public void setLeftLockClosed(){
-        leftLock.setPosition(0.7);
+        leftLock.setPosition(1.0);
     }
 
     public void setRightLockClosed(){
-        rightLock.setPosition(0.01);
+        rightLock.setPosition(0.18);
     }
     public void setRightPower(double rightPower){
         motorFrontRight.setPower(rightPower);

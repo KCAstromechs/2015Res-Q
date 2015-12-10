@@ -92,8 +92,6 @@ public class AutoTestGyro extends LinearOpMode {
         motorBackLeft.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
         sleep(500);
 
-
-        // motorFrontRight.setMode();
         motorFrontRight.setPower(0);
         motorFrontLeft.setPower(0);
         motorBackRight.setPower(0);
@@ -170,11 +168,12 @@ public class AutoTestGyro extends LinearOpMode {
         motorBackRight.setMode(DcMotorController.RunMode.RESET_ENCODERS);
         motorBackLeft.setMode(DcMotorController.RunMode.RESET_ENCODERS);
         sleep(500);
-        //motorFrontRight.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-        //motorFrontLeft.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-        //motorBackRight.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-        //motorBackLeft.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-
+        motorFrontRight.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        motorFrontLeft.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        motorBackRight.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        motorBackLeft.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        sleep(500);
+        
         leftPower = 0.6f;
         rightPower = 0.6f;
       /*

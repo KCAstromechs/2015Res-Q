@@ -131,10 +131,6 @@ public class AutoTestGyro extends LinearOpMode {
         stage = 1;
         telemetry.addData("Stage", stage);
         telemetry.addData("gyro (PostCalibration)", gyro.getHeading());
-        motorFrontRight.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
-        motorFrontLeft.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
-        motorBackRight.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
-        motorBackRight.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
         leftPower = 1;
         rightPower = 0;
         motorFrontLeft.setPower(leftPower);
@@ -168,10 +164,10 @@ public class AutoTestGyro extends LinearOpMode {
         motorBackRight.setMode(DcMotorController.RunMode.RESET_ENCODERS);
         motorBackLeft.setMode(DcMotorController.RunMode.RESET_ENCODERS);
         sleep(500);
-        motorFrontRight.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-        motorFrontLeft.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-        motorBackRight.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-        motorBackLeft.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        //motorFrontRight.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        //motorFrontLeft.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        //motorBackRight.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        //motorBackLeft.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
 
         leftPower = 0.6f;
         rightPower = 0.6f;
@@ -209,10 +205,12 @@ public class AutoTestGyro extends LinearOpMode {
                 motorBackRight.setPower(localRightPower);
                 motorBackLeft.setPower(localLeftPower);
 
+                /*
                 telemetry.addData("motorFrontRight", motorFrontRight.getCurrentPosition());
                 telemetry.addData("motorFrontLeft", motorFrontLeft.getCurrentPosition());
                 telemetry.addData("motorBackRight", motorBackRight.getCurrentPosition());
                 telemetry.addData("motorBackLeft", motorBackLeft.getCurrentPosition());
+                */
 
                 sleep(1);
             }
@@ -228,10 +226,6 @@ public class AutoTestGyro extends LinearOpMode {
         //turns towards beacon use gyro, not encoders
         stage = 4;
         telemetry.addData("Stage", stage);
-        motorFrontRight.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
-        motorFrontLeft.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
-        motorBackRight.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
-        motorBackLeft.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
         startHeading = gyro.getHeading();
         while (gyro.getHeading() <= 90) {
             motorFrontLeft.setPower(leftPower);

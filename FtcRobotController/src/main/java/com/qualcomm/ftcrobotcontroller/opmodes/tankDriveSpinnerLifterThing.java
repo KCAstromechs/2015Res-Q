@@ -126,10 +126,6 @@ public class tankDriveSpinnerLifterThing extends OpMode {
 			robotBase.setMjolnirUp();
 		}
 
-		if(gamepad2.b){
-			robotBase.setMjolnirAllClear();
-		}
-
 		if(gamepad2.x){
 			robotBase.setLeftLockClosed();
 			robotBase.setRightLockClosed();

@@ -35,6 +35,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.GyroSensor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
 /**
@@ -59,15 +60,22 @@ public class AutoTestGyro extends LinearOpMode {
 
     //Drive Constants
     private static final int kClicksPerRev = 1100;
-    private static final int klongDrive = (int) (kClicksPerRev * 3.75);
+    private static final int klongDrive = (int) (kClicksPerRev * 7.25);
     private static final int kClearWall = (int) (kClicksPerRev * 0.10);
-    private static final int kSlowApproach = kClicksPerRev * 2;
+    private static final int kSlowApproach =  (int) (kClicksPerRev * 1.25f);
 
 
     DcMotor motorFrontRight;
     DcMotor motorFrontLeft;
     DcMotor motorBackRight;
     DcMotor motorBackLeft;
+
+    Servo mjolnir;
+    Servo grabber;
+    Servo leftZipline;
+    Servo rightZipline;
+    Servo leftLock;
+    Servo rightLock;
 
     GyroSensor gyro;
 
@@ -79,6 +87,12 @@ public class AutoTestGyro extends LinearOpMode {
         motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
         motorBackRight = hardwareMap.dcMotor.get("backRight");
         motorBackLeft = hardwareMap.dcMotor.get("backLeft");
+        mjolnir = hardwareMap.servo.get("box");
+        grabber=hardwareMap.servo.get("grabber");
+        leftZipline=hardwareMap.servo.get("leftZipline");
+        rightZipline=hardwareMap.servo.get("rightZipline");
+        leftLock=hardwareMap.servo.get("leftLock");
+        rightLock=hardwareMap.servo.get("rightLock");
 
         //reset encoders
         motorFrontRight.setMode(DcMotorController.RunMode.RESET_ENCODERS);
@@ -119,6 +133,13 @@ public class AutoTestGyro extends LinearOpMode {
         telemetry.addData("gyro", gyro.getHeading());
         System.out.println("gyro (PostCalibration?" + gyro.getHeading());
 
+        grabber.setPosition(0.1);
+        leftZipline.setPosition(1.0);
+        rightZipline.setPosition(0.4);
+        mjolnir.setPosition(0.9);
+        leftLock.setPosition(0.2);
+        rightLock.setPosition(0.98);
+
         waitForStart();
 
         //gyro.resetZAxisIntegrator();
@@ -135,20 +156,20 @@ public class AutoTestGyro extends LinearOpMode {
         stage = 1;
         telemetry.addData("Stage", stage);
         telemetry.addData("gyro (PostCalibration)", gyro.getHeading());
-        leftPower = 1;
+        leftPower = 0.5f;
         rightPower = 0;
         motorFrontLeft.setPower(leftPower);
         motorBackLeft.setPower(leftPower);
         //motorFrontRight.setPower(rightPower);
         //motorBackRight.setPower(rightPower);
-        while (gyro.getHeading() <= 45) {
+        while (gyro.getHeading() <= 35) {
             //motorFrontLeft.setPower(leftPower);
             //motorBackLeft.setPower(leftPower);
             //telemetry.addData("leftPower", leftPower);
             //telemetry.addData("rightPower", rightPower);
             //telemetry.addData("gyro",gyro.getHeading());
             //System.out.println("gyro="+gyro.getHeading());
-            sleep(1);
+            sleep(50);
         }
         motorFrontLeft.setPower(0);
         motorBackLeft.setPower(0);
@@ -229,16 +250,21 @@ public class AutoTestGyro extends LinearOpMode {
 
         telemetry.addData("codeLoc", "motors off!");
 
+        sleep(1000);
         //turns towards beacon use gyro, not encoders
         stage = 4;
         telemetry.addData("Stage", stage);
+        leftPower = 0.5f;
         startHeading = gyro.getHeading();
-        while (gyro.getHeading() <= 90) {
-            motorFrontLeft.setPower(leftPower);
-            motorBackLeft.setPower(leftPower);
+        motorFrontLeft.setPower(leftPower);
+        motorBackLeft.setPower(leftPower);
+        while (gyro.getHeading() <= 80) {
+            sleep(50);
         }
         motorFrontLeft.setPower(0);
         motorBackLeft.setPower(0);
+
+        sleep(1000);
 
         //slow approach - use light sensor to follow line
         stage = 5;
@@ -282,8 +308,9 @@ public class AutoTestGyro extends LinearOpMode {
                 telemetry.addData("motorBackRight", motorBackRight.getCurrentPosition());
                 telemetry.addData("motorBackLeft", motorBackLeft.getCurrentPosition());
 
-                sleep(1);
             }
+
+            sleep(50);
         }
         stage = 6;
         telemetry.addData("Stage", stage);
@@ -293,8 +320,12 @@ public class AutoTestGyro extends LinearOpMode {
         motorBackRight.setPower(0);
         motorBackLeft.setPower(0);
 
+        sleep(500);
+
         //Deliver climbers, and potentially light sensors
         stage = 7;
         telemetry.addData("Stage", stage);
+
+        mjolnir.setPosition(0.1);
     }
 }

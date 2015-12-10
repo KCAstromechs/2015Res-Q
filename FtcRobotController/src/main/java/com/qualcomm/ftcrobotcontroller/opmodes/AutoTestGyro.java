@@ -173,7 +173,7 @@ public class AutoTestGyro extends LinearOpMode {
         motorBackRight.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
         motorBackLeft.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
         sleep(500);
-        
+
         leftPower = 0.6f;
         rightPower = 0.6f;
       /*
@@ -205,10 +205,10 @@ public class AutoTestGyro extends LinearOpMode {
                 localLeftPower = Range.clip(leftPower - correction, -1.0f, 1.0f);
                 localRightPower = Range.clip(rightPower + correction, -1.0f, 1.0f);
 
-                motorFrontRight.setPower(localRightPower);
-                motorFrontLeft.setPower(localLeftPower);
+                //motorFrontRight.setPower(localRightPower);
+                //motorFrontLeft.setPower(localLeftPower);
                 motorBackRight.setPower(localRightPower);
-                motorBackLeft.setPower(localLeftPower);
+               // motorBackLeft.setPower(localLeftPower);
 
                 /*
                 telemetry.addData("motorFrontRight", motorFrontRight.getCurrentPosition());

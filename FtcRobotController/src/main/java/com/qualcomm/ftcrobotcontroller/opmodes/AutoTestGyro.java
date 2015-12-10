@@ -194,7 +194,7 @@ public class AutoTestGyro extends LinearOpMode {
         telemetry.addData("codeLoc", "motors on!");
         degErr=0;
 
-        while (motorFrontRight.getCurrentPosition() < targetPos) {
+        while (motorBackRight.getCurrentPosition() < targetPos) {
             lastDegErr=degErr;
             degErr = gyro.getHeading() - startHeading;
             if (degErr!=lastDegErr) {
@@ -262,7 +262,7 @@ public class AutoTestGyro extends LinearOpMode {
         localRightPower=rightPower;
         degErr=0;
 
-        while (motorFrontRight.getCurrentPosition() < targetPos) {
+        while (motorBackRight.getCurrentPosition() < targetPos) {
             lastDegErr=degErr;
             degErr = gyro.getHeading() - startHeading;
             if (degErr!=lastDegErr) {

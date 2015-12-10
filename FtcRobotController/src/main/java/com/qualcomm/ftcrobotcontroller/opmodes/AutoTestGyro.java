@@ -44,6 +44,8 @@ import com.qualcomm.robotcore.util.Range;
 public class AutoTestGyro extends LinearOpMode {
     float leftPower;
     float rightPower;
+    float localRightPower;
+    float localLeftPower;
     int stage = 0;
     int startHeading;
     int targetPos;
@@ -92,6 +94,7 @@ public class AutoTestGyro extends LinearOpMode {
 
         //Sensor init
         gyro = hardwareMap.gyroSensor.get("gyro");
+        //Add ODS to compensate for errors in longDrive
         gyro.calibrate();
 
         sleep(100);
@@ -169,10 +172,10 @@ public class AutoTestGyro extends LinearOpMode {
         stage = 3;
         telemetry.addData("Stage", stage);
 
-        float localLeftPower=leftPower;
-        float localRightPower=rightPower;
+        localLeftPower=leftPower;
+        localRightPower=rightPower;
 
-        telemetry.addData("codeLoc","motors on!");
+        telemetry.addData("codeLoc", "motors on!");
         degErr=0;
 
         while (motorFrontRight.getCurrentPosition() < targetPos) {
@@ -196,16 +199,15 @@ public class AutoTestGyro extends LinearOpMode {
                 sleep(1);
             }
         }
-        telemetry.addData("codeLoc","motors turning off!");
+        telemetry.addData("codeLoc", "motors turning off!");
         motorFrontRight.setPower(0);
         motorFrontLeft.setPower(0);
         motorBackRight.setPower(0);
         motorBackLeft.setPower(0);
 
-        telemetry.addData("codeLoc","motors off!");
+        telemetry.addData("codeLoc", "motors off!");
 
         //turns towards beacon use gyro, not encoders
-        sleep(200000);
         stage = 4;
         telemetry.addData("Stage", stage);
         motorFrontRight.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
@@ -230,24 +232,43 @@ public class AutoTestGyro extends LinearOpMode {
         motorFrontLeft.setMode(DcMotorController.RunMode.RESET_ENCODERS);
         motorBackRight.setMode(DcMotorController.RunMode.RESET_ENCODERS);
         motorBackLeft.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-        sleep(100);
+        sleep(500);
         motorFrontRight.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
         motorFrontLeft.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
         motorBackRight.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
         motorBackLeft.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-        motorFrontRight.setTargetPosition(kSlowApproach);
-        motorFrontLeft.setTargetPosition(kSlowApproach);
-        motorBackRight.setTargetPosition(kSlowApproach);
-        motorBackLeft.setTargetPosition(kSlowApproach);
-        //gyro stabilization - PID
+
+        targetPos=kSlowApproach;
+        startHeading = 90;
+        stage = 3;
+        telemetry.addData("Stage", stage);
+        localLeftPower=leftPower;
+        localRightPower=rightPower;
+        degErr=0;
+
+        while (motorFrontRight.getCurrentPosition() < targetPos) {
+            lastDegErr=degErr;
+            degErr = gyro.getHeading() - startHeading;
+            if (degErr!=lastDegErr) {
+                correction = degErr * proportionalConst;
+                localLeftPower = Range.clip(leftPower - correction, -1.0f, 1.0f);
+                localRightPower = Range.clip(rightPower + correction, -1.0f, 1.0f);
+
+                motorFrontRight.setPower(localRightPower);
+                motorFrontLeft.setPower(localLeftPower);
+                motorBackRight.setPower(localRightPower);
+                motorBackLeft.setPower(localLeftPower);
+
+                telemetry.addData("motorFrontRight", motorFrontRight.getCurrentPosition());
+                telemetry.addData("motorFrontLeft", motorFrontLeft.getCurrentPosition());
+                telemetry.addData("motorBackRight", motorBackRight.getCurrentPosition());
+                telemetry.addData("motorBackLeft", motorBackLeft.getCurrentPosition());
+
+                sleep(1);
+            }
+        }
         stage = 6;
         telemetry.addData("Stage", stage);
-
-        motorFrontRight.setPower(rightPower);
-        motorFrontLeft.setPower(leftPower);
-        motorBackRight.setPower(rightPower);
-        motorBackLeft.setPower(leftPower);
-
 
         motorFrontRight.setPower(0);
         motorFrontLeft.setPower(0);
@@ -259,4 +280,3 @@ public class AutoTestGyro extends LinearOpMode {
         telemetry.addData("Stage", stage);
     }
 }
-

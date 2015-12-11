@@ -32,11 +32,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorController;
-import com.qualcomm.robotcore.hardware.GyroSensor;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.Range;
+
 
 /**
  * Base Drive code
@@ -53,8 +49,8 @@ public class BluePos1 extends LinearOpMode {
     private static final int klongDrive = (int) (kClicksPerRev * 7.25);
     private static final int kClearWall = (int) (kClicksPerRev * 0.10);
     private static final int kSlowApproach =  (int) (kClicksPerRev * 1.25f);
-
-
+    private static final int kReverse = (int)(kClicksPerRev*0.75);
+    private static final int kPark = (int)(kClicksPerRev*1.25);
 
 
     @Override
@@ -64,13 +60,15 @@ public class BluePos1 extends LinearOpMode {
         robotBase.initializeServos();
         robotBase.calibrateGyro();
 
-
-
-
-
-
         waitForStart();
 
-        
+        robotBase.driveStraight(kClearWall,1,0,1); //clears wall
+        robotBase.turn(45,.75); //turns 45 degrees
+        robotBase.driveStraight(klongDrive,1,45,1); // long drive down the field
+        robotBase.turn(90,.75); // turns towards safety beacon
+        robotBase.driveStraight(kSlowApproach,0.5,90,1); //approaches safety beacon
+        robotBase.driveStraight(kReverse,0.5,90,-1); // backs away
+        robotBase.turn(180,0.5); //turn towards low goal
+        robotBase.driveStraight(kPark,0.75,180,1); //enter low zone
     }
 }

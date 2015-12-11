@@ -1,6 +1,7 @@
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -171,8 +172,8 @@ public class RobotBase {
         double leftPower;
         int variation = Math.abs(turnHeading-gyro.getHeading());
         if(calcTurnDirection(turnHeading, gyro.getHeading(), variation)){
-            leftPower=1;
-            rightPower=-1;
+            leftPower=power;
+            rightPower=-power;
             motorFrontRight.setPower(rightPower);
             motorFrontLeft.setPower(leftPower);
             motorBackRight.setPower(rightPower);
@@ -186,8 +187,8 @@ public class RobotBase {
             motorBackLeft.setPower(0);
         }
         else {
-            leftPower=-1;
-            rightPower=1;
+            leftPower=-power;
+            rightPower=power;
             motorFrontRight.setPower(rightPower);
             motorFrontLeft.setPower(leftPower);
             motorBackRight.setPower(rightPower);
@@ -202,7 +203,7 @@ public class RobotBase {
         }
     }
 
-    public void driveStraight(int dist, double power, int heading)throws InterruptedException {
+    public void driveStraight(int dist, double power, int heading, int direction)throws InterruptedException {
         //gyro stabilization - PID
         float proportionalConst = 0.05f;
         int degErr;
@@ -211,7 +212,20 @@ public class RobotBase {
         double localLeftPower=power;
         double localRightPower=power;
 
+        //reset encoders
+        motorFrontRight.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+        motorFrontLeft.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+        motorBackRight.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+        motorBackLeft.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+
+        //set motor Power
+        motorFrontRight.setPower(power);
+        motorFrontLeft.setPower(power);
+        motorBackRight.setPower(power);
+        motorBackLeft.setPower(power);
+
         degErr=0;
+
 
         while (motorBackRight.getCurrentPosition() < dist) {
             //System.out.println("Encoder= " +motorBackRight.getCurrentPosition());
@@ -219,8 +233,8 @@ public class RobotBase {
             degErr = gyro.getHeading() - heading;
             if (degErr != lastDegErr) {
                 correction = degErr * proportionalConst;
-                localLeftPower = Range.clip(power - correction, -1.0f, 1.0f);
-                localRightPower = Range.clip(power + correction, -1.0f, 1.0f);
+                localLeftPower = Range.clip((power - correction)*direction, -1.0f, 1.0f);
+                localRightPower = Range.clip((power + correction)*direction, -1.0f, 1.0f);
 
                 motorFrontRight.setPower(localRightPower);
                 motorFrontLeft.setPower(localLeftPower);

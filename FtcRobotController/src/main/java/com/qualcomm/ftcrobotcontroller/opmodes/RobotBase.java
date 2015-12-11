@@ -50,6 +50,17 @@ public class RobotBase {
 
     }
 
+    public void calibrateGyro()throws InterruptedException{
+        gyro.calibrate();
+
+        java.lang.Thread.sleep(100);
+        while (gyro.isCalibrating()) {
+            java.lang.Thread.sleep(50);
+        }
+        // check calibrate gyro
+        System.out.println("gyro (PreCalibration" + gyro.getHeading());
+    }
+
     public void setGrabberUp() {
         grabber.setPosition(0.7);
     }

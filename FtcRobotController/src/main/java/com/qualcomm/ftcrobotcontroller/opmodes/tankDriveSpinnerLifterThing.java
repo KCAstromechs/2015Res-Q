@@ -54,6 +54,7 @@ public class tankDriveSpinnerLifterThing extends OpMode {
 	public void init() {
 
 		robotBase = new RobotBase(hardwareMap);
+		robotBase.initializeServos();
 
 	}
 	@Override
@@ -139,11 +140,6 @@ public class tankDriveSpinnerLifterThing extends OpMode {
 		robotBase.motorWinch.setPower(left2);
 		robotBase.motorDrawerSlide.setPower(right2);
 
-		/*telemetry.addData("Text", "*** Robot Data***");
-        telemetry.addData("arm", "arm:  " + String.format("%.2f", armPosition));
-        telemetry.addData("claw", "claw:  " + String.format("%.2f", clawPosition));
-		telemetry.addData("left tgt pwr",  "left  pwr: " + String.format("%.2f", left));
-		telemetry.addData("right tgt pwr", "right pwr: " + String.format("%.2f", right));*/
 	}
 
 	@Override

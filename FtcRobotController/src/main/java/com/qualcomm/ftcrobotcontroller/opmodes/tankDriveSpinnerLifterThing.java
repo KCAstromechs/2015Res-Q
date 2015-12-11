@@ -32,15 +32,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
-/**
- * TeleOp Mode
- * <p>
- * Enables control of the robot via the gamepad
- */
 public class tankDriveSpinnerLifterThing extends OpMode {
 
 	RobotBase robotBase;
@@ -102,9 +95,18 @@ public class tankDriveSpinnerLifterThing extends OpMode {
 		{
 			robotBase.setGrabberUp();
 		}
-		if (gamepad2.left_bumper)
+		if (gamepad2.right_trigger>25)
 		{
 			robotBase.setGrabberMiddle();
+		}
+
+		if (gamepad2.left_trigger>75)
+		{
+			left2=left2/2;
+		}
+
+		if (gamepad2.left_bumper){
+			robotBase.setGrabberDown();
 		}
 
 		if(gamepad1.a){
@@ -125,6 +127,10 @@ public class tankDriveSpinnerLifterThing extends OpMode {
 
 		if(gamepad2.a){
 			robotBase.setMjolnirUp();
+		}
+
+		if(gamepad2.b){
+			robotBase.setMjolnirDown();
 		}
 
 		if(gamepad2.x){

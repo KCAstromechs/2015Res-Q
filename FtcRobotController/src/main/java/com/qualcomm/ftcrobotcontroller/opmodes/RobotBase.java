@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.Range;
 
 /**
  * Created by Kevin on 12/6/2015.
@@ -114,8 +115,117 @@ public class RobotBase {
         motorFrontRight.setPower(rightPower);
         motorBackRight.setPower(rightPower);
     }
+
     public void setLeftPower(double leftPower){
         motorFrontLeft.setPower(leftPower);
         motorBackLeft.setPower(leftPower);
+    }
+
+    private boolean calcTurnDirection (int target, int heading, int variation)throws InterruptedException {
+        //Finds weather to turn clockwise or anticlockwise
+        if(target>180){
+            if(heading>180){
+                if(heading>target){
+                    return false;
+                } else {
+                    return true;
+                }
+            } else {
+                if (variation>180){
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        } else {
+            if (heading>180){
+                if(variation>180){
+                    return false;
+                } else {
+                    return true;
+                }
+            } else {
+                if (heading>target){
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        }
+
+    }
+
+    public void turn(int turnHeading, double power)throws InterruptedException{
+        double rightPower;
+        double leftPower;
+        int variation = Math.abs(turnHeading-gyro.getHeading());
+        if(calcTurnDirection(turnHeading, gyro.getHeading(), variation)){
+            leftPower=1;
+            rightPower=-1;
+            motorFrontRight.setPower(rightPower);
+            motorFrontLeft.setPower(leftPower);
+            motorBackRight.setPower(rightPower);
+            motorBackLeft.setPower(leftPower);
+            while(gyro.getHeading()<turnHeading){
+                java.lang.Thread.sleep(50);
+            }
+            motorFrontRight.setPower(0);
+            motorFrontLeft.setPower(0);
+            motorBackRight.setPower(0);
+            motorBackLeft.setPower(0);
+        }
+        else {
+            leftPower=-1;
+            rightPower=1;
+            motorFrontRight.setPower(rightPower);
+            motorFrontLeft.setPower(leftPower);
+            motorBackRight.setPower(rightPower);
+            motorBackLeft.setPower(leftPower);
+            while(gyro.getHeading()>turnHeading){
+                java.lang.Thread.sleep(50);
+            }
+            motorFrontRight.setPower(0);
+            motorFrontLeft.setPower(0);
+            motorBackRight.setPower(0);
+            motorBackLeft.setPower(0);
+        }
+    }
+
+    public void driveStraight(int dist, double power, int heading)throws InterruptedException {
+        //gyro stabilization - PID
+        float proportionalConst = 0.05f;
+        int degErr;
+        float correction;
+        int lastDegErr;
+        double localLeftPower=power;
+        double localRightPower=power;
+
+        degErr=0;
+
+        while (motorBackRight.getCurrentPosition() < dist) {
+            //System.out.println("Encoder= " +motorBackRight.getCurrentPosition());
+            lastDegErr = degErr;
+            degErr = gyro.getHeading() - heading;
+            if (degErr != lastDegErr) {
+                correction = degErr * proportionalConst;
+                localLeftPower = Range.clip(power - correction, -1.0f, 1.0f);
+                localRightPower = Range.clip(power + correction, -1.0f, 1.0f);
+
+                motorFrontRight.setPower(localRightPower);
+                motorFrontLeft.setPower(localLeftPower);
+                motorBackRight.setPower(localRightPower);
+                motorBackLeft.setPower(localLeftPower);
+
+                /*
+                telemetry.addData("motorFrontRight", motorFrontRight.getCurrentPosition());
+                telemetry.addData("motorFrontLeft", motorFrontLeft.getCurrentPosition());
+                telemetry.addData("motorBackRight", motorBackRight.getCurrentPosition());
+                telemetry.addData("motorBackLeft", motorBackLeft.getCurrentPosition());
+                */
+
+
+            }
+            java.lang.Thread.sleep(50);
+        }
     }
 }

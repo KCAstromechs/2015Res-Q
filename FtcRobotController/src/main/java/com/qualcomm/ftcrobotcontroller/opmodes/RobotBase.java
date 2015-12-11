@@ -49,6 +49,9 @@ public class RobotBase {
         leftLock=hardwareMap.servo.get("leftLock");
         rightLock=hardwareMap.servo.get("rightLock");
 
+        //sensor init
+        gyro=hardwareMap.gyroSensor.get("gyro");
+
     }
 
     public void calibrateGyro()throws InterruptedException{

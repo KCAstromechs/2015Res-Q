@@ -34,23 +34,22 @@ package com.qualcomm.ftcrobotcontroller.opmodes;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 
-
 /**
  * Base Drive code
  * Blue side of field
  * far left corner
  */
 
-public class BluePos1 extends LinearOpMode {
+public class BluePos2 extends LinearOpMode {
 
     RobotBase robotBase;
 
     //Drive Constants
     private static final int kClicksPerRev = 1100;
-    private static final int klongDrive = (int) (kClicksPerRev * 7.0);
-    private static final int kClearWall = (int) (kClicksPerRev * 0.50);
-    private static final int kSlowApproach =  (int) (kClicksPerRev * 2.75f);
-    private static final int kReverse = (int)(kClicksPerRev*0.75);
+    private static final int klongDrive = (int) (kClicksPerRev * 3.75);
+    private static final int kDriveOut = (int) (kClicksPerRev * 2.5);
+    private static final int kSlowApproach =  (int) (kClicksPerRev * 2.0f);
+    private static final int kReverse = (int)(kClicksPerRev*0.5);
     private static final int kPark = (int)(kClicksPerRev*1.25);
 
 
@@ -65,14 +64,14 @@ public class BluePos1 extends LinearOpMode {
 
         waitForStart();
 
-        robotBase.driveStraight(kClearWall,1,0,1.0f); //clears wall
-        robotBase.turn(35,.25); //turns 45 degrees
-        robotBase.driveStraight(klongDrive,1,50,1.0f); // long drive down the field
-        robotBase.turn(80,.25); // turns towards safety beacon
-        robotBase.driveStraight(kSlowApproach,0.5,90,1.0f); //approaches safety beacon
+        robotBase.driveStraight(kDriveOut, 1, 0, 1.0f); //clears wall
+        robotBase.turn(35, .25); //turns 45 degrees
+        robotBase.driveStraight(klongDrive, 1, 50, 1.0f); // long drive down the field
+        robotBase.turn(80, .25); // turns towards safety beacon
+        robotBase.driveStraight(kSlowApproach, 0.5, 90, 1.0f); //approaches safety beacon
         robotBase.hammerTime();
-        //robotBase.driveStraight(kReverse,0.5,90,-1); // backs away
-        //robotBase.turn(180,0.5); //turn towards low goal
-        //robotBase.driveStraight(kPark,0.75,180,1); //enter low zone
+        robotBase.driveStraight(kReverse, 0.5, 90, -1); // backs away
+        robotBase.turn(180, 0.5); //turn towards low goal
+        robotBase.driveStraight(kPark, 0.75, 180, 1); //enter low zone
     }
 }

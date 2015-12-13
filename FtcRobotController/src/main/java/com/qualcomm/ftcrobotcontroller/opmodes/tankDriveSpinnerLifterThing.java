@@ -86,7 +86,7 @@ public class tankDriveSpinnerLifterThing extends OpMode {
 		float left2 = gamepad2.left_stick_y;
 
 		if (Math.abs(left2)<0.1){
-			left2=0;
+			left2=0.0f;
 		}
 		if (Math.abs(right2)<0.1){
 			right2=0;
@@ -95,19 +95,21 @@ public class tankDriveSpinnerLifterThing extends OpMode {
 		{
 			robotBase.setGrabberUp();
 		}
-		if (gamepad2.right_trigger>25)
+		if (gamepad2.right_trigger>0.75)
 		{
 			robotBase.setGrabberMiddle();
 		}
 
-		if (gamepad2.left_trigger>75)
+		if (gamepad2.left_trigger>0.75)
 		{
-			left2=left2/2;
-		}
-
-		if (gamepad2.left_bumper){
 			robotBase.setGrabberDown();
 		}
+		telemetry.addData("leftT", gamepad2.left_trigger);
+
+		if (gamepad2.left_bumper){
+			right2 /= 10.0;
+		}
+		telemetry.addData("right2", right2);
 
 		if(gamepad1.a){
 			robotBase.setLeftZiplineDown();
@@ -143,8 +145,8 @@ public class tankDriveSpinnerLifterThing extends OpMode {
 			robotBase.setRightLockOpen();
 		}
 
-		robotBase.motorWinch.setPower(left2);
-		robotBase.motorDrawerSlide.setPower(right2);
+		robotBase.motorWinch.setPower(right2);
+		robotBase.motorDrawerSlide.setPower(left2);
 
 	}
 

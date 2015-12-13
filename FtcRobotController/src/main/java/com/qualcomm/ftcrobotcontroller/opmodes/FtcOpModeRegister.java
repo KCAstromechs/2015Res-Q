@@ -62,9 +62,11 @@ public class FtcOpModeRegister implements OpModeRegister {
 
     manager.register ("Autonomous Blue Position 1", BluePos1.class);
 
-    manager.register("MR Gyro Test", MRGyroTest.class);
+    manager.register ("Autonomous Red Position 1", RedPos1.class);
 
-    manager.register("ServoTest", ServoTest.class);
+    manager.register("Autonomous Red Position 1 Play Nice Version", RedPos1Wait.class);
+
+    manager.register("Autonomous Blue Position 1 Play Nice Version", BluePos1Wait.class);
 
     manager.register("Tele Op", tankDriveSpinnerLifterThing.class);
   }

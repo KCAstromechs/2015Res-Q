@@ -49,6 +49,8 @@ public class RobotBase {
         leftLock=hardwareMap.servo.get("leftLock");
         rightLock=hardwareMap.servo.get("rightLock");
 
+        //sensor init
+        gyro=hardwareMap.gyroSensor.get("gyro");
     }
 
     public void calibrateGyro()throws InterruptedException{
@@ -98,6 +100,17 @@ public class RobotBase {
         mjolnir.setPosition(0.1);
     }
 
+    public void hammerTime() throws InterruptedException {
+        setMjolnirUp();
+        System.out.println("Mjolnir Down");
+        Thread.sleep(1500);
+        System.out.println("Mjolnir sleep done");
+        mjolnir.setPosition(0.9);
+        System.out.println("Mjolnir Up");
+        Thread.sleep(1000);
+        System.out.println("Mjolnir last sleep done");
+    }
+
     public void setLeftLockOpen(){
         leftLock.setPosition(0.2);
     }
@@ -135,6 +148,7 @@ public class RobotBase {
 
     private boolean calcTurnDirection (int target, int heading, int variation)throws InterruptedException {
         //Finds weather to turn clockwise or anticlockwise
+        //true is clockwise; false is counter clockwise
         if(target>180){
             if(heading>180){
                 if(heading>target){
@@ -152,9 +166,9 @@ public class RobotBase {
         } else {
             if (heading>180){
                 if(variation>180){
-                    return false;
-                } else {
                     return true;
+                } else {
+                    return false;
                 }
             } else {
                 if (heading>target){
@@ -170,16 +184,31 @@ public class RobotBase {
     public void turn(int turnHeading, double power)throws InterruptedException{
         double rightPower;
         double leftPower;
-        int variation = Math.abs(turnHeading-gyro.getHeading());
-        if(calcTurnDirection(turnHeading, gyro.getHeading(), variation)){
+        double cclockwise = gyro.getHeading() - turnHeading;
+        double clockwise = turnHeading - gyro.getHeading();
+
+        if (clockwise >= 360){
+            clockwise -= 360;
+        }
+        if (clockwise < 0){
+            clockwise += 360;
+        }
+        if (cclockwise >= 360){
+            cclockwise -= 360;
+        }
+        if (cclockwise < 0){
+            cclockwise += 360;
+        }
+
+        if(cclockwise > clockwise){
             leftPower=power;
             rightPower=-power;
             motorFrontRight.setPower(rightPower);
             motorFrontLeft.setPower(leftPower);
             motorBackRight.setPower(rightPower);
             motorBackLeft.setPower(leftPower);
-            while(gyro.getHeading()<turnHeading){
-                java.lang.Thread.sleep(50);
+            while(Math.abs(gyro.getHeading() - turnHeading) > 2){
+                java.lang.Thread.sleep(25);
             }
             motorFrontRight.setPower(0);
             motorFrontLeft.setPower(0);
@@ -193,17 +222,18 @@ public class RobotBase {
             motorFrontLeft.setPower(leftPower);
             motorBackRight.setPower(rightPower);
             motorBackLeft.setPower(leftPower);
-            while(gyro.getHeading()>turnHeading){
-                java.lang.Thread.sleep(50);
+            while(Math.abs(gyro.getHeading() - turnHeading) > 2){
+                java.lang.Thread.sleep(25);
             }
             motorFrontRight.setPower(0);
             motorFrontLeft.setPower(0);
             motorBackRight.setPower(0);
             motorBackLeft.setPower(0);
         }
+        Thread.sleep(100);
     }
 
-    public void driveStraight(int dist, double power, int heading, int direction)throws InterruptedException {
+    public void driveStraight(int dist, double power, int heading, float direction)throws InterruptedException {
         //gyro stabilization - PID
         float proportionalConst = 0.05f;
         int degErr;
@@ -217,6 +247,13 @@ public class RobotBase {
         motorFrontLeft.setMode(DcMotorController.RunMode.RESET_ENCODERS);
         motorBackRight.setMode(DcMotorController.RunMode.RESET_ENCODERS);
         motorBackLeft.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+
+        Thread.sleep(250);
+
+        motorFrontRight.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+        motorFrontLeft.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+        motorBackRight.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+        motorBackLeft.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
 
         //set motor Power
         motorFrontRight.setPower(power);
@@ -247,10 +284,15 @@ public class RobotBase {
                 telemetry.addData("motorBackRight", motorBackRight.getCurrentPosition());
                 telemetry.addData("motorBackLeft", motorBackLeft.getCurrentPosition());
                 */
-
+                Thread.sleep(50);
 
             }
-            java.lang.Thread.sleep(50);
+
         }
+        motorBackRight.setPower(0);
+        motorBackLeft.setPower(0);
+        motorFrontLeft.setPower(0);
+        motorFrontRight.setPower(0);
+        Thread.sleep(100);
     }
 }

@@ -1,5 +1,6 @@
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.GyroSensor;
@@ -29,6 +30,7 @@ public class RobotBase {
 
     //sensors
     GyroSensor gyro;
+    ColorSensor colorSensor;
 
     public RobotBase(HardwareMap hardwareMap) {
         //motor init
@@ -51,6 +53,7 @@ public class RobotBase {
 
         //sensor init
         gyro=hardwareMap.gyroSensor.get("gyro");
+        colorSensor = hardwareMap.colorSensor.get("colorSensor");
 
     }
 

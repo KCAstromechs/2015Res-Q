@@ -30,7 +30,8 @@ public class RobotBase {
 
     //sensors
     GyroSensor gyro;
-    ColorSensor colorSensor;
+    ColorSensor rightColorSensor;
+    ColorSensor leftColorSensor;
 
     public RobotBase(HardwareMap hardwareMap) {
         //motor init
@@ -53,7 +54,8 @@ public class RobotBase {
 
         //sensor init
         gyro=hardwareMap.gyroSensor.get("gyro");
-        colorSensor = hardwareMap.colorSensor.get("colorSensor");
+        rightColorSensor = hardwareMap.colorSensor.get("rightColorSensor");
+        leftColorSensor = hardwareMap.colorSensor.get("leftColorSensor");
 
     }
 

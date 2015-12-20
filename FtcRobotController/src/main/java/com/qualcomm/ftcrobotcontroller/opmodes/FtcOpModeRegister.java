@@ -58,8 +58,6 @@ public class FtcOpModeRegister implements OpModeRegister {
 
     manager.register("NullOp", NullOp.class);
 
-    //manager.register ("AutoTestGyro", AutoTestGyro.class);
-
     manager.register ("Autonomous Blue Position 1", BluePos1.class);
 
     manager.register ("Autonomous Red Position 1", RedPos1.class);
@@ -71,5 +69,7 @@ public class FtcOpModeRegister implements OpModeRegister {
     manager.register("Tele Op", tankDriveSpinnerLifterThing.class);
 
     manager.register("Tread Test",tankTreadTest.class);
+
+    manager.register("Tape Measure Lifter test", testbedLifter.class);
   }
 }

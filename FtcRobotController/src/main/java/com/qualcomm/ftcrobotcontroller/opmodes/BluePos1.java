@@ -71,6 +71,10 @@ public class BluePos1 extends LinearOpMode {
         robotBase.turn(80,.25); // turns towards safety beacon
         robotBase.driveStraight(kSlowApproach,0.5,90,1.0f); //approaches safety beacon
         robotBase.hammerTime();
+        //read color sensor
+        //push button
+
+
         //robotBase.driveStraight(kReverse,0.5,90,-1); // backs away
         //robotBase.turn(180,0.5); //turn towards low goal
         //robotBase.driveStraight(kPark,0.75,180,1); //enter low zone

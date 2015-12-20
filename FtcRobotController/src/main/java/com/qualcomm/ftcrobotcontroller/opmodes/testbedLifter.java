@@ -36,6 +36,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
 
 public class testbedLifter extends OpMode {
+
 	DcMotor motorFrontRight;
 	DcMotor motorFrontLeft;
 	DcMotor motorBackRight;
@@ -89,14 +90,16 @@ public class testbedLifter extends OpMode {
 		motorBackLeft.setPower(left);
 
 		//operate lifter
-		if (gamepad1.right_bumper);{
-			lifter.setPower(1);
-		}
-		if(gamepad1.left_bumper);
+		if (gamepad1.right_bumper); //extend lifter
 		{
-			lifter.setPower(-1);
+			lifter.setPower(0.75);
 		}
-		if (gamepad1.a);{
+		if(gamepad1.left_bumper); // retract
+		{
+			lifter.setPower(-0.75);
+		}
+		if (gamepad1.a); // stop motor
+		{
 			lifter.setPower(0);
 		}
 

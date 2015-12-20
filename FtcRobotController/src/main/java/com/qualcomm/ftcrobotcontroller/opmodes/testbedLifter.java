@@ -40,6 +40,7 @@ public class testbedLifter extends OpMode {
 	DcMotor motorFrontLeft;
 	DcMotor motorBackRight;
 	DcMotor motorBackLeft;
+	DcMotor lifter;
 
 
 	public testbedLifter() {
@@ -47,6 +48,7 @@ public class testbedLifter extends OpMode {
 		motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
 		motorBackRight = hardwareMap.dcMotor.get("backRight");
 		motorBackLeft = hardwareMap.dcMotor.get("backLeft");
+		lifter = hardwareMap.dcMotor.get("lifter");
 	}
 
 
@@ -85,6 +87,18 @@ public class testbedLifter extends OpMode {
 		motorFrontLeft.setPower(left);
 		motorBackRight.setPower(right);
 		motorBackLeft.setPower(left);
+
+		//operate lifter
+		if (gamepad1.right_bumper);{
+			lifter.setPower(1);
+		}
+		if(gamepad1.left_bumper);
+		{
+			lifter.setPower(-1);
+		}
+		if (gamepad1.a);{
+			lifter.setPower(0);
+		}
 
 
 

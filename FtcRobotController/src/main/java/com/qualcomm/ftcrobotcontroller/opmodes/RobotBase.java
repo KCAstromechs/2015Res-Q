@@ -1,5 +1,7 @@
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
+import android.content.Context;
+
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
@@ -30,8 +32,11 @@ public class RobotBase {
 
     //sensors
     GyroSensor gyro;
-    ColorSensor rightColorSensor;
-    ColorSensor leftColorSensor;
+    ColorSensor color;
+
+
+    //camera
+
 
     public RobotBase(HardwareMap hardwareMap) {
         //motor init
@@ -54,8 +59,11 @@ public class RobotBase {
 
         //sensor init
         gyro=hardwareMap.gyroSensor.get("gyro");
-        rightColorSensor = hardwareMap.colorSensor.get("rightColorSensor");
-        leftColorSensor = hardwareMap.colorSensor.get("leftColorSensor");
+        color = hardwareMap.colorSensor.get("color");
+        //leftColorSensor = hardwareMap.colorSensor.get("leftColorSensor");
+
+        //camera
+
 
     }
 
@@ -142,7 +150,7 @@ public class RobotBase {
         setLeftLockOpen();
     }
 
-    public void setRightPower(double rightPower){
+    public void setRightPower(double rightPower) {
         motorFrontRight.setPower(rightPower);
         motorBackRight.setPower(rightPower);
     }
@@ -301,4 +309,11 @@ public class RobotBase {
         motorFrontRight.setPower(0);
         Thread.sleep(100);
     }
+
+    public void beaconLightRed(){
+        //use camera
+        //
+
+    }
+
 }

@@ -42,16 +42,15 @@ public class tankTreadTest extends OpMode {
 
 
 	public tankTreadTest() {
-		motorRight = hardwareMap.dcMotor.get("right");
-		motorLeft = hardwareMap.dcMotor.get("left");
+
 	}
 
 
 	@Override
 	public void init() {
-
-
-
+		motorRight = hardwareMap.dcMotor.get("right");
+		motorLeft = hardwareMap.dcMotor.get("left");
+		motorRight.setDirection(DcMotor.Direction.REVERSE);
 	}
 	@Override
 	public void loop() {

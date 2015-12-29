@@ -66,6 +66,7 @@ public class RedPos1Wait extends LinearOpMode {
 
         waitForStart();
 
+        sleep(15000);
         robotBase.driveStraight(kClearWall, 1, 0, 1.0f); //clears wall
         robotBase.turn(325, .25); //turns 45 degrees
         robotBase.driveStraight(klongDrive, 1, 310, 1.0f); // long drive down the field

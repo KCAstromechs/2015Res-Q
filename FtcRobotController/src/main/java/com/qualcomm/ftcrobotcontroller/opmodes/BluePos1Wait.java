@@ -64,26 +64,7 @@ public class BluePos1Wait extends LinearOpMode {
 
         waitForStart();
 
-        sleep(1000);
-        sleep(1000);
-        sleep(1000);
-        sleep(1000);
-        sleep(1000);
-        sleep(1000);
-        sleep(1000);
-        sleep(1000);
-        sleep(1000);
-        sleep(1000);
-        sleep(1000);
-        sleep(1000);
-        sleep(1000);
-        sleep(1000);
-        sleep(1000);
-        sleep(1000);
-        sleep(1000);
-        sleep(1000);
-        sleep(1000);
-        sleep(1000);
+
         robotBase.driveStraight(kClearWall,1,0,1.0f); //clears wall
         robotBase.turn(35,.25); //turns 45 degrees
         robotBase.driveStraight(klongDrive,1,50,1.0f); // long drive down the field

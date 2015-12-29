@@ -310,10 +310,16 @@ public class RobotBase {
         Thread.sleep(100);
     }
 
-    public void beaconLightRed(){
-        //use camera
-        //
+    /*
+    public  isBeaconLightRed(){
+        //detects left side
+        if(color.red()>color.blue()){
+            return true;
+        }
+        else{
+            return false;
+        }
 
     }
-
+    */
 }

@@ -29,7 +29,7 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
-package com.qualcomm.ftcrobotcontroller.opmodes;
+package com.qualcomm.ftcrobotcontroller.opmodes.archive;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -41,6 +41,7 @@ public class BeaconColorTest extends OpMode {
 	ColorSensor color;
 
 	public BeaconColorTest() {
+		//broken
 
 	}
 
@@ -48,13 +49,18 @@ public class BeaconColorTest extends OpMode {
 	@Override
 	public void init() {
 		color = hardwareMap.colorSensor.get("color");
+		color.enableLed(true);
 	}
 	@Override
 	public void loop() {
-
-		telemetry.addData("Alpha",color.alpha());
+		color.enableLed(true);
+		telemetry.addData("Alpha", color.alpha());
 		telemetry.addData("RED",color.red());
 		telemetry.addData("BLUE",color.blue());
+		System.out.println("Alpha: " + color.alpha());
+		System.out.println("RED: " + color.red());
+		System.out.println("BLUE: " + color.blue());
+		telemetry.addData("Prog","BeaconColorTest");
 
 	}
 

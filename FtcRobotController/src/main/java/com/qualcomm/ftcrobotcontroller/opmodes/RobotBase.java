@@ -1,7 +1,13 @@
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
 import android.content.Context;
-
+import android.hardware.Camera;
+import android.hardware.Camera.CameraInfo;
+import android.hardware.Camera.PictureCallback;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.SurfaceTexture;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
@@ -36,6 +42,10 @@ public class RobotBase {
 
 
     //camera
+    Camera camera;
+    PictureCallback picDone;
+    int CameraID = -1;
+
 
 
     public RobotBase(HardwareMap hardwareMap) {
@@ -63,6 +73,7 @@ public class RobotBase {
         //leftColorSensor = hardwareMap.colorSensor.get("leftColorSensor");
 
         //camera
+        
 
 
     }

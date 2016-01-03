@@ -8,13 +8,18 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.SurfaceTexture;
-import com.qualcomm.robotcore.hardware.ColorSensor;
+import android.os.Environment;
+import java.io.File;
+import java.io.FileOutputStream;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import android.util.Log;
 
 /**
  * Created by Kevin on 12/6/2015.
@@ -38,13 +43,13 @@ public class RobotBase {
 
     //sensors
     GyroSensor gyro;
-    ColorSensor color;
-
 
     //camera
     Camera camera;
     PictureCallback picDone;
     int CameraID = -1;
+    public static final int MEDIA_TYPE_IMAGE = 1;
+    public static final int MEDIA_TYPE_VIDEO = 2;
 
 
 
@@ -69,11 +74,132 @@ public class RobotBase {
 
         //sensor init
         gyro=hardwareMap.gyroSensor.get("gyro");
-        color = hardwareMap.colorSensor.get("color");
-        //leftColorSensor = hardwareMap.colorSensor.get("leftColorSensor");
 
-        //camera
-        
+    }
+
+    public void snapPic(){
+        camera.startPreview();
+        camera.takePicture(null, null, picDone);
+    }
+
+    public void cameraSetup() throws InterruptedException {
+        //finds frontal camera
+        //mounted vertically
+        int numOfCameras = Camera.getNumberOfCameras();
+        for (int i = 0; i < numOfCameras; i++){
+            CameraInfo info = new CameraInfo();
+            Camera.getCameraInfo(i,info);
+            if(info.facing == CameraInfo.CAMERA_FACING_FRONT){
+                CameraID = i;
+
+                try {
+                    SurfaceTexture texture = new SurfaceTexture(0);
+                    camera = Camera.open(CameraID);
+                    camera.setPreviewTexture(texture);
+                    picDone = getPicCallback();
+                    System.out.println("Found Camera");
+                    Thread.sleep(2000);
+                }
+                catch (Exception e){
+                   System.out.println("cameraSetup Failed");
+                }
+            }
+        }
+    }
+
+    private static File getOutputMediaFile(int type, String folder_name) {
+        // To be safe, you should check that the SDCard is mounted
+        // using Environment.getExternalStorageState() before doing this.
+
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), folder_name);
+        // This location works best if you want the created images to be shared
+        // between applications and persist after your app has been uninstalled.
+
+        // Create the storage directory if it does not exist
+        if (! mediaStorageDir.exists()){
+            if (! mediaStorageDir.mkdirs()){
+                Log.d("DEBUG", "Unable to create directory!");
+                return null;
+            }
+        }
+
+        // Create a media file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        File mediaFile;
+        if (type == MEDIA_TYPE_IMAGE){
+            mediaFile = new File(mediaStorageDir.getPath() + File.separator +
+                    "IMG_"+ timeStamp + ".jpg");
+        } else if(type == MEDIA_TYPE_VIDEO) {
+            mediaFile = new File(mediaStorageDir.getPath() + File.separator +
+                    "VID_"+ timeStamp + ".mp4");
+        } else {
+            return null;
+        }
+//        Log.d(TAG,mediaStorageDir.getPath() + File.separator +
+        //              "IMG_"+ timeStamp + ".jpg");
+        return mediaFile;
+    }
+
+    private PictureCallback getPicCallback(){
+        PictureCallback picture = new PictureCallback() {
+            @Override
+            public void onPictureTaken(byte[] data, Camera camera) {
+                System.out.println("got Data");
+                Bitmap picture = BitmapFactory.decodeByteArray(data, 0,data.length);
+
+                System.out.println("width: " + picture.getWidth());
+                System.out.println("Hight: " + picture.getHeight());
+
+                int clr = picture.getPixel(60,80);
+                System.out.println("Red: " +Color.red(clr));
+                System.out.println("Blue: " + Color.blue(clr));
+                System.out.println("Green: " + Color.green(clr));
+
+                int totalRed = 0;
+                int totalBlue = 0;
+                int currentPixel = 0;
+
+
+                File picturefile = getOutputMediaFile(MEDIA_TYPE_IMAGE, "capture");
+
+                try {
+                    //write the file
+                    FileOutputStream fos = new FileOutputStream(picturefile);
+                    fos.write(data);
+                    fos.close();
+                } catch (Exception e)
+                {
+                    System.out.println("Camera: " + "failed to save pic, exception"+e.getMessage());
+                }
+
+                for(int y = 0; y < picture.getHeight() / 2; y++ ) {
+                    currentPixel = picture.getPixel(90,y);
+                    System.out.print(Color.red(currentPixel));
+                    System.out.print(",");
+                    System.out.print(Color.green(currentPixel) );
+                    System.out.print(",");
+                    System.out.println(Color.blue(currentPixel));
+                    if(Color.red(currentPixel) < Color.blue(currentPixel)) {
+                        totalBlue++;
+                    }
+                    else {
+                        totalRed++; //THIS FOR LOOP IS TOTALLY UNTESTED, CHEERS
+                    }
+                }
+
+                if (totalBlue > totalRed){
+                    System.out.println("Blue");
+                }
+                else {
+                    System.out.println("Red");
+                }
+
+
+            }
+        };
+        return picture;
+
 
 
     }
@@ -320,17 +446,4 @@ public class RobotBase {
         motorFrontRight.setPower(0);
         Thread.sleep(100);
     }
-
-    /*
-    public  isBeaconLightRed(){
-        //detects left side
-        if(color.red()>color.blue()){
-            return true;
-        }
-        else{
-            return false;
-        }
-
-    }
-    */
 }

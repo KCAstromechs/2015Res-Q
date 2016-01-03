@@ -136,12 +136,15 @@ public class RobotBase {
         // Create a media file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         File mediaFile;
+
         if (type == MEDIA_TYPE_IMAGE){
             mediaFile = new File(mediaStorageDir.getPath() + File.separator +
                     "IMG_"+ timeStamp + ".jpg");
+            System.out.println("TYPE: Image");
         } else if(type == MEDIA_TYPE_VIDEO) {
             mediaFile = new File(mediaStorageDir.getPath() + File.separator +
                     "VID_"+ timeStamp + ".mp4");
+            System.out.println("TYPE: Video");
         } else {
             return null;
         }
@@ -184,11 +187,10 @@ public class RobotBase {
 
                 for(int y = 0; y < picture.getHeight() / 2; y++ ) {
                     currentPixel = picture.getPixel(90,y);
-                    System.out.print(Color.red(currentPixel));
-                    System.out.print(",");
-                    System.out.print(Color.green(currentPixel) );
-                    System.out.print(",");
-                    System.out.println(Color.blue(currentPixel));
+                    System.out.println("RED: " + Color.red(currentPixel));
+                    System.out.println("GREEN: " + Color.green(currentPixel));
+                    System.out.println("BLUE: " + Color.blue(currentPixel));
+
                     if(Color.red(currentPixel) < Color.blue(currentPixel)) {
                         totalBlue++;
                     }
@@ -196,6 +198,8 @@ public class RobotBase {
                         totalRed++; //THIS FOR LOOP IS TOTALLY UNTESTED, CHEERS
                     }
                 }
+                System.out.println("Total RED: " + totalRed);
+                System.out.println("Total BLUE: " + totalBlue);
 
                 if (totalBlue > totalRed){
                     System.out.println("Blue");

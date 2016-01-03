@@ -52,7 +52,6 @@ public class RedPos1Wait extends LinearOpMode {
     private static final int kReverse = (int)(kClicksPerRev*0.75);
     private static final int kPark = (int)(kClicksPerRev*1.25);
 
-
     @Override
     public void runOpMode() throws InterruptedException {
 

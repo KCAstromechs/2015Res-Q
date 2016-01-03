@@ -66,7 +66,9 @@ public class FtcOpModeRegister implements OpModeRegister {
 
     manager.register("Autonomous Blue Position 1 Play Nice Version", BluePos1Wait.class);
 
-    manager.register("Tele Op", tankDriveSpinnerLifterThing.class);
+    manager.register("Old Tele Op", tankDriveSpinnerLifterThing.class);
+
+    manager.register("Tele Op", teleopUMKC.class);
 
     manager.register("Tread Test",tankTreadTest.class);
 

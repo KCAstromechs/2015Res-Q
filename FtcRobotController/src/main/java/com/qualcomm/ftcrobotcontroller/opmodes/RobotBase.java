@@ -32,6 +32,8 @@ public class RobotBase {
     public DcMotor motorBackLeft;
     public DcMotor motorWinch;
     public DcMotor motorDrawerSlide;
+    public DcMotor motorRight;
+    public DcMotor motorLeft;
 
     //Servos
     Servo mjolnir;
@@ -40,6 +42,8 @@ public class RobotBase {
     Servo rightZipline;
     Servo leftLock;
     Servo rightLock;
+    Servo leftHook;
+    Servo rightHook;
 
     //sensors
     GyroSensor gyro;
@@ -61,6 +65,9 @@ public class RobotBase {
         motorBackLeft = hardwareMap.dcMotor.get("backLeft");
         motorFrontRight.setDirection(DcMotor.Direction.REVERSE);
         motorBackRight.setDirection(DcMotor.Direction.REVERSE);
+        motorRight = hardwareMap.dcMotor.get("right");
+        motorLeft = hardwareMap.dcMotor.get("left");
+        motorRight.setDirection(DcMotor.Direction.REVERSE);
         motorWinch = hardwareMap.dcMotor.get("winch");
         motorDrawerSlide = hardwareMap.dcMotor.get("drawerSlide");
 
@@ -71,6 +78,8 @@ public class RobotBase {
         rightZipline=hardwareMap.servo.get("rightZipline");
         leftLock=hardwareMap.servo.get("leftLock");
         rightLock=hardwareMap.servo.get("rightLock");
+        leftHook=hardwareMap.servo.get("leftHook");
+        rightHook=hardwareMap.servo.get("rightHook");
 
         //sensor init
         gyro=hardwareMap.gyroSensor.get("gyro");

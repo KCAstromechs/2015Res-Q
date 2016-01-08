@@ -36,7 +36,7 @@ import com.qualcomm.robotcore.util.Range;
 
 public class teleopUMKC extends OpMode {
 
-	RobotBase robotBase;
+	RobotBase2 robotBase;
 
 	public teleopUMKC() {
 
@@ -46,8 +46,7 @@ public class teleopUMKC extends OpMode {
 	@Override
 	public void init() {
 
-		robotBase = new RobotBase(hardwareMap);
-		robotBase.initializeServos();
+		robotBase = new RobotBase2(hardwareMap);
 
 	}
 	@Override
@@ -77,6 +76,7 @@ public class teleopUMKC extends OpMode {
 		// write the values to the motors
 		robotBase.motorRight.setPower(right);
 		robotBase.motorLeft.setPower(left);
+
 
 		if(gamepad1.a){
 			robotBase.leftHook.setPosition(0.5);
@@ -154,8 +154,6 @@ public class teleopUMKC extends OpMode {
 		}
 
 */
-		robotBase.motorWinch.setPower(right2);
-		robotBase.motorDrawerSlide.setPower(left2);
 
 
 	}

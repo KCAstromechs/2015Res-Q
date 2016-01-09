@@ -75,5 +75,7 @@ public class FtcOpModeRegister implements OpModeRegister {
     manager.register("Tape Measure Lifter test", testbedLifter.class);
 
     manager.register("ColorTest", BeaconColorTest.class);
+
+    manager.register("distanceTest", distanceTest.class);
   }
 }

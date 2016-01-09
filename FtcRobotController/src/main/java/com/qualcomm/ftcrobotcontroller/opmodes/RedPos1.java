@@ -42,15 +42,12 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 public class RedPos1 extends LinearOpMode {
 
-    RobotBase robotBase;
+    AstroRobotBaseInterface robotBase;
 
     //Drive Constants
-    private static final int kClicksPerRev = 1100;
-    private static final int klongDrive = (int) (kClicksPerRev * 9.0);
-    private static final int kClearWall = (int) (kClicksPerRev * 0.50);
-    private static final int kSlowApproach =  (int) (kClicksPerRev * 1.0f);
-    private static final int kReverse = (int)(kClicksPerRev*0.75);
-    private static final int kPark = (int)(kClicksPerRev*1.25);
+    private static final double klongDrive = 113.0;
+    private static final double kClearWall = 6.3;
+    private static final double kSlowApproach =  12.6;
 
 
     @Override

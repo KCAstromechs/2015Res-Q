@@ -42,15 +42,14 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 public class BluePos2 extends LinearOpMode {
 
-    RobotBase robotBase;
+    AstroRobotBaseInterface robotBase;
 
     //Drive Constants
-    private static final int kClicksPerRev = 1100;
-    private static final int klongDrive = (int) (kClicksPerRev * 3.75);
-    private static final int kDriveOut = (int) (kClicksPerRev * 2.5);
-    private static final int kSlowApproach =  (int) (kClicksPerRev * 2.0f);
-    private static final int kReverse = (int)(kClicksPerRev*0.5);
-    private static final int kPark = (int)(kClicksPerRev*1.25);
+    private static final double klongDrive = 47.1;
+    private static final double kDriveOut = 31.4;
+    private static final double kSlowApproach = 25.1;
+    private static final double kReverse = 6.3;
+    private static final double kPark = 15.7;
 
 
     @Override

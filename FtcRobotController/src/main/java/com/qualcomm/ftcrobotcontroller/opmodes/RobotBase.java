@@ -1,6 +1,5 @@
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
-import android.content.Context;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
 import android.hardware.Camera.PictureCallback;
@@ -24,7 +23,9 @@ import android.util.Log;
 /**
  * Created by Kevin on 12/6/2015.
  */
-public class RobotBase {
+public class RobotBase implements AstroRobotBaseInterface {
+    double inchesToEncoder = 86.3;
+
     //motors
     public DcMotor motorFrontRight;
     public DcMotor motorFrontLeft;
@@ -32,8 +33,6 @@ public class RobotBase {
     public DcMotor motorBackLeft;
     public DcMotor motorWinch;
     public DcMotor motorDrawerSlide;
-    public DcMotor motorRight;
-    public DcMotor motorLeft;
 
     //Servos
     Servo mjolnir;
@@ -65,11 +64,11 @@ public class RobotBase {
         motorBackLeft = hardwareMap.dcMotor.get("backLeft");
         motorFrontRight.setDirection(DcMotor.Direction.REVERSE);
         motorBackRight.setDirection(DcMotor.Direction.REVERSE);
-        motorRight = hardwareMap.dcMotor.get("right");
-        motorLeft = hardwareMap.dcMotor.get("left");
-        motorRight.setDirection(DcMotor.Direction.REVERSE);
-        motorWinch = hardwareMap.dcMotor.get("winch");
-        motorDrawerSlide = hardwareMap.dcMotor.get("drawerSlide");
+        //motorRight = hardwareMap.dcMotor.get("right");
+        //motorLeft = hardwareMap.dcMotor.get("left");
+        //motorRight.setDirection(DcMotor.Direction.REVERSE);
+        //motorWinch = hardwareMap.dcMotor.get("winch");
+        //motorDrawerSlide = hardwareMap.dcMotor.get("drawerSlide");
 
         //Servo init
         mjolnir=hardwareMap.servo.get("box");
@@ -78,8 +77,8 @@ public class RobotBase {
         rightZipline=hardwareMap.servo.get("rightZipline");
         leftLock=hardwareMap.servo.get("leftLock");
         rightLock=hardwareMap.servo.get("rightLock");
-        leftHook=hardwareMap.servo.get("leftHook");
-        rightHook=hardwareMap.servo.get("rightHook");
+        //leftHook=hardwareMap.servo.get("leftHook");
+        //rightHook=hardwareMap.servo.get("rightHook");
 
         //sensor init
         gyro=hardwareMap.gyroSensor.get("gyro");
@@ -217,6 +216,7 @@ public class RobotBase {
 
     }
 
+    @Override
     public void calibrateGyro()throws InterruptedException{
         gyro.calibrate();
 
@@ -228,42 +228,52 @@ public class RobotBase {
         System.out.println("gyro (PreCalibration" + gyro.getHeading());
     }
 
+    @Override
     public void setGrabberUp() {
         grabber.setPosition(0.7);
     }
 
+    @Override
     public void setGrabberMiddle() {
         grabber.setPosition(0.4);
     }
 
+    @Override
     public void setGrabberDown() {
         grabber.setPosition(0.1);
     }
 
+    @Override
     public void setLeftZiplineUp() {
         leftZipline.setPosition(1.0);
     }
 
+    @Override
     public void setLeftZiplineDown() {
         leftZipline.setPosition(0.5);
     }
 
+    @Override
     public void setRightZiplineUp() {
         rightZipline.setPosition(0.4);
     }
 
+    @Override
     public void setRightZiplineDown() {
         rightZipline.setPosition(1.0);
     }
 
+    @Override
     public void setMjolnirDown(){
         mjolnir.setPosition(0.9);
     }
 
+    @Override
     public void setMjolnirUp(){
         mjolnir.setPosition(0.1);
     }
 
+    @Override
     public void hammerTime() throws InterruptedException {
         setMjolnirUp();
         System.out.println("Mjolnir Down");
@@ -275,22 +285,27 @@ public class RobotBase {
         System.out.println("Mjolnir last sleep done");
     }
 
+    @Override
     public void setLeftLockOpen(){
         leftLock.setPosition(0.2);
     }
 
+    @Override
     public void setRightLockOpen(){
         rightLock.setPosition(0.98);
     }
 
+    @Override
     public void setLeftLockClosed(){
         leftLock.setPosition(1.0);
     }
 
+    @Override
     public void setRightLockClosed(){
         rightLock.setPosition(0.18);
     }
 
+    @Override
     public void initializeServos() {
         setGrabberDown();
         setLeftZiplineUp();
@@ -300,11 +315,13 @@ public class RobotBase {
         setLeftLockOpen();
     }
 
+    @Override
     public void setRightPower(double rightPower) {
         motorFrontRight.setPower(rightPower);
         motorBackRight.setPower(rightPower);
     }
 
+    @Override
     public void setLeftPower(double leftPower){
         motorFrontLeft.setPower(leftPower);
         motorBackLeft.setPower(leftPower);
@@ -345,6 +362,7 @@ public class RobotBase {
 
     }
 
+    @Override
     public void turn(int turnHeading, double power)throws InterruptedException{
         double rightPower;
         double leftPower;
@@ -397,7 +415,11 @@ public class RobotBase {
         Thread.sleep(100);
     }
 
-    public void driveStraight(int dist, double power, int heading, float direction)throws InterruptedException {
+    public void driveStraight(double inches, double power, int heading, float direction)throws InterruptedException{
+        this.driveStraightEncoder((int)(inches*inchesToEncoder), power, heading, direction);
+    }
+
+    public void driveStraightEncoder(int dist, double power, int heading, float direction)throws InterruptedException {
         //gyro stabilization - PID
         float proportionalConst = 0.05f;
         int degErr;
@@ -432,6 +454,9 @@ public class RobotBase {
             //System.out.println("Encoder= " +motorBackRight.getCurrentPosition());
             lastDegErr = degErr;
             degErr = gyro.getHeading() - heading;
+            if (degErr > 180){
+                degErr -= 360;
+            }
             if (degErr != lastDegErr) {
                 correction = degErr * proportionalConst;
                 localLeftPower = Range.clip((power - correction)*direction, -1.0f, 1.0f);
@@ -458,5 +483,15 @@ public class RobotBase {
         motorFrontLeft.setPower(0);
         motorFrontRight.setPower(0);
         Thread.sleep(100);
+    }
+
+    @Override
+    public void setLeftHookPosition(double position){
+        leftHook.setPosition(position);
+    }
+
+    @Override
+    public void setRightHookPosition(double position){
+        rightHook.setPosition(position);
     }
 }

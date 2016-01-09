@@ -36,7 +36,7 @@ import com.qualcomm.robotcore.util.Range;
 
 public class teleopUMKC extends OpMode {
 
-	RobotBase2 robotBase;
+	AstroRobotBaseInterface robotBase;
 
 	public teleopUMKC() {
 
@@ -74,17 +74,17 @@ public class teleopUMKC extends OpMode {
 		left =  (float)scaleInput(left);
 
 		// write the values to the motors
-		robotBase.motorRight.setPower(right);
-		robotBase.motorLeft.setPower(left);
+		robotBase.setRightPower(right);
+		robotBase.setLeftPower(left);
 
 
 		if(gamepad1.a){
-			robotBase.leftHook.setPosition(0.5);
-			robotBase.rightHook.setPosition(0.5);
+			robotBase.setLeftHookPosition(0.5);
+			robotBase.setRightHookPosition(0.5);
 		}
 		if(gamepad1.b){
-			robotBase.leftHook.setPosition(0.75);
-			robotBase.rightHook.setPosition(0.25);
+			robotBase.setLeftHookPosition(0.75);
+			robotBase.setRightHookPosition(0.25);
 		}
 		// update the position of the arm.
 

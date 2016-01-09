@@ -36,22 +36,13 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 /**
  * Base Drive code
- * Blue side of field
- * far left corner
+ * Red side of field
+ * far right corner
  */
 
-public class BluePos1New extends LinearOpMode {
+public class distanceTest extends LinearOpMode {
 
-    RobotBase robotBase;
-
-    //Drive Constants
-    private static final int kClicksPerRev = 1100;
-    private static final int klongDrive = (int) (kClicksPerRev * 7.25);
-    private static final int kClearWall = (int) (kClicksPerRev * 0.50);
-    private static final int kSlowApproach =  (int) (kClicksPerRev * 0.5f);
-    private static final int kReverse = (int)(kClicksPerRev*0.5);
-    private static final int kPark = (int)(kClicksPerRev*1.25);
-
+    AstroRobotBaseInterface robotBase;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -60,18 +51,11 @@ public class BluePos1New extends LinearOpMode {
         robotBase.initializeServos();
         robotBase.calibrateGyro();
         telemetry.addData("Ready to run:", "Gyro is calabrated. You are ready to run. " +
-                "Make sure that the robot is centered on the tile furthest to the left on the blue side.");
+                "Make sure that the robot is centered on the tile furthest to the right on the red side.");
+
 
         waitForStart();
 
-        robotBase.driveStraight(kClearWall,1,0,1.0f); //clears wall
-        robotBase.turn(35,.25); //turns 45 degrees
-        robotBase.driveStraight(klongDrive,1,50,1.0f); // long drive down the field
-        robotBase.turn(80,.25); // turns towards safety beacon
-        robotBase.driveStraight(kSlowApproach,0.5,90,1.0f); //approaches safety beacon
-        robotBase.hammerTime();
-        robotBase.driveStraight(kReverse,0.5,90,-1); // backs away
-        robotBase.turn(180,0.5); //turn towards low goal
-        robotBase.driveStraight(kPark,0.75,180,1); //enter low zone
+        robotBase.driveStraight(60, 0.75, 0, 1.0f);
     }
 }

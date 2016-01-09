@@ -25,7 +25,9 @@ import java.util.Date;
 /**
  * Created by Kevin on 12/6/2015.
  */
-public class RobotBase2 {
+public class RobotBase2 implements AstroRobotBaseInterface {
+
+    double inchesToEncoder = 86.3;
     //motors
     public DcMotor motorFrontRight;
     public DcMotor motorFrontLeft;
@@ -210,9 +212,9 @@ public class RobotBase2 {
         System.out.println("gyro (PreCalibration" + gyro.getHeading());
     }
 
-    public void setGrabberUp() {
+   public void setGrabberUp() {
         grabber.setPosition(0.7);
-    }
+   }
 
     public void setGrabberMiddle() {
         grabber.setPosition(0.4);
@@ -283,13 +285,11 @@ public class RobotBase2 {
     }
 
     public void setRightPower(double rightPower) {
-        motorFrontRight.setPower(rightPower);
-        motorBackRight.setPower(rightPower);
+        motorRight.setPower(rightPower);
     }
 
     public void setLeftPower(double leftPower){
-        motorFrontLeft.setPower(leftPower);
-        motorBackLeft.setPower(leftPower);
+        motorLeft.setPower(leftPower);
     }
 
     private boolean calcTurnDirection (int target, int heading, int variation)throws InterruptedException {
@@ -379,7 +379,11 @@ public class RobotBase2 {
         Thread.sleep(100);
     }
 
-    public void driveStraight(int dist, double power, int heading, float direction)throws InterruptedException {
+    public void driveStraight(double inches, double power, int heading, float direction)throws InterruptedException{
+        this.driveStraightEncoder((int)(inches*inchesToEncoder), power, heading, direction);
+    }
+
+    public void driveStraightEncoder(int dist, double power, int heading, float direction)throws InterruptedException {
         //gyro stabilization - PID
         float proportionalConst = 0.05f;
         int degErr;
@@ -440,5 +444,15 @@ public class RobotBase2 {
         motorFrontLeft.setPower(0);
         motorFrontRight.setPower(0);
         Thread.sleep(100);
+    }
+
+    @Override
+    public void setLeftHookPosition(double position){
+        leftHook.setPosition(position);
+    }
+
+    @Override
+    public void setRightHookPosition(double position){
+        rightHook.setPosition(position);
     }
 }

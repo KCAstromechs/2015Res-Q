@@ -39,6 +39,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
  * Base Drive code
  * Blue side of field
  * far left corner
+ *
+ * added camera for beacon light
  */
 
 public class BluePos1 extends LinearOpMode {
@@ -57,6 +59,7 @@ public class BluePos1 extends LinearOpMode {
         robotBase = new RobotBase(hardwareMap);
         robotBase.initializeServos();
         robotBase.calibrateGyro();
+        robotBase.cameraSetup();
         telemetry.addData("Ready to run:", "Gyro is calabrated. You are ready to run. " +
                 "Make sure that the robot is centered on the tile furthest to the left on the blue side.");
 
@@ -68,7 +71,7 @@ public class BluePos1 extends LinearOpMode {
         robotBase.turn(80,.25); // turns towards safety beacon
         robotBase.driveStraight(kSlowApproach,0.5,90,1.0f); //approaches safety beacon
         robotBase.hammerTime();
-        //read color sensor
+        robotBase.snapPic();
         //push button
 
 

@@ -54,7 +54,7 @@ public class RobotBase implements AstroRobotBaseInterface {
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
 
-
+    
 
     public RobotBase(HardwareMap hardwareMap) {
         //motor init

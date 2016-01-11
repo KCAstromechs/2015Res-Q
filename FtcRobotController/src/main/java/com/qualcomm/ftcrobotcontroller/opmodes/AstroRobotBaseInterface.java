@@ -1,9 +1,17 @@
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
+import android.hardware.Camera;
+
 /**
  * Created by Kevin on 1/7/2016.
  */
 public interface AstroRobotBaseInterface {
+    void snapPic();
+
+    void cameraSetup() throws InterruptedException;
+
+    Camera.PictureCallback getPicCallback();
+
     void calibrateGyro()throws InterruptedException;
 
     void setGrabberUp();
@@ -47,4 +55,6 @@ public interface AstroRobotBaseInterface {
     void setLeftHookPosition(double position);
 
     void setRightHookPosition(double position);
+
+    void updateWinchAndDrawerslide(float winch, float DrawerSlide);
 }

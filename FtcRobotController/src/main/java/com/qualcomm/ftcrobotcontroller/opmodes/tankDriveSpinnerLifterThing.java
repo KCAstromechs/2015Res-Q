@@ -36,7 +36,7 @@ import com.qualcomm.robotcore.util.Range;
 
 public class tankDriveSpinnerLifterThing extends OpMode {
 
-	RobotBase robotBase;
+	RobotBaseSmithville robotBaseSmithville;
 
 	public tankDriveSpinnerLifterThing() {
 
@@ -46,8 +46,8 @@ public class tankDriveSpinnerLifterThing extends OpMode {
 	@Override
 	public void init() {
 
-		robotBase = new RobotBase(hardwareMap);
-		robotBase.initializeServos();
+		robotBaseSmithville = new RobotBaseSmithville(hardwareMap);
+		robotBaseSmithville.initializeServos();
 
 	}
 	@Override
@@ -75,10 +75,10 @@ public class tankDriveSpinnerLifterThing extends OpMode {
 		left =  (float)scaleInput(left);
 
 		// write the values to the motors
-		robotBase.motorFrontRight.setPower(right);
-		robotBase.motorFrontLeft.setPower(left);
-		robotBase.motorBackRight.setPower(right);
-		robotBase.motorBackLeft.setPower(left);
+		robotBaseSmithville.motorFrontRight.setPower(right);
+		robotBaseSmithville.motorFrontLeft.setPower(left);
+		robotBaseSmithville.motorBackRight.setPower(right);
+		robotBaseSmithville.motorBackLeft.setPower(left);
 
 		// update the position of the arm.
 
@@ -93,16 +93,16 @@ public class tankDriveSpinnerLifterThing extends OpMode {
 		}
 		if (gamepad2.right_bumper)
 		{
-			robotBase.setGrabberUp();
+			robotBaseSmithville.setGrabberUp();
 		}
 		if (gamepad2.right_trigger>0.75)
 		{
-			robotBase.setGrabberMiddle();
+			robotBaseSmithville.setGrabberMiddle();
 		}
 
 		if (gamepad2.left_trigger>0.75)
 		{
-			robotBase.setGrabberDown();
+			robotBaseSmithville.setGrabberDown();
 		}
 		telemetry.addData("leftT", gamepad2.left_trigger);
 
@@ -112,41 +112,41 @@ public class tankDriveSpinnerLifterThing extends OpMode {
 		telemetry.addData("right2", right2);
 
 		if(gamepad1.a){
-			robotBase.setLeftZiplineDown();
+			robotBaseSmithville.setLeftZiplineDown();
 		}
 
 		if(gamepad1.b){
-			robotBase.setRightZiplineDown();
+			robotBaseSmithville.setRightZiplineDown();
 		}
 
 		if(gamepad1.x){
-			robotBase.setLeftZiplineUp();
+			robotBaseSmithville.setLeftZiplineUp();
 		}
 
 		if(gamepad1.y){
-			robotBase.setRightZiplineUp();
+			robotBaseSmithville.setRightZiplineUp();
 		}
 
 		if(gamepad2.a){
-			robotBase.setMjolnirUp();
+			robotBaseSmithville.setMjolnirUp();
 		}
 
 		if(gamepad2.b){
-			robotBase.setMjolnirDown();
+			robotBaseSmithville.setMjolnirDown();
 		}
 
 		if(gamepad2.x){
-			robotBase.setLeftLockClosed();
-			robotBase.setRightLockClosed();
+			robotBaseSmithville.setLeftLockClosed();
+			robotBaseSmithville.setRightLockClosed();
 		}
 
 		if(gamepad2.y){
-			robotBase.setLeftLockOpen();
-			robotBase.setRightLockOpen();
+			robotBaseSmithville.setLeftLockOpen();
+			robotBaseSmithville.setRightLockOpen();
 		}
 
-		robotBase.motorWinch.setPower(right2);
-		robotBase.motorDrawerSlide.setPower(left2);
+		robotBaseSmithville.motorWinch.setPower(right2);
+		robotBaseSmithville.motorDrawerSlide.setPower(left2);
 
 	}
 

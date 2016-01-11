@@ -1,31 +1,33 @@
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
-import android.hardware.Camera;
-import android.hardware.Camera.CameraInfo;
-import android.hardware.Camera.PictureCallback;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.SurfaceTexture;
+import android.hardware.Camera;
+import android.hardware.Camera.CameraInfo;
+import android.hardware.Camera.PictureCallback;
 import android.os.Environment;
-import java.io.File;
-import java.io.FileOutputStream;
+import android.util.Log;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
+
+import java.io.File;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import android.util.Log;
 
 /**
  * Created by Kevin on 12/6/2015.
  */
-public class RobotBase implements AstroRobotBaseInterface {
-    double inchesToEncoder = 86.3;
+public class RobotBaseUMKC implements AstroRobotBaseInterface {
 
+    double inchesToEncoder = 86.3;
     //motors
     public DcMotor motorFrontRight;
     public DcMotor motorFrontLeft;
@@ -33,6 +35,8 @@ public class RobotBase implements AstroRobotBaseInterface {
     public DcMotor motorBackLeft;
     public DcMotor motorWinch;
     public DcMotor motorDrawerSlide;
+    public DcMotor motorRight;
+    public DcMotor motorLeft;
 
     //Servos
     Servo mjolnir;
@@ -54,31 +58,20 @@ public class RobotBase implements AstroRobotBaseInterface {
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
 
-    
 
-    public RobotBase(HardwareMap hardwareMap) {
+
+    public RobotBaseUMKC(HardwareMap hardwareMap) {
         //motor init
-        motorFrontRight = hardwareMap.dcMotor.get("frontRight");
-        motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
-        motorBackRight = hardwareMap.dcMotor.get("backRight");
-        motorBackLeft = hardwareMap.dcMotor.get("backLeft");
-        motorFrontRight.setDirection(DcMotor.Direction.REVERSE);
-        motorBackRight.setDirection(DcMotor.Direction.REVERSE);
-        //motorRight = hardwareMap.dcMotor.get("right");
-        //motorLeft = hardwareMap.dcMotor.get("left");
-        //motorRight.setDirection(DcMotor.Direction.REVERSE);
-        //motorWinch = hardwareMap.dcMotor.get("winch");
-        //motorDrawerSlide = hardwareMap.dcMotor.get("drawerSlide");
+        motorRight = hardwareMap.dcMotor.get("right");
+        motorLeft = hardwareMap.dcMotor.get("left");
+        motorRight.setDirection(DcMotor.Direction.REVERSE);
+        motorWinch = hardwareMap.dcMotor.get("Winch");
+        motorDrawerSlide = hardwareMap.dcMotor.get("DrawerSlide");
 
         //Servo init
-        mjolnir=hardwareMap.servo.get("box");
-        grabber=hardwareMap.servo.get("grabber");
-        leftZipline=hardwareMap.servo.get("leftZipline");
-        rightZipline=hardwareMap.servo.get("rightZipline");
-        leftLock=hardwareMap.servo.get("leftLock");
-        rightLock=hardwareMap.servo.get("rightLock");
-        //leftHook=hardwareMap.servo.get("leftHook");
-        //rightHook=hardwareMap.servo.get("rightHook");
+        leftHook = hardwareMap.servo.get("leftHook");
+        rightHook = hardwareMap.servo.get("rightHook");
+
 
         //sensor init
         gyro=hardwareMap.gyroSensor.get("gyro");
@@ -135,15 +128,12 @@ public class RobotBase implements AstroRobotBaseInterface {
         // Create a media file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         File mediaFile;
-
         if (type == MEDIA_TYPE_IMAGE){
             mediaFile = new File(mediaStorageDir.getPath() + File.separator +
                     "IMG_"+ timeStamp + ".jpg");
-            System.out.println("TYPE: Image");
         } else if(type == MEDIA_TYPE_VIDEO) {
             mediaFile = new File(mediaStorageDir.getPath() + File.separator +
                     "VID_"+ timeStamp + ".mp4");
-            System.out.println("TYPE: Video");
         } else {
             return null;
         }
@@ -152,7 +142,7 @@ public class RobotBase implements AstroRobotBaseInterface {
         return mediaFile;
     }
 
-    private PictureCallback getPicCallback(){
+    public PictureCallback getPicCallback(){
         PictureCallback picture = new PictureCallback() {
             @Override
             public void onPictureTaken(byte[] data, Camera camera) {
@@ -186,10 +176,11 @@ public class RobotBase implements AstroRobotBaseInterface {
 
                 for(int y = 0; y < picture.getHeight() / 2; y++ ) {
                     currentPixel = picture.getPixel(90,y);
-                    System.out.println("RED: " + Color.red(currentPixel));
-                    System.out.println("GREEN: " + Color.green(currentPixel));
-                    System.out.println("BLUE: " + Color.blue(currentPixel));
-
+                    System.out.print(Color.red(currentPixel));
+                    System.out.print(",");
+                    System.out.print(Color.green(currentPixel) );
+                    System.out.print(",");
+                    System.out.println(Color.blue(currentPixel));
                     if(Color.red(currentPixel) < Color.blue(currentPixel)) {
                         totalBlue++;
                     }
@@ -197,8 +188,6 @@ public class RobotBase implements AstroRobotBaseInterface {
                         totalRed++; //THIS FOR LOOP IS TOTALLY UNTESTED, CHEERS
                     }
                 }
-                System.out.println("Total RED: " + totalRed);
-                System.out.println("Total BLUE: " + totalBlue);
 
                 if (totalBlue > totalRed){
                     System.out.println("Blue");
@@ -216,64 +205,53 @@ public class RobotBase implements AstroRobotBaseInterface {
 
     }
 
-    @Override
     public void calibrateGyro()throws InterruptedException{
         gyro.calibrate();
 
-        java.lang.Thread.sleep(100);
+        Thread.sleep(100);
         while (gyro.isCalibrating()) {
-            java.lang.Thread.sleep(50);
+            Thread.sleep(50);
         }
         // check calibrate gyro
         System.out.println("gyro (PreCalibration" + gyro.getHeading());
     }
 
-    @Override
-    public void setGrabberUp() {
+   public void setGrabberUp() {
         grabber.setPosition(0.7);
-    }
+   }
 
-    @Override
     public void setGrabberMiddle() {
         grabber.setPosition(0.4);
     }
 
-    @Override
     public void setGrabberDown() {
         grabber.setPosition(0.1);
     }
 
-    @Override
     public void setLeftZiplineUp() {
         leftZipline.setPosition(1.0);
     }
 
-    @Override
     public void setLeftZiplineDown() {
         leftZipline.setPosition(0.5);
     }
 
-    @Override
     public void setRightZiplineUp() {
         rightZipline.setPosition(0.4);
     }
 
-    @Override
     public void setRightZiplineDown() {
         rightZipline.setPosition(1.0);
     }
 
-    @Override
     public void setMjolnirDown(){
         mjolnir.setPosition(0.9);
     }
 
-    @Override
     public void setMjolnirUp(){
         mjolnir.setPosition(0.1);
     }
 
-    @Override
     public void hammerTime() throws InterruptedException {
         setMjolnirUp();
         System.out.println("Mjolnir Down");
@@ -285,27 +263,22 @@ public class RobotBase implements AstroRobotBaseInterface {
         System.out.println("Mjolnir last sleep done");
     }
 
-    @Override
     public void setLeftLockOpen(){
         leftLock.setPosition(0.2);
     }
 
-    @Override
     public void setRightLockOpen(){
         rightLock.setPosition(0.98);
     }
 
-    @Override
     public void setLeftLockClosed(){
         leftLock.setPosition(1.0);
     }
 
-    @Override
     public void setRightLockClosed(){
         rightLock.setPosition(0.18);
     }
 
-    @Override
     public void initializeServos() {
         setGrabberDown();
         setLeftZiplineUp();
@@ -315,16 +288,12 @@ public class RobotBase implements AstroRobotBaseInterface {
         setLeftLockOpen();
     }
 
-    @Override
     public void setRightPower(double rightPower) {
-        motorFrontRight.setPower(rightPower);
-        motorBackRight.setPower(rightPower);
+        motorRight.setPower(rightPower);
     }
 
-    @Override
     public void setLeftPower(double leftPower){
-        motorFrontLeft.setPower(leftPower);
-        motorBackLeft.setPower(leftPower);
+        motorLeft.setPower(leftPower);
     }
 
     private boolean calcTurnDirection (int target, int heading, int variation)throws InterruptedException {
@@ -362,7 +331,6 @@ public class RobotBase implements AstroRobotBaseInterface {
 
     }
 
-    @Override
     public void turn(int turnHeading, double power)throws InterruptedException{
         double rightPower;
         double leftPower;
@@ -390,7 +358,7 @@ public class RobotBase implements AstroRobotBaseInterface {
             motorBackRight.setPower(rightPower);
             motorBackLeft.setPower(leftPower);
             while(Math.abs(gyro.getHeading() - turnHeading) > 2){
-                java.lang.Thread.sleep(25);
+                Thread.sleep(25);
             }
             motorFrontRight.setPower(0);
             motorFrontLeft.setPower(0);
@@ -405,7 +373,7 @@ public class RobotBase implements AstroRobotBaseInterface {
             motorBackRight.setPower(rightPower);
             motorBackLeft.setPower(leftPower);
             while(Math.abs(gyro.getHeading() - turnHeading) > 2){
-                java.lang.Thread.sleep(25);
+                Thread.sleep(25);
             }
             motorFrontRight.setPower(0);
             motorFrontLeft.setPower(0);
@@ -416,7 +384,7 @@ public class RobotBase implements AstroRobotBaseInterface {
     }
 
     public void driveStraight(double inches, double power, int heading, float direction)throws InterruptedException{
-        this.driveStraightEncoder((int)(inches*inchesToEncoder), power, heading, direction);
+        this.driveStraightEncoder((int) (inches * inchesToEncoder), power, heading, direction);
     }
 
     public void driveStraightEncoder(int dist, double power, int heading, float direction)throws InterruptedException {
@@ -454,9 +422,6 @@ public class RobotBase implements AstroRobotBaseInterface {
             //System.out.println("Encoder= " +motorBackRight.getCurrentPosition());
             lastDegErr = degErr;
             degErr = gyro.getHeading() - heading;
-            if (degErr > 180){
-                degErr -= 360;
-            }
             if (degErr != lastDegErr) {
                 correction = degErr * proportionalConst;
                 localLeftPower = Range.clip((power - correction)*direction, -1.0f, 1.0f);
@@ -493,5 +458,11 @@ public class RobotBase implements AstroRobotBaseInterface {
     @Override
     public void setRightHookPosition(double position){
         rightHook.setPosition(position);
+    }
+
+    @Override
+    public void updateWinchAndDrawerslide(float winch, float DrawerSlide){
+        motorWinch.setPower(winch);
+        motorDrawerSlide.setPower(DrawerSlide);
     }
 }

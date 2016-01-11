@@ -32,6 +32,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.robot.Robot;
 import com.qualcomm.robotcore.util.Range;
 
 public class teleopUMKC extends OpMode {
@@ -46,7 +47,7 @@ public class teleopUMKC extends OpMode {
 	@Override
 	public void init() {
 
-		robotBase = new RobotBase2(hardwareMap);
+		robotBase = new RobotBaseUMKC(hardwareMap);
 
 	}
 	@Override
@@ -55,8 +56,9 @@ public class teleopUMKC extends OpMode {
 		/*
 		 * Gamepad 1
 		 *
-		 * Gamepad 1 controls the motors via the left stick, and it controls the
-		 * wrist/claw via the a,b, x, y buttons
+		 * Gamepad 1 controls the motors via the left an right sticks
+		 *
+		 *
 		 */
 
         // tank drive
@@ -73,25 +75,26 @@ public class teleopUMKC extends OpMode {
 		right = (float)scaleInput(right);
 		left =  (float)scaleInput(left);
 
-		// write the values to the motors
+		// write the values to the drive motors
 		robotBase.setRightPower(right);
 		robotBase.setLeftPower(left);
 
-
-		if(gamepad1.a){
-			robotBase.setLeftHookPosition(0.5);
-			robotBase.setRightHookPosition(0.5);
+		//change position of hooks on front
+		if(gamepad1.a) { //down
+			robotBase.setLeftHookPosition(0.1);
+			robotBase.setRightHookPosition(0.9);
 		}
-		if(gamepad1.b){
-			robotBase.setLeftHookPosition(0.75);
-			robotBase.setRightHookPosition(0.25);
+		if(gamepad1.b){ // up
+			robotBase.setLeftHookPosition(1);
+			robotBase.setRightHookPosition(0);
 		}
-		// update the position of the arm.
 
 
+		//gamepad2
 		float right2 = gamepad2.right_stick_y;
 		float left2 = gamepad2.left_stick_y;
 
+		//deadzones for secondary driver
 		if (Math.abs(left2)<0.1){
 			left2=0.0f;
 		}
@@ -101,60 +104,61 @@ public class teleopUMKC extends OpMode {
 		/*
 		if (gamepad2.right_bumper)
 		{
-			robotBase.setGrabberUp();
+			robotBaseSmithville.setGrabberUp();
 		}
 		if (gamepad2.right_trigger>0.75)
 		{
-			robotBase.setGrabberMiddle();
+			robotBaseSmithville.setGrabberMiddle();
 		}
 
 		if (gamepad2.left_trigger>0.75)
 		{
-			robotBase.setGrabberDown();
+			robotBaseSmithville.setGrabberDown();
 		}
 		telemetry.addData("leftT", gamepad2.left_trigger);
-
+*/
 		if (gamepad2.left_bumper){
 			right2 /= 10.0;
 		}
 		telemetry.addData("right2", right2);
 
+/*
 		if(gamepad1.a){
-			robotBase.setLeftZiplineDown();
+			robotBaseSmithville.setLeftZiplineDown();
 		}
 
 		if(gamepad1.b){
-			robotBase.setRightZiplineDown();
+			robotBaseSmithville.setRightZiplineDown();
 		}
 
 		if(gamepad1.x){
-			robotBase.setLeftZiplineUp();
+			robotBaseSmithville.setLeftZiplineUp();
 		}
 
 		if(gamepad1.y){
-			robotBase.setRightZiplineUp();
+			robotBaseSmithville.setRightZiplineUp();
 		}
 
 		if(gamepad2.a){
-			robotBase.setMjolnirUp();
+			robotBaseSmithville.setMjolnirUp();
 		}
 
 		if(gamepad2.b){
-			robotBase.setMjolnirDown();
+			robotBaseSmithville.setMjolnirDown();
 		}
 
 		if(gamepad2.x){
-			robotBase.setLeftLockClosed();
-			robotBase.setRightLockClosed();
+			robotBaseSmithville.setLeftLockClosed();
+			robotBaseSmithville.setRightLockClosed();
 		}
 
 		if(gamepad2.y){
-			robotBase.setLeftLockOpen();
-			robotBase.setRightLockOpen();
+			robotBaseSmithville.setLeftLockOpen();
+			robotBaseSmithville.setRightLockOpen();
 		}
 
 */
-
+		robotBase.updateWinchAndDrawerslide(right2, left2);
 
 	}
 

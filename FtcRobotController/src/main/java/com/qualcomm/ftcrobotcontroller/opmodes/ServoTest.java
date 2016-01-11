@@ -1,20 +1,19 @@
-package com.qualcomm.ftcrobotcontroller.opmodes.archive;
+package com.qualcomm.ftcrobotcontroller.opmodes;
 
-import com.qualcomm.ftcrobotcontroller.opmodes.RobotBase;
+import com.qualcomm.ftcrobotcontroller.opmodes.RobotBaseSmithville;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.Servo;
 
 /**
  * Created by Kevin on 12/6/2015.
  */
 public class ServoTest extends OpMode {
 
-    RobotBase robotBase;
+    AstroRobotBaseInterface robotBase;
 
     @Override
     public void init() {
 
-        robotBase = new RobotBase(hardwareMap);
+        robotBase = new RobotBaseUMKC(hardwareMap);
 
     }
 
@@ -22,7 +21,8 @@ public class ServoTest extends OpMode {
     public void loop() {
 
         if (gamepad1.a) {
-            robotBase.setMjolnirDown();
+            robotBase.setRightHookPosition(0.5);
+            robotBase.setRightHookPosition(0.5);
         }
         if (gamepad1.b) {
             robotBase.setMjolnirUp();

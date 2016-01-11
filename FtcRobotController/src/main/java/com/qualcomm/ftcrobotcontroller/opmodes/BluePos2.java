@@ -55,7 +55,7 @@ public class BluePos2 extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        robotBase = new RobotBase(hardwareMap);
+        robotBase = new RobotBaseSmithville(hardwareMap);
         robotBase.initializeServos();
         robotBase.calibrateGyro();
         telemetry.addData("Ready to run:", "Gyro is calabrated. You are ready to run. " +

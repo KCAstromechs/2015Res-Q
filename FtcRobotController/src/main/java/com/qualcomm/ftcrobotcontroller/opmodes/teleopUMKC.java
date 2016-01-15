@@ -80,11 +80,21 @@ public class teleopUMKC extends OpMode {
 		robotBase.setLeftPower(left);
 
 		//change position of hooks on front
+		//1st driver
 		if(gamepad1.a) { //down
 			robotBase.setLeftHookPosition(0.1);
 			robotBase.setRightHookPosition(0.9);
 		}
 		if(gamepad1.b){ // up
+			robotBase.setLeftHookPosition(1);
+			robotBase.setRightHookPosition(0);
+		}
+		//second Driver
+		if(gamepad2.a) { //down
+			robotBase.setLeftHookPosition(0.1);
+			robotBase.setRightHookPosition(0.9);
+		}
+		if(gamepad2.b){ // up
 			robotBase.setLeftHookPosition(1);
 			robotBase.setRightHookPosition(0);
 		}

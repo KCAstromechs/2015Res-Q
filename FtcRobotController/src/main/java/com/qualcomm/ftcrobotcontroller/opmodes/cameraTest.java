@@ -55,18 +55,13 @@ public class cameraTest extends LinearOpMode {
         robotBase.initializeServos();
         robotBase.calibrateGyro();
         robotBase.cameraSetup();
-        telemetry.addData("Ready to run:", "Gyro is calabrated. You are ready to run. " +
+        telemetry.addData("Ready to run:", "Gyro is calibrated and Camera is ready to use. You are ready to run. " +
                 "Make sure that the robot is centered on the Beacon (no drive used.");
 
         waitForStart();
 
-
         robotBase.snapPic();
 
 
-
-        //robotBaseSmithville.driveStraight(kReverse,0.5,90,-1); // backs away
-        //robotBaseSmithville.turn(180,0.5); //turn towards low goal
-        //robotBaseSmithville.driveStraight(kPark,0.75,180,1); //enter low zone
     }
 }

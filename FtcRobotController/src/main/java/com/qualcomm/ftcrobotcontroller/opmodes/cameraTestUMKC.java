@@ -35,11 +35,14 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 
 /**
+ * Base Drive code
+ * Blue side of field
+ * far left corner
  *
  * added camera for beacon light
  */
 
-public class cameraTest extends LinearOpMode {
+public class cameraTestUMKC extends LinearOpMode {
 
     AstroRobotBaseInterface robotBase;
 
@@ -48,7 +51,7 @@ public class cameraTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        robotBase = new RobotBaseSmithville(hardwareMap);
+        robotBase = new RobotBaseUMKC(hardwareMap);
         robotBase.initializeServos();
         robotBase.calibrateGyro();
         robotBase.cameraSetup();

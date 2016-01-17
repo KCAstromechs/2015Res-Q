@@ -78,6 +78,6 @@ public class FtcOpModeRegister implements OpModeRegister {
 
     manager.register("Tele Op", teleopUMKC.class);
 
-    manager.register("cameraTest", cameraTest.class);
+    manager.register("cameraTestUMKC", cameraTestUMKC.class);
   }
 }

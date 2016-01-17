@@ -113,22 +113,16 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
 
     public void cameraSetup() throws InterruptedException {
         //finds frontal camera
-        //mounted vertically
-        System.out.println("StartCameraSetup");
-/*        int numOfCameras = Camera.getNumberOfCameras();
-        System.out.println("SearchStart");
+        //mounted screen up, using back camera with mirror
+        int numOfCameras = Camera.getNumberOfCameras();
         for (int i = 0; i < numOfCameras; i++){
-            System.out.println("iteration: " + i);
             CameraInfo info = new CameraInfo();
             Camera.getCameraInfo(i,info);
-            System.out.println("CameraInfo for Camera at position: " + i);
-            if(info.facing == CameraInfo.CAMERA_FACING_FRONT){
+            if(info.facing == CameraInfo.CAMERA_FACING_BACK){
                 CameraID = i;
-                System.out.println("CameraID: " + CameraID);
 
                 try {
                     SurfaceTexture texture = new SurfaceTexture(0);
-                    System.out.println("Texture defined");
                     camera = Camera.open(CameraID);
                     camera.setPreviewTexture(texture);
                     picDone = getPicCallback();
@@ -136,10 +130,10 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
                     Thread.sleep(2000);
                 }
                 catch (Exception e){
-                   System.out.println("cameraSetup Failed");
+                    System.out.println("cameraSetup Failed");
                 }
             }
-        }*/
+        }
     }
 
     private static File getOutputMediaFile(int type, String folder_name) {

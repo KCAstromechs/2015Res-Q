@@ -108,20 +108,27 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
     public void snapPic(){
         camera.startPreview();
         camera.takePicture(null, null, picDone);
+        System.out.println("Picture Taken");
     }
 
     public void cameraSetup() throws InterruptedException {
         //finds frontal camera
         //mounted vertically
-        int numOfCameras = Camera.getNumberOfCameras();
+        System.out.println("StartCameraSetup");
+/*        int numOfCameras = Camera.getNumberOfCameras();
+        System.out.println("SearchStart");
         for (int i = 0; i < numOfCameras; i++){
+            System.out.println("iteration: " + i);
             CameraInfo info = new CameraInfo();
             Camera.getCameraInfo(i,info);
+            System.out.println("CameraInfo for Camera at position: " + i);
             if(info.facing == CameraInfo.CAMERA_FACING_FRONT){
                 CameraID = i;
+                System.out.println("CameraID: " + CameraID);
 
                 try {
                     SurfaceTexture texture = new SurfaceTexture(0);
+                    System.out.println("Texture defined");
                     camera = Camera.open(CameraID);
                     camera.setPreviewTexture(texture);
                     picDone = getPicCallback();
@@ -132,7 +139,7 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
                    System.out.println("cameraSetup Failed");
                 }
             }
-        }
+        }*/
     }
 
     private static File getOutputMediaFile(int type, String folder_name) {
@@ -179,10 +186,12 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
                 System.out.println("width: " + picture.getWidth());
                 System.out.println("Hight: " + picture.getHeight());
 
+                /*
                 int clr = picture.getPixel(60,80);
                 System.out.println("Red: " +Color.red(clr));
                 System.out.println("Blue: " + Color.blue(clr));
                 System.out.println("Green: " + Color.green(clr));
+                */
 
                 int totalRed = 0;
                 int totalBlue = 0;
@@ -200,9 +209,9 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
                 {
                     System.out.println("Camera: " + "failed to save pic, exception"+e.getMessage());
                 }
-
                 for(int y = 0; y < picture.getHeight() / 2; y++ ) {
                     currentPixel = picture.getPixel(90,y);
+                    System.out.println("Pixel (x,y): "+ "(90,"+ y +")");  //location of pixel
                     System.out.print(Color.red(currentPixel));
                     System.out.print(",");
                     System.out.print(Color.green(currentPixel) );
@@ -210,9 +219,11 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
                     System.out.println(Color.blue(currentPixel));
                     if(Color.red(currentPixel) < Color.blue(currentPixel)) {
                         totalBlue++;
+                        System.out.println("Current pixel is Blue");
                     }
                     else {
                         totalRed++; //THIS FOR LOOP IS TOTALLY UNTESTED, CHEERS
+                        System.out.println("Current pixel is Red");
                     }
                 }
 
@@ -222,13 +233,10 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
                 else {
                     System.out.println("Red");
                 }
-
-
             }
         };
+        System.out.println("PictureCallback is done");
         return picture;
-
-
 
     }
 
@@ -243,7 +251,7 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
         System.out.println("gyro (PreCalibration" + gyro.getHeading());
     }
 
-   public void setGrabberUp() {
+    public void setGrabberUp() {
         grabber.setPosition(0.7);
    }
 
@@ -322,8 +330,7 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
     public void setLeftPower(double leftPower){
         motorLeft.setPower(leftPower);
     }
-
-
+    
     @Override
     public void turn(int turnHeading, double power)throws InterruptedException{
         double rightPower;

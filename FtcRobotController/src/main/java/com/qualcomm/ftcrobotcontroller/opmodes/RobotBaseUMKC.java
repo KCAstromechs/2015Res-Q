@@ -184,7 +184,7 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
                 }
                 for(int y = 0; y < picture.getHeight() / 2; y++ ) {
                     currentPixel = picture.getPixel(90,y);
-                    System.out.println("Pixel (x,y): "+ "(90,"+ y +")");
+                    System.out.println("Pixel (x,y): "+ "(90,"+ y +")");  //location of pixel
                     System.out.print(Color.red(currentPixel));
                     System.out.print(",");
                     System.out.print(Color.green(currentPixel) );
@@ -208,6 +208,7 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
                 }
             }
         };
+        System.out.println("PictureCallback is done");
         return picture;
 
     }
@@ -304,7 +305,7 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
     }
 
     private boolean calcTurnDirection (int target, int heading, int variation)throws InterruptedException {
-        //Finds weather to turn clockwise or anticlockwise
+        //Finds whether to turn clockwise or anticlockwise
         //true is clockwise; false is counter clockwise
         if(target>180){
             if(heading>180){

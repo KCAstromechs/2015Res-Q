@@ -31,7 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
-import com.qualcomm.ftcrobotcontroller.opmodes.archive.BeaconColorTest;
+import com.qualcomm.ftcrobotcontroller.opmodes.archive.testbedLifter;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManager;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeRegister;
 
@@ -71,10 +71,6 @@ public class FtcOpModeRegister implements OpModeRegister {
     manager.register("Tele Op", teleopUMKC.class);
 
     manager.register("Tread Test",tankTreadTest.class);
-
-    manager.register("Tape Measure Lifter test", testbedLifter.class);
-
-    manager.register("ColorTest", BeaconColorTest.class);
 
     manager.register("distanceTest", distanceTest.class);
 

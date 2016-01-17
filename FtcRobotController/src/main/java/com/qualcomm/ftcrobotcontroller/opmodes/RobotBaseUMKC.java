@@ -330,7 +330,7 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
     public void setLeftPower(double leftPower){
         motorLeft.setPower(leftPower);
     }
-    
+
     @Override
     public void turn(int turnHeading, double power)throws InterruptedException{
         double rightPower;
@@ -413,11 +413,15 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
         motorBackRight.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
         motorBackLeft.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
 
+        callingOpMode.waitOneFullHardwareCycle();
+
         //set motor Power
         motorFrontRight.setPower(power);
         motorFrontLeft.setPower(power);
         motorBackRight.setPower(power);
         motorBackLeft.setPower(power);
+
+        callingOpMode.waitOneFullHardwareCycle();
 
         degErr=0;
 

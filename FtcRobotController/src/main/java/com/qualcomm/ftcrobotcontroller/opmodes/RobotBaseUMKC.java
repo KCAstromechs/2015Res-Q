@@ -159,10 +159,12 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
                 System.out.println("width: " + picture.getWidth());
                 System.out.println("Hight: " + picture.getHeight());
 
+                /*
                 int clr = picture.getPixel(60,80);
                 System.out.println("Red: " +Color.red(clr));
                 System.out.println("Blue: " + Color.blue(clr));
                 System.out.println("Green: " + Color.green(clr));
+                */
 
                 int totalRed = 0;
                 int totalBlue = 0;
@@ -182,6 +184,7 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
                 }
                 for(int y = 0; y < picture.getHeight() / 2; y++ ) {
                     currentPixel = picture.getPixel(90,y);
+                    System.out.println("Pixel (x,y): "+ "(90,"+ y +")");
                     System.out.print(Color.red(currentPixel));
                     System.out.print(",");
                     System.out.print(Color.green(currentPixel) );

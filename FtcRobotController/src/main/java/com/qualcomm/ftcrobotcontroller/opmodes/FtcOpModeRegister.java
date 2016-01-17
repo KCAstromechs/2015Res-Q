@@ -58,25 +58,25 @@ public class FtcOpModeRegister implements OpModeRegister {
 
     manager.register("NullOp", NullOp.class);
 
-    manager.register ("Autonomous Blue Position 1", BluePos1.class);
+    //manager.register ("Autonomous Blue Position 1", BluePos1.class);
 
-    manager.register ("Autonomous Red Position 1", RedPos1.class);
+    //manager.register("Autonomous Blue Position 1 Play Nice Version", BluePos1Wait.class);
 
-    manager.register("Autonomous Red Position 1 Play Nice Version", RedPos1Wait.class);
+    manager.register ("Autonomous Blue Position 2", BluePos2.class);
 
-    manager.register("Autonomous Blue Position 1 Play Nice Version", BluePos1Wait.class);
+    //manager.register("Autonomous Blue Position 2 Play Nice Version", BluePos1Wait.class);
+
+    //manager.register ("Autonomous Red Position 1", RedPos1.class);
+
+    //manager.register("Autonomous Red Position 1 Play Nice Version", RedPos1Wait.class);
+
+    //manager.register ("Autonomous Red Position 2", RedPos2.class);
+
+    //manager.register("Autonomous Red Position 2 Play Nice Version", RedPos1Wait.class);
 
     manager.register("Old Tele Op", tankDriveSpinnerLifterThing.class);
 
     manager.register("Tele Op", teleopUMKC.class);
-
-    manager.register("Tread Test",tankTreadTest.class);
-
-    manager.register("Tape Measure Lifter test", testbedLifter.class);
-
-    manager.register("ColorTest", BeaconColorTest.class);
-
-    manager.register("distanceTest", distanceTest.class);
 
     manager.register("cameraTest", cameraTest.class);
   }

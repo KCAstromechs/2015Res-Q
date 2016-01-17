@@ -2,10 +2,18 @@ package com.qualcomm.ftcrobotcontroller.opmodes;
 
 import android.hardware.Camera;
 
+import com.qualcomm.robotcore.hardware.HardwareMap;
+
 /**
  * Created by Kevin on 1/7/2016.
  */
 public interface AstroRobotBaseInterface {
+    void initializeVariables(HardwareMap hardwareMap);
+
+    void setDriveReverse();
+
+    void setDriveForward();
+
     void snapPic();
 
     void cameraSetup() throws InterruptedException;
@@ -52,9 +60,11 @@ public interface AstroRobotBaseInterface {
 
     void driveStraight(double inches, double power, int heading, float direction)throws InterruptedException;
 
+    void driveStraightEncoder(int dist, double power, int heading, float direction)throws InterruptedException;
+
     void setLeftHookPosition(double position);
 
     void setRightHookPosition(double position);
 
-    void updateWinchAndDrawerslide(float winch, float DrawerSlide);
+    void updateWinchAndDrawerSlide(float winch, float DrawerSlide);
 }

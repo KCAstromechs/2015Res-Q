@@ -53,10 +53,10 @@ public class RedPos1 extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        robotBase = new RobotBaseSmithville(hardwareMap);
+        robotBase = new RobotBaseSmithville(hardwareMap,this);
         robotBase.initializeServos();
         robotBase.calibrateGyro();
-        telemetry.addData("Ready to run:", "Gyro is calabrated. You are ready to run. " +
+        telemetry.addData("Ready to run:", "Gyro is calibrated. You are ready to run. " +
                 "Make sure that the robot is centered on the tile furthest to the right on the red side.");
 
 
@@ -68,8 +68,8 @@ public class RedPos1 extends LinearOpMode {
         robotBase.turn(280,.25); // turns towards safety beacon
         robotBase.driveStraight(kSlowApproach,0.5,270,1.0f); //approaches safety beacon
         robotBase.hammerTime();
-        //robotBaseSmithville.driveStraight(kReverse,0.5,90,-1); // backs away
+        //robotBaseSmithville.driveStraight(kReverse,0.5,90,-1.0f); // backs away
         //robotBaseSmithville.turn(180,0.5); //turn towards low goal
-        //robotBaseSmithville.driveStraight(kPark,0.75,180,1); //enter low zone
+        //robotBaseSmithville.driveStraight(kPark,0.75,180,1.0f); //enter low zone
     }
 }

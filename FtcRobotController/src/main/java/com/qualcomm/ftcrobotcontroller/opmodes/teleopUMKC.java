@@ -158,7 +158,7 @@ public class teleopUMKC extends OpMode {
 		}
 
 */
-		robotBase.updateWinchAndDrawerslide(right2, left2);
+		robotBase.updateWinchAndDrawerSlide(right2, left2);
 
 	}
 

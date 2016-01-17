@@ -10,6 +10,7 @@ import android.hardware.Camera.PictureCallback;
 import android.os.Environment;
 import android.util.Log;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.GyroSensor;
@@ -51,6 +52,8 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
     //sensors
     GyroSensor gyro;
 
+    LinearOpMode callingOpMode;
+
     //camera
     Camera camera;
     PictureCallback picDone;
@@ -59,8 +62,17 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
     public static final int MEDIA_TYPE_VIDEO = 2;
 
 
+    public RobotBaseUMKC(HardwareMap hardwareMap, LinearOpMode _callingOpMode) {
+        this.initializeVariables(hardwareMap);
+        callingOpMode=_callingOpMode;
+    }
+
 
     public RobotBaseUMKC(HardwareMap hardwareMap) {
+        this.initializeVariables(hardwareMap);
+    }
+
+    public void initializeVariables (HardwareMap hardwareMap){
         //motor init
         motorRight = hardwareMap.dcMotor.get("right");
         motorLeft = hardwareMap.dcMotor.get("left");
@@ -75,7 +87,22 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
 
         //sensor init
         gyro=hardwareMap.gyroSensor.get("gyro");
+    }
 
+    @Override
+    public void setDriveReverse(){
+        motorFrontRight.setDirection(DcMotor.Direction.FORWARD);
+        motorBackRight.setDirection(DcMotor.Direction.FORWARD);
+        motorFrontLeft.setDirection(DcMotor.Direction.REVERSE);
+        motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
+    }
+
+    @Override
+    public void setDriveForward(){
+        motorFrontLeft.setDirection(DcMotor.Direction.FORWARD);
+        motorBackLeft.setDirection(DcMotor.Direction.FORWARD);
+        motorFrontRight.setDirection(DcMotor.Direction.REVERSE);
+        motorBackRight.setDirection(DcMotor.Direction.REVERSE);
     }
 
     public void snapPic(){
@@ -296,41 +323,8 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
         motorLeft.setPower(leftPower);
     }
 
-    private boolean calcTurnDirection (int target, int heading, int variation)throws InterruptedException {
-        //Finds weather to turn clockwise or anticlockwise
-        //true is clockwise; false is counter clockwise
-        if(target>180){
-            if(heading>180){
-                if(heading>target){
-                    return false;
-                } else {
-                    return true;
-                }
-            } else {
-                if (variation>180){
-                    return false;
-                } else {
-                    return true;
-                }
-            }
-        } else {
-            if (heading>180){
-                if(variation>180){
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                if (heading>target){
-                    return false;
-                } else {
-                    return true;
-                }
-            }
-        }
 
-    }
-
+    @Override
     public void turn(int turnHeading, double power)throws InterruptedException{
         double rightPower;
         double leftPower;
@@ -358,7 +352,7 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
             motorBackRight.setPower(rightPower);
             motorBackLeft.setPower(leftPower);
             while(Math.abs(gyro.getHeading() - turnHeading) > 2){
-                Thread.sleep(25);
+                callingOpMode.waitForNextHardwareCycle();
             }
             motorFrontRight.setPower(0);
             motorFrontLeft.setPower(0);
@@ -373,7 +367,8 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
             motorBackRight.setPower(rightPower);
             motorBackLeft.setPower(leftPower);
             while(Math.abs(gyro.getHeading() - turnHeading) > 2){
-                Thread.sleep(25);
+                //java.lang.Thread.sleep(25);
+                callingOpMode.waitForNextHardwareCycle();
             }
             motorFrontRight.setPower(0);
             motorFrontLeft.setPower(0);
@@ -383,10 +378,12 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
         Thread.sleep(100);
     }
 
+
     public void driveStraight(double inches, double power, int heading, float direction)throws InterruptedException{
         this.driveStraightEncoder((int) (inches * inchesToEncoder), power, heading, direction);
     }
 
+    @Override
     public void driveStraightEncoder(int dist, double power, int heading, float direction)throws InterruptedException {
         //gyro stabilization - PID
         float proportionalConst = 0.05f;
@@ -402,7 +399,7 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
         motorBackRight.setMode(DcMotorController.RunMode.RESET_ENCODERS);
         motorBackLeft.setMode(DcMotorController.RunMode.RESET_ENCODERS);
 
-        Thread.sleep(250);
+        callingOpMode.waitOneFullHardwareCycle();
 
         motorFrontRight.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
         motorFrontLeft.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
@@ -422,6 +419,9 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
             //System.out.println("Encoder= " +motorBackRight.getCurrentPosition());
             lastDegErr = degErr;
             degErr = gyro.getHeading() - heading;
+            if (degErr > 180){
+                degErr -= 360;
+            }
             if (degErr != lastDegErr) {
                 correction = degErr * proportionalConst;
                 localLeftPower = Range.clip((power - correction)*direction, -1.0f, 1.0f);
@@ -438,7 +438,7 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
                 telemetry.addData("motorBackRight", motorBackRight.getCurrentPosition());
                 telemetry.addData("motorBackLeft", motorBackLeft.getCurrentPosition());
                 */
-                Thread.sleep(50);
+                callingOpMode.waitForNextHardwareCycle();
 
             }
 
@@ -461,7 +461,7 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
     }
 
     @Override
-    public void updateWinchAndDrawerslide(float winch, float DrawerSlide){
+    public void updateWinchAndDrawerSlide(float winch, float DrawerSlide){
         motorWinch.setPower(winch);
         motorDrawerSlide.setPower(DrawerSlide);
     }

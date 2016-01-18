@@ -53,7 +53,7 @@ public class RedPos1 extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        robotBase = new RobotBaseSmithville(hardwareMap,this);
+        robotBase = new RobotBaseUMKC(hardwareMap,this);
         robotBase.initializeServos();
         robotBase.calibrateGyro();
         telemetry.addData("Ready to run:", "Gyro is calibrated. You are ready to run. " +

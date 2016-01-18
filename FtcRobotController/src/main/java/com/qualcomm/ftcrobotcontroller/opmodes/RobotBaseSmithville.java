@@ -35,6 +35,7 @@ public class RobotBaseSmithville implements AstroRobotBaseInterface {
     public DcMotor motorBackLeft;
     public DcMotor motorWinch;
     public DcMotor motorDrawerSlide;
+    public DcMotor encoderMotor;
 
     //Servos
     Servo mjolnir;
@@ -50,6 +51,8 @@ public class RobotBaseSmithville implements AstroRobotBaseInterface {
     GyroSensor gyro;
 
     LinearOpMode callingOpMode;
+
+    HardwareMap hardwareMap;
 
     //camera
     Camera camera;
@@ -70,14 +73,14 @@ public class RobotBaseSmithville implements AstroRobotBaseInterface {
     }
 
     @Override
-    public void initializeVariables(HardwareMap hardwareMap) {
+    public void initializeVariables(HardwareMap _hardwareMap) {
         //motor init
-        motorFrontRight = hardwareMap.dcMotor.get("frontRight");
-        motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
-        motorBackRight = hardwareMap.dcMotor.get("backRight");
-        motorBackLeft = hardwareMap.dcMotor.get("backLeft");
-        motorFrontRight.setDirection(DcMotor.Direction.REVERSE);
-        motorBackRight.setDirection(DcMotor.Direction.REVERSE);
+        hardwareMap = _hardwareMap;
+        setDriveForward();
+        motorFrontRight.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+        motorFrontLeft.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+        motorBackRight.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+        motorBackLeft.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
         //motorRight = hardwareMap.dcMotor.get("right");
         //motorLeft = hardwareMap.dcMotor.get("left");
         //motorRight.setDirection(DcMotor.Direction.REVERSE);
@@ -100,18 +103,28 @@ public class RobotBaseSmithville implements AstroRobotBaseInterface {
 
     @Override
     public void setDriveReverse(){
-        motorFrontRight.setDirection(DcMotor.Direction.FORWARD);
-        motorBackRight.setDirection(DcMotor.Direction.FORWARD);
-        motorFrontLeft.setDirection(DcMotor.Direction.REVERSE);
-        motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
+        motorFrontRight = hardwareMap.dcMotor.get("frontLeft");
+        motorFrontLeft = hardwareMap.dcMotor.get("frontRight");
+        motorBackRight = hardwareMap.dcMotor.get("backLeft");
+        motorBackLeft = hardwareMap.dcMotor.get("backRight");
+        encoderMotor = motorBackLeft;
+        motorFrontRight.setDirection(DcMotor.Direction.REVERSE);
+        motorBackRight.setDirection(DcMotor.Direction.REVERSE);
+        motorFrontLeft.setDirection(DcMotor.Direction.FORWARD);
+        motorBackLeft.setDirection(DcMotor.Direction.FORWARD);
     }
 
     @Override
     public void setDriveForward(){
-        motorFrontLeft.setDirection(DcMotor.Direction.FORWARD);
-        motorBackLeft.setDirection(DcMotor.Direction.FORWARD);
+        motorFrontRight = hardwareMap.dcMotor.get("frontRight");
+        motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
+        motorBackRight = hardwareMap.dcMotor.get("backRight");
+        motorBackLeft = hardwareMap.dcMotor.get("backLeft");
+        encoderMotor = motorBackRight;
         motorFrontRight.setDirection(DcMotor.Direction.REVERSE);
         motorBackRight.setDirection(DcMotor.Direction.REVERSE);
+        motorFrontLeft.setDirection(DcMotor.Direction.FORWARD);
+        motorBackLeft.setDirection(DcMotor.Direction.FORWARD);
     }
 
     @Override
@@ -428,19 +441,27 @@ public class RobotBaseSmithville implements AstroRobotBaseInterface {
         double localRightPower=power;
 
         //reset encoders
-        motorFrontRight.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-        motorFrontLeft.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-        motorBackRight.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-        motorBackLeft.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+        //motorFrontRight.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+        //motorFrontLeft.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+        encoderMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+        //motorBackLeft.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+
+        System.out.println("runmode="+motorFrontRight.getMode());
 
         callingOpMode.waitOneFullHardwareCycle();
+        //callingOpMode.waitOneFullHardwareCycle();
+        callingOpMode.sleep(250);
+        System.out.println("runmode=" + motorFrontRight.getMode());
 
-        motorFrontRight.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
-        motorFrontLeft.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
-        motorBackRight.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
-        motorBackLeft.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+        //motorFrontRight.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+        //motorFrontLeft.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS)
+        encoderMotor.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+        //motorBackLeft.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
 
-        callingOpMode.waitOneFullHardwareCycle();
+        while(encoderMotor.getCurrentPosition()>20) {
+            callingOpMode.waitOneFullHardwareCycle();
+            System.out.println("Resetting Encoder= " + encoderMotor.getCurrentPosition());
+        }
 
         //set motor Power
         motorFrontRight.setPower(power);
@@ -453,8 +474,9 @@ public class RobotBaseSmithville implements AstroRobotBaseInterface {
         degErr=0;
 
 
-        while (motorBackRight.getCurrentPosition() < dist) {
-            //System.out.println("Encoder= " +motorBackRight.getCurrentPosition());
+        System.out.println("Start Encoder= " + encoderMotor.getCurrentPosition());
+        while (encoderMotor.getCurrentPosition() < dist) {
+            //System.out.println("Encoder= " +encoderMotor.getCurrentPosition());
             lastDegErr = degErr;
             degErr = gyro.getHeading() - heading;
             if (degErr > 180){
@@ -473,7 +495,7 @@ public class RobotBaseSmithville implements AstroRobotBaseInterface {
                 /*
                 telemetry.addData("motorFrontRight", motorFrontRight.getCurrentPosition());
                 telemetry.addData("motorFrontLeft", motorFrontLeft.getCurrentPosition());
-                telemetry.addData("motorBackRight", motorBackRight.getCurrentPosition());
+                telemetry.addData("motorBackRight", encoderMotor.getCurrentPosition());
                 telemetry.addData("motorBackLeft", motorBackLeft.getCurrentPosition());
                 */
                 callingOpMode.waitForNextHardwareCycle();
@@ -481,6 +503,7 @@ public class RobotBaseSmithville implements AstroRobotBaseInterface {
             }
 
         }
+        System.out.println("End Encoder= " +encoderMotor.getCurrentPosition());
         motorBackRight.setPower(0);
         motorBackLeft.setPower(0);
         motorFrontLeft.setPower(0);

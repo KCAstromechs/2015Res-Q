@@ -45,9 +45,9 @@ public class BluePos2 extends LinearOpMode {
     AstroRobotBaseInterface robotBase;
 
     //Drive Constants
-    private static final double klongDrive = 47.1;
+    private static final double klongDrive = 63.1;
     private static final double kDriveOut = 31.4;
-    private static final double kSlowApproach = 25.1;
+    private static final double kSlowApproach = 20.1;
     private static final double kReverse = 6.3;
     private static final double kPark = 15.7;
 
@@ -55,7 +55,8 @@ public class BluePos2 extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        robotBase = new RobotBaseSmithville(hardwareMap, this);
+        robotBase = new RobotBaseUMKC(hardwareMap, this);
+        robotBase.setDriveReverse();
         robotBase.initializeServos();
         robotBase.calibrateGyro();
         telemetry.addData("Ready to run:", "Gyro is calabrated. You are ready to run. " +

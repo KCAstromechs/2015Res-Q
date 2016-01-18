@@ -58,7 +58,7 @@ public class FtcOpModeRegister implements OpModeRegister {
 
     manager.register("NullOp", NullOp.class);
 
-    //manager.register ("Autonomous Blue Position 1", BluePos1.class);
+    manager.register ("Autonomous Blue Position 1", BluePos1.class);
 
     //manager.register("Autonomous Blue Position 1 Play Nice Version", BluePos1Wait.class);
 
@@ -66,11 +66,11 @@ public class FtcOpModeRegister implements OpModeRegister {
 
     //manager.register("Autonomous Blue Position 2 Play Nice Version", BluePos1Wait.class);
 
-    //manager.register ("Autonomous Red Position 1", RedPos1.class);
+    manager.register ("Autonomous Red Position 1", RedPos1.class);
 
     //manager.register("Autonomous Red Position 1 Play Nice Version", RedPos1Wait.class);
 
-    //manager.register ("Autonomous Red Position 2", RedPos2.class);
+    manager.register ("Autonomous Red Position 2", RedPos2.class);
 
     //manager.register("Autonomous Red Position 2 Play Nice Version", RedPos1Wait.class);
 

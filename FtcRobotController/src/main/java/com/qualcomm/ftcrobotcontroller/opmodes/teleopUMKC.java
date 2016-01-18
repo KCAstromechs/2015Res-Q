@@ -39,6 +39,9 @@ public class teleopUMKC extends OpMode {
 
 	AstroRobotBaseInterface robotBase;
 
+	boolean isRightZiplineDown = false;
+	boolean isLeftZiplineDown = false;
+
 	public teleopUMKC() {
 
 	}
@@ -111,63 +114,40 @@ public class teleopUMKC extends OpMode {
 		if (Math.abs(right2)<0.1){
 			right2=0;
 		}
-		/*
-		if (gamepad2.right_bumper)
-		{
-			robotBaseSmithville.setGrabberUp();
-		}
-		if (gamepad2.right_trigger>0.75)
-		{
-			robotBaseSmithville.setGrabberMiddle();
-		}
 
-		if (gamepad2.left_trigger>0.75)
-		{
-			robotBaseSmithville.setGrabberDown();
-		}
-		telemetry.addData("leftT", gamepad2.left_trigger);
-*/
 		if (gamepad2.left_bumper){
 			right2 /= 10.0;
 		}
-		telemetry.addData("right2", right2);
-
-/*
-		if(gamepad1.a){
-			robotBaseSmithville.setLeftZiplineDown();
-		}
-
-		if(gamepad1.b){
-			robotBaseSmithville.setRightZiplineDown();
-		}
-
-		if(gamepad1.x){
-			robotBaseSmithville.setLeftZiplineUp();
-		}
-
-		if(gamepad1.y){
-			robotBaseSmithville.setRightZiplineUp();
-		}
-
-		if(gamepad2.a){
-			robotBaseSmithville.setMjolnirUp();
-		}
-
-		if(gamepad2.b){
-			robotBaseSmithville.setMjolnirDown();
-		}
 
 		if(gamepad2.x){
-			robotBaseSmithville.setLeftLockClosed();
-			robotBaseSmithville.setRightLockClosed();
+			robotBase.setMjolnirDown();
 		}
 
 		if(gamepad2.y){
-			robotBaseSmithville.setLeftLockOpen();
-			robotBaseSmithville.setRightLockOpen();
+			robotBase.setMjolnirUp();
 		}
 
-*/
+		if(gamepad2.left_trigger>0.75){
+			if(isRightZiplineDown){
+				robotBase.setRightZiplineUp();
+				isRightZiplineDown = false;
+			} else {
+				robotBase.setRightZiplineDown();
+				isRightZiplineDown = true;
+			}
+
+		}
+
+		if(gamepad2.right_trigger>0.75){
+			if(isLeftZiplineDown){
+				robotBase.setLeftZiplineUp();
+				isLeftZiplineDown = false;
+			} else {
+				robotBase.setLeftZiplineDown();
+				isLeftZiplineDown = true;
+			}
+		}
+
 		robotBase.updateWinchAndDrawerSlide(right2, left2);
 
 	}

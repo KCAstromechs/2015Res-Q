@@ -38,6 +38,7 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
     public DcMotor motorDrawerSlide;
     public DcMotor motorRight;
     public DcMotor motorLeft;
+    public DcMotor encoderMotor;
 
     //Servos
     Servo mjolnir;
@@ -52,7 +53,10 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
     //sensors
     GyroSensor gyro;
 
+    HardwareMap hardwareMap;
+
     LinearOpMode callingOpMode;
+
 
     //camera
     Camera camera;
@@ -72,18 +76,25 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
         this.initializeVariables(hardwareMap);
     }
 
-    public void initializeVariables (HardwareMap hardwareMap){
-        //motor init
-        motorRight = hardwareMap.dcMotor.get("right");
-        motorLeft = hardwareMap.dcMotor.get("left");
+    public void initializeVariables (HardwareMap _hardwareMap){
+
+        boolean rightZiplineDown = false;
+        boolean leftZiplineDown = false;
+
+
+                //motor init
+        hardwareMap = _hardwareMap;
+        setDriveForward();
         motorRight.setDirection(DcMotor.Direction.REVERSE);
         motorWinch = hardwareMap.dcMotor.get("Winch");
         motorDrawerSlide = hardwareMap.dcMotor.get("DrawerSlide");
 
         //Servo init
-        leftHook = hardwareMap.servo.get("leftHook");
-        rightHook = hardwareMap.servo.get("rightHook");
-
+        leftHook=hardwareMap.servo.get("leftHook");
+        rightHook=hardwareMap.servo.get("rightHook");
+        leftZipline=hardwareMap.servo.get("leftZipline");
+        rightZipline=hardwareMap.servo.get("rightZipline");
+        mjolnir=hardwareMap.servo.get("box");
 
         //sensor init
         gyro=hardwareMap.gyroSensor.get("gyro");
@@ -91,18 +102,16 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
 
     @Override
     public void setDriveReverse(){
-        motorFrontRight.setDirection(DcMotor.Direction.FORWARD);
-        motorBackRight.setDirection(DcMotor.Direction.FORWARD);
-        motorFrontLeft.setDirection(DcMotor.Direction.REVERSE);
-        motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
+        motorRight = hardwareMap.dcMotor.get("left");
+        motorLeft = hardwareMap.dcMotor.get("right");
+        encoderMotor = motorLeft;
     }
 
     @Override
     public void setDriveForward(){
-        motorFrontLeft.setDirection(DcMotor.Direction.FORWARD);
-        motorBackLeft.setDirection(DcMotor.Direction.FORWARD);
-        motorFrontRight.setDirection(DcMotor.Direction.REVERSE);
-        motorBackRight.setDirection(DcMotor.Direction.REVERSE);
+        motorRight = hardwareMap.dcMotor.get("right");
+        motorLeft = hardwareMap.dcMotor.get("left");
+        encoderMotor = motorLeft;
     }
 
     public void snapPic(){
@@ -246,15 +255,15 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
     }
 
     public void setGrabberUp() {
-        grabber.setPosition(0.7);
+
    }
 
     public void setGrabberMiddle() {
-        grabber.setPosition(0.4);
+
     }
 
     public void setGrabberDown() {
-        grabber.setPosition(0.1);
+
     }
 
     public void setLeftZiplineUp() {
@@ -309,12 +318,7 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
     }
 
     public void initializeServos() {
-        setGrabberDown();
-        setLeftZiplineUp();
-        setRightZiplineUp();
-        setMjolnirDown();
-        setRightLockOpen();
-        setLeftLockOpen();
+
     }
 
     public void setRightPower(double rightPower) {
@@ -348,39 +352,31 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
         if(cclockwise > clockwise){
             leftPower=power;
             rightPower=-power;
-            motorFrontRight.setPower(rightPower);
-            motorFrontLeft.setPower(leftPower);
-            motorBackRight.setPower(rightPower);
-            motorBackLeft.setPower(leftPower);
+            motorRight.setPower(rightPower);
+            motorLeft.setPower(leftPower);
             while(Math.abs(gyro.getHeading() - turnHeading) > 2){
                 callingOpMode.waitForNextHardwareCycle();
             }
-            motorFrontRight.setPower(0);
-            motorFrontLeft.setPower(0);
-            motorBackRight.setPower(0);
-            motorBackLeft.setPower(0);
+            motorRight.setPower(0);
+            motorLeft.setPower(0);
         }
         else {
             leftPower=-power;
             rightPower=power;
-            motorFrontRight.setPower(rightPower);
-            motorFrontLeft.setPower(leftPower);
-            motorBackRight.setPower(rightPower);
-            motorBackLeft.setPower(leftPower);
+            motorRight.setPower(rightPower);
+            motorLeft.setPower(leftPower);
             while(Math.abs(gyro.getHeading() - turnHeading) > 2){
                 //java.lang.Thread.sleep(25);
                 callingOpMode.waitForNextHardwareCycle();
             }
-            motorFrontRight.setPower(0);
-            motorFrontLeft.setPower(0);
-            motorBackRight.setPower(0);
-            motorBackLeft.setPower(0);
+            motorRight.setPower(0);
+            motorLeft.setPower(0);
         }
         Thread.sleep(100);
     }
 
 
-    public void driveStraight(double inches, double power, int heading, float direction)throws InterruptedException{
+    public void driveStraight(double inches, double power, int heading, float direction) throws InterruptedException {
         this.driveStraightEncoder((int) (inches * inchesToEncoder), power, heading, direction);
     }
 
@@ -391,37 +387,35 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
         int degErr;
         float correction;
         int lastDegErr;
-        double localLeftPower=power;
+        double localLeftPower = power;
         double localRightPower=power;
 
         //reset encoders
-        motorFrontRight.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-        motorFrontLeft.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-        motorBackRight.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-        motorBackLeft.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+        encoderMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
 
         callingOpMode.waitOneFullHardwareCycle();
+        //callingOpMode.waitOneFullHardwareCycle();
+        callingOpMode.sleep(250);
 
-        motorFrontRight.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
-        motorFrontLeft.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
-        motorBackRight.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
-        motorBackLeft.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+        encoderMotor.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
 
-        callingOpMode.waitOneFullHardwareCycle();
+        while(encoderMotor.getCurrentPosition()>20) {
+            callingOpMode.waitOneFullHardwareCycle();
+            System.out.println("Resetting Encoder= " + encoderMotor.getCurrentPosition());
+        }
 
         //set motor Power
-        motorFrontRight.setPower(power);
-        motorFrontLeft.setPower(power);
-        motorBackRight.setPower(power);
-        motorBackLeft.setPower(power);
+        motorRight.setPower(power);
+        motorLeft.setPower(power);
 
         callingOpMode.waitOneFullHardwareCycle();
 
         degErr=0;
 
 
-        while (motorBackRight.getCurrentPosition() < dist) {
-            //System.out.println("Encoder= " +motorBackRight.getCurrentPosition());
+        System.out.println("Start Encoder= " + encoderMotor.getCurrentPosition());
+        while (encoderMotor.getCurrentPosition() < dist) {
+            //System.out.println("Encoder= " +encoderMotor.getCurrentPosition());
             lastDegErr = degErr;
             degErr = gyro.getHeading() - heading;
             if (degErr > 180){
@@ -432,26 +426,17 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
                 localLeftPower = Range.clip((power - correction)*direction, -1.0f, 1.0f);
                 localRightPower = Range.clip((power + correction)*direction, -1.0f, 1.0f);
 
-                motorFrontRight.setPower(localRightPower);
-                motorFrontLeft.setPower(localLeftPower);
-                motorBackRight.setPower(localRightPower);
-                motorBackLeft.setPower(localLeftPower);
+                motorRight.setPower(localRightPower);
+                motorLeft.setPower(localLeftPower);
 
-                /*
-                telemetry.addData("motorFrontRight", motorFrontRight.getCurrentPosition());
-                telemetry.addData("motorFrontLeft", motorFrontLeft.getCurrentPosition());
-                telemetry.addData("motorBackRight", motorBackRight.getCurrentPosition());
-                telemetry.addData("motorBackLeft", motorBackLeft.getCurrentPosition());
-                */
                 callingOpMode.waitForNextHardwareCycle();
 
             }
 
         }
-        motorBackRight.setPower(0);
-        motorBackLeft.setPower(0);
-        motorFrontLeft.setPower(0);
-        motorFrontRight.setPower(0);
+        System.out.println("End Encoder= " +encoderMotor.getCurrentPosition());
+        motorRight.setPower(0);
+        motorRight.setPower(0);
         Thread.sleep(100);
     }
 
@@ -466,7 +451,7 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
     }
 
     @Override
-    public void updateWinchAndDrawerSlide(float winch, float DrawerSlide){
+    public void updateWinchAndDrawerSlide(float winch, float DrawerSlide) {
         motorWinch.setPower(winch);
         motorDrawerSlide.setPower(DrawerSlide);
     }

@@ -67,9 +67,9 @@ public class BluePos1Wait extends LinearOpMode {
 
         sleep(15000);
         robotBase.driveStraight(kClearWall, 1, 0, 1.0f); //clears wall
-        robotBase.turn(35, .25); //turns 45 degrees
+        robotBase.turn(35, .5); //turns 45 degrees
         robotBase.driveStraight(klongDrive, 1, 50, 1.0f); // long drive down the field
-        robotBase.turn(80, .25); // turns towards safety beacon
+        robotBase.turn(80, .5); // turns towards safety beacon
         robotBase.driveStraight(kSlowApproach, 0.5, 90, 1.0f); //approaches safety beacon
         robotBase.hammerTime();
         //robotBase.snapPic();

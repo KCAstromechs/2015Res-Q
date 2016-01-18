@@ -56,7 +56,7 @@ public class BluePos2 extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         robotBase = new RobotBaseUMKC(hardwareMap, this);
-        robotBase.setDriveReverse();
+        //robotBase.setDriveReverse();
         robotBase.initializeServos();
         robotBase.calibrateGyro();
         telemetry.addData("Ready to run:", "Gyro is calabrated. You are ready to run. " +
@@ -65,9 +65,9 @@ public class BluePos2 extends LinearOpMode {
         waitForStart();
 
         robotBase.driveStraight(kDriveOut, 1, 0, 1.0f); //clears wall
-        robotBase.turn(35, .25); //turns 45 degrees
+        robotBase.turn(35, .5); //turns 45 degrees
         robotBase.driveStraight(klongDrive, 1, 50, 1.0f); // long drive down the field
-        robotBase.turn(80, .25); // turns towards safety beacon
+        robotBase.turn(80, .5); // turns towards safety beacon
         robotBase.driveStraight(kSlowApproach, 0.5, 90, 1.0f); //approaches safety beacon
         robotBase.hammerTime();
         //robotBase.driveStraight(kReverse, 0.5, 90, -1.0f); // backs away

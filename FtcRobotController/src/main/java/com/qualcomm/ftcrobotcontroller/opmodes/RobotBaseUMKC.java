@@ -349,6 +349,10 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
             cclockwise += 360;
         }
 
+        System.out.println("turn... c="+clockwise+" cc="+cclockwise);
+
+
+
         if(cclockwise > clockwise){
             leftPower=power;
             rightPower=-power;

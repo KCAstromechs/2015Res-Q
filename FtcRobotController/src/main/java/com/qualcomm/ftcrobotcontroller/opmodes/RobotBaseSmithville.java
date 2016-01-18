@@ -351,6 +351,26 @@ public class RobotBaseSmithville implements AstroRobotBaseInterface {
     }
 
     @Override
+    public void setRightHookUp() {
+
+    }
+
+    @Override
+    public void setLeftHookUp() {
+
+    }
+
+    @Override
+    public void setRightHookDown() {
+
+    }
+
+    @Override
+    public void setLeftHookDown() {
+
+    }
+
+    @Override
     public void initializeServos() {
         setGrabberDown();
         setLeftZiplineUp();

@@ -271,7 +271,7 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
     }
 
     public void setLeftZiplineDown() {
-        leftZipline.setPosition(0.5);
+        leftZipline.setPosition(0.4);
     }
 
     public void setRightZiplineUp() {
@@ -283,11 +283,11 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
     }
 
     public void setMjolnirDown(){
-        mjolnir.setPosition(0.9);
+        mjolnir.setPosition(1);
     }
 
     public void setMjolnirUp(){
-        mjolnir.setPosition(0.1);
+        mjolnir.setPosition(0);
     }
 
     public void hammerTime() throws InterruptedException {
@@ -317,7 +317,32 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
         rightLock.setPosition(0.18);
     }
 
+    @Override
+    public void setRightHookUp(){
+        setRightHookPosition(0);
+    }
+
+    @Override
+    public void setLeftHookUp(){
+        setLeftHookPosition(1);
+    }
+
+    @Override
+    public void setRightHookDown(){
+        setRightHookPosition(0.9);
+    }
+
+    @Override
+    public void setLeftHookDown(){
+        setLeftHookPosition(0.1);
+    }
+
     public void initializeServos() {
+        setLeftZiplineUp();
+        setRightZiplineUp();
+        setMjolnirDown();
+        setRightHookUp();
+        setLeftHookUp();
 
     }
 
@@ -440,7 +465,7 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
         }
         System.out.println("End Encoder= " +encoderMotor.getCurrentPosition());
         motorRight.setPower(0);
-        motorRight.setPower(0);
+        motorLeft.setPower(0);
         Thread.sleep(100);
     }
 

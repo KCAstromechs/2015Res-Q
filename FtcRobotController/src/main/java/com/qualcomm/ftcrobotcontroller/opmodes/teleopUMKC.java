@@ -51,6 +51,9 @@ public class teleopUMKC extends OpMode {
 	public void init() {
 
 		robotBase = new RobotBaseUMKC(hardwareMap);
+		robotBase.initializeServos();
+		robotBase.setRightHookPosition(0);
+		robotBase.setLeftHookPosition(1);
 
 	}
 	@Override
@@ -85,21 +88,29 @@ public class teleopUMKC extends OpMode {
 		//change position of hooks on front
 		//1st driver
 		if(gamepad1.a) { //down
-			robotBase.setLeftHookPosition(0.1);
-			robotBase.setRightHookPosition(0.9);
+			robotBase.setRightHookDown();
+			robotBase.setLeftHookDown();
+			//robotBase.setLeftHookPosition(0.1);
+			//robotBase.setRightHookPosition(0.9);
 		}
 		if(gamepad1.b){ // up
-			robotBase.setLeftHookPosition(1);
-			robotBase.setRightHookPosition(0);
+			robotBase.setRightHookUp();
+			robotBase.setLeftHookUp();
+			//robotBase.setLeftHookPosition(1);
+			//robotBase.setRightHookPosition(0);
 		}
 		//second Driver
 		if(gamepad2.a) { //down
-			robotBase.setLeftHookPosition(0.1);
-			robotBase.setRightHookPosition(0.9);
+			robotBase.setRightHookDown();
+			robotBase.setLeftHookDown();
+			//robotBase.setLeftHookPosition(0.1);
+			//robotBase.setRightHookPosition(0.9);
 		}
 		if(gamepad2.b){ // up
-			robotBase.setLeftHookPosition(1);
-			robotBase.setRightHookPosition(0);
+			robotBase.setRightHookUp();
+			robotBase.setLeftHookUp();
+			//robotBase.setLeftHookPosition(1);
+			//robotBase.setRightHookPosition(0);
 		}
 
 
@@ -128,6 +139,8 @@ public class teleopUMKC extends OpMode {
 		}
 
 		if(gamepad2.left_trigger>0.75){
+
+			//this.
 			if(isRightZiplineDown){
 				robotBase.setRightZiplineUp();
 				isRightZiplineDown = false;

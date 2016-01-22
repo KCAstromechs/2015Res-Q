@@ -48,15 +48,15 @@ public class BluePos1Wait extends LinearOpMode {
     AstroRobotBaseInterface robotBase;
 
     //Drive Constants
-    private static final double klongDrive = 92.9;
-    private static final double kClearWall = 6.3;
-    private static final double kSlowApproach = 34.5;
+    private static final double klongDrive = 94.0;
+    private static final double kClearWall = 5.5;
+    private static final double kSlowApproach = 42.0;
 
 
     @Override
     public void runOpMode() throws InterruptedException {
 
-        robotBase = new RobotBaseSmithville(hardwareMap, this);
+        robotBase = new RobotBaseUMKC(hardwareMap, this);
         robotBase.initializeServos();
         robotBase.calibrateGyro();
         robotBase.cameraSetup();
@@ -66,10 +66,11 @@ public class BluePos1Wait extends LinearOpMode {
         waitForStart();
 
         sleep(15000);
+
         robotBase.driveStraight(kClearWall, 1, 0, 1.0f); //clears wall
-        robotBase.turn(35, .5); //turns 45 degrees
+        robotBase.turn(40, 1.0f); //turns 45 degrees
         robotBase.driveStraight(klongDrive, 1, 50, 1.0f); // long drive down the field
-        robotBase.turn(80, .5); // turns towards safety beacon
+        robotBase.turn(80, 1.0f); // turns towards safety beacon
         robotBase.driveStraight(kSlowApproach, 0.5, 90, 1.0f); //approaches safety beacon
         robotBase.hammerTime();
         //robotBase.snapPic();

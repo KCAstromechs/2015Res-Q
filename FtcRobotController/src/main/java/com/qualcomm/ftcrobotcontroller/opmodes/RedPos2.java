@@ -45,9 +45,9 @@ public class RedPos2 extends LinearOpMode {
     AstroRobotBaseInterface robotBase;
 
     //Drive Constants
-    private static final double klongDrive = 62.8;
-    private static final double kDriveOut = 31.4;
-    private static final double kSlowApproach = 12.6;
+    private static final double klongDrive = 55.1;
+    private static final double kDriveOut = 38.4;
+    private static final double kSlowApproach = 20.53;
     private static final double kReverse = 6.3;
     private static final double kPark = 15.7;
 
@@ -65,14 +65,14 @@ public class RedPos2 extends LinearOpMode {
         waitForStart();
 
         robotBase.driveStraight(kDriveOut, 1, 0, 1.0f); //clears wall
-        robotBase.turn(325, .5); //turns 45 degrees
+        robotBase.turn(325, 1.0f); //turns 45 degrees
         robotBase.driveStraight(klongDrive, 1, 310, 1.0f); // long drive down the field
-        robotBase.turn(280, .5); // turns towards safety beacon
+        robotBase.turn(280, 1.0f); // turns towards safety beacon
         robotBase.driveStraight(kSlowApproach, 0.5, 270, 1.0f); //approaches safety beacon
         robotBase.hammerTime();
-        robotBase.driveStraight(kReverse, 0.5, 90, -1.0f); // backs away
-        robotBase.turn(180, 0.5); //turn towards low goal
-        robotBase.driveStraight(kPark, 0.75, 180, 1.0f); //enter low zone
+        //robotBase.driveStraight(kReverse, 0.5, 90, -1.0f); // backs away
+        //robotBase.turn(180, 0.5); //turn towards low goal
+        //robotBase.driveStraight(kPark, 0.75, 180, 1.0f); //enter low zone
 
 
     }

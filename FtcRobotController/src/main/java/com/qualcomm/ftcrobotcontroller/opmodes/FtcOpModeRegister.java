@@ -56,25 +56,25 @@ public class FtcOpModeRegister implements OpModeRegister {
      * If two or more op modes are registered with the same name, the app will display an error.
      */
 
-    manager.register("NullOp", NullOp.class);
+    //manager.register("NullOp", NullOp.class);
 
-    manager.register ("Autonomous Blue Position 1", BluePos1.class);
+    manager.register ("Auto Blue Position 1", BluePos1.class);
 
-    //manager.register("Autonomous Blue Position 1 Play Nice Version", BluePos1Wait.class);
+    manager.register("Auto Blue Position 1 Play Nice", BluePos1Wait.class);
 
-    manager.register ("Autonomous Blue Position 2", BluePos2.class);
+    manager.register ("Auto Blue Position 2", BluePos2.class);
 
-    //manager.register("Autonomous Blue Position 2 Play Nice Version", BluePos1Wait.class);
+    //manager.register("Auto Blue Position 2 Play Nice", BluePos2Wait.class);
 
-    manager.register ("Autonomous Red Position 1", RedPos1.class);
+    manager.register ("Auto Red Position 1", RedPos1.class);
 
-    //manager.register("Autonomous Red Position 1 Play Nice Version", RedPos1Wait.class);
+    manager.register("Auto Red Position 1 Play Nice", RedPos1Wait.class);
 
-    manager.register ("Autonomous Red Position 2", RedPos2.class);
+    manager.register ("Auto Red Position 2", RedPos2.class);
 
-    //manager.register("Autonomous Red Position 2 Play Nice Version", RedPos1Wait.class);
+    manager.register("Auto Red Position 2 Play Nice", RedPos2Wait.class);
 
-    manager.register("Old Tele Op", tankDriveSpinnerLifterThing.class);
+    //manager.register("Old Tele Op", tankDriveSpinnerLifterThing.class);
 
     manager.register("Tele Op", teleopUMKC.class);
 

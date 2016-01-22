@@ -34,47 +34,46 @@ package com.qualcomm.ftcrobotcontroller.opmodes;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 
-
 /**
  * Base Drive code
  * Blue side of field
  * far left corner
- *
- * added camera for beacon light
  */
 
-public class BluePos1 extends LinearOpMode {
+public class BluePos2Wait extends LinearOpMode {
 
     AstroRobotBaseInterface robotBase;
 
     //Drive Constants
-    private static final double klongDrive = 94.0;
-    private static final double kClearWall = 5.5;
-    private static final double kSlowApproach = 42.0;
+    private static final double klongDrive = 51.1;
+    private static final double kDriveOut = 31.4;
+    private static final double kSlowApproach = 32.1;
+    private static final double kReverse = 6.3;
+    private static final double kPark = 15.7;
 
 
     @Override
     public void runOpMode() throws InterruptedException {
 
         robotBase = new RobotBaseUMKC(hardwareMap, this);
+        //robotBase.setDriveReverse();
         robotBase.initializeServos();
         robotBase.calibrateGyro();
-        robotBase.cameraSetup();
         telemetry.addData("Ready to run:", "Gyro is calabrated. You are ready to run. " +
                 "Make sure that the robot is centered on the tile furthest to the left on the blue side.");
 
         waitForStart();
 
-        robotBase.driveStraight(kClearWall, 1, 0, 1.0f); //clears wall
-        robotBase.turn(40, 1.0f); //turns 45 degrees
+        sleep(15000);
+
+        robotBase.driveStraight(kDriveOut, 1, 0, 1.0f); //clears wall
+        robotBase.turn(35, 1.0f); //turns 45 degrees
         robotBase.driveStraight(klongDrive, 1, 50, 1.0f); // long drive down the field
         robotBase.turn(80, 1.0f); // turns towards safety beacon
         robotBase.driveStraight(kSlowApproach, 0.5, 90, 1.0f); //approaches safety beacon
         robotBase.hammerTime();
-        //robotBase.snapPic();
-        //push button
-        //robotBaseSmithville.driveStraight(kReverse,0.5,90,-1.0f); // backs away
-        //robotBaseSmithville.turn(180,0.5); //turn towards low goal
-        //robotBaseSmithville.driveStraight(kPark,0.75,180,1.0f); //enter low zone
-    }
+        //robotBase.driveStraight(kReverse, 0.5, 90, -1.0f); // backs away
+        //robotBase.turn(180, 0.5); //turn towards low goal
+        //robotBase.driveStraight(kPark, 0.75, 180, 1.0f); //enter low zone
+}
 }

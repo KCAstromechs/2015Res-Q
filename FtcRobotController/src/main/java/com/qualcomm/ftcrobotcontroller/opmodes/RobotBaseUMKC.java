@@ -64,6 +64,7 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
     int CameraID = -1;
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
+    SurfaceTexture texture;
 
 
     public RobotBaseUMKC(HardwareMap hardwareMap, LinearOpMode _callingOpMode) {
@@ -116,12 +117,13 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
 
     public void snapPic(){
         camera.startPreview();
+        System.out.println("Preview Started");
         camera.takePicture(null, null, picDone);
         System.out.println("Picture Taken");
     }
 
     public void cameraSetup() throws InterruptedException {
-        //finds frontal camera
+        //finds back camera
         //mounted screen up, using back camera with mirror
         int numOfCameras = Camera.getNumberOfCameras();
         for (int i = 0; i < numOfCameras; i++){
@@ -131,7 +133,7 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
                 CameraID = i;
 
                 try {
-                    SurfaceTexture texture = new SurfaceTexture(0);
+                    texture = new SurfaceTexture(0);
                     camera = Camera.open(CameraID);
                     camera.setPreviewTexture(texture);
                     picDone = getPicCallback();
@@ -184,7 +186,7 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
             @Override
             public void onPictureTaken(byte[] data, Camera camera) {
                 System.out.println("got Data");
-                Bitmap picture = BitmapFactory.decodeByteArray(data, 0,data.length);
+                Bitmap picture = BitmapFactory.decodeByteArray(data, 0, data.length);
 
                 System.out.println("width: " + picture.getWidth());
                 System.out.println("Hight: " + picture.getHeight());
@@ -197,7 +199,11 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
                 */
 
                 int totalRed = 0;
+                int yRedSum = 0;
+                int yRedAvg = 0;
                 int totalBlue = 0;
+                int yBlueSum = 0;
+                int yBlueAvg = 0;
                 int currentPixel = 0;
 
 
@@ -208,36 +214,40 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
                     FileOutputStream fos = new FileOutputStream(picturefile);
                     fos.write(data);
                     fos.close();
-                } catch (Exception e)
-                {
-                    System.out.println("Camera: " + "failed to save pic, exception"+e.getMessage());
+                } catch (Exception e) {
+                    System.out.println("Camera: " + "failed to save pic, exception" + e.getMessage());
                 }
-                for(int y = 0; y < picture.getHeight() / 2; y++ ) {
-                    currentPixel = picture.getPixel(90,y);
-                    System.out.println("Pixel (x,y): "+ "(90,"+ y +")");  //location of pixel
-                    System.out.print(Color.red(currentPixel));
-                    System.out.print(",");
-                    System.out.print(Color.green(currentPixel) );
-                    System.out.print(",");
-                    System.out.println(Color.blue(currentPixel));
-                    if(Color.red(currentPixel) < Color.blue(currentPixel)) {
-                        totalBlue++;
-                        System.out.println("Current pixel is Blue");
-                    }
-                    else {
-                        totalRed++; //THIS FOR LOOP IS TOTALLY UNTESTED, CHEERS
-                        System.out.println("Current pixel is Red");
+                for (int x = 0; x < picture.getWidth(); x++) {
+                    for (int y = 0; y < picture.getHeight(); y++) {
+                        currentPixel = picture.getPixel(x, y); // view is rotated 90 deg. counterclockwise
+                        System.out.println("Pixel (x,y): " + "(" + x + "," + y + ")");  //location of pixel
+                        System.out.print(Color.red(currentPixel));
+                        System.out.print(",");
+                        System.out.print(Color.green(currentPixel));
+                        System.out.print(",");
+                        System.out.println(Color.blue(currentPixel));
+                        if (Color.red(currentPixel) < Color.blue(currentPixel)) {
+                            totalBlue++;
+                            yBlueSum += y;
+                            System.out.println("Current pixel is Blue");
+                        } else {
+                            totalRed++;
+                            yRedSum+=y;
+                            System.out.println("Current pixel is Red");
+                        }
                     }
                 }
+                
+                    if (totalBlue > totalRed) {
+                        System.out.println("Blue");
+                    } else {
+                        System.out.println("Red");
+                    }
 
-                if (totalBlue > totalRed){
-                    System.out.println("Blue");
-                }
-                else {
-                    System.out.println("Red");
-                }
             }
+
         };
+
         System.out.println("PictureCallback is done");
         return picture;
 

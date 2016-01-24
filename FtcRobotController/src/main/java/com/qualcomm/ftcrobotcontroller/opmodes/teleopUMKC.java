@@ -138,7 +138,7 @@ public class teleopUMKC extends OpMode {
 			robotBase.setMjolnirUp();
 		}
 
-		if(gamepad2.left_trigger>0.75){
+		if(gamepad2.left_trigger>0.9){
 
 			//this.
 			if(isRightZiplineDown){
@@ -151,7 +151,7 @@ public class teleopUMKC extends OpMode {
 
 		}
 
-		if(gamepad2.right_trigger>0.75){
+		if(gamepad2.right_trigger>0.9){
 			if(isLeftZiplineDown){
 				robotBase.setLeftZiplineUp();
 				isLeftZiplineDown = false;

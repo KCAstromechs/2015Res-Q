@@ -29,6 +29,7 @@ import java.util.Date;
 public class RobotBaseUMKC implements AstroRobotBaseInterface {
 
     double inchesToEncoder = 86.3;
+
     //motors
     public DcMotor motorFrontRight;
     public DcMotor motorFrontLeft;
@@ -57,7 +58,6 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
 
     LinearOpMode callingOpMode;
 
-
     //camera
     Camera camera;
     PictureCallback picDone;
@@ -66,12 +66,10 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
     public static final int MEDIA_TYPE_VIDEO = 2;
     SurfaceTexture texture;
 
-
     public RobotBaseUMKC(HardwareMap hardwareMap, LinearOpMode _callingOpMode) {
         this.initializeVariables(hardwareMap);
         callingOpMode=_callingOpMode;
     }
-
 
     public RobotBaseUMKC(HardwareMap hardwareMap) {
         this.initializeVariables(hardwareMap);
@@ -81,7 +79,6 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
 
         boolean rightZiplineDown = false;
         boolean leftZiplineDown = false;
-
 
                 //motor init
         hardwareMap = _hardwareMap;
@@ -223,6 +220,7 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
                     fos.close();
                 } catch (Exception e) {
                     System.out.println("Camera: " + "failed to save pic, exception" + e.getMessage());
+
                     //callingOpMode.telemetry.addData("Status", "Failed to save pic, Exception" + e.getMessage());
                 }
                 for (int x = 0; x < picture.getWidth(); x++) {
@@ -257,8 +255,11 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
                    //callingOpMode.telemetry.addData("Red Side", "Right");
                     System.out.println("==>   Blue | Red      avgBlueY:" + yBlueAvg + " avgRedY:" + yRedAvg);
 
+                } else {
+                    callingOpMode.telemetry.addData("Blue Side", "Right");
+                    callingOpMode.telemetry.addData("Red Side", "Left");
+                    System.out.println("==>   Red | Blue      avgBlueY:" + yBlueAvg + " avgRedY:" + yRedAvg);
                 }
-
             }
         };
 

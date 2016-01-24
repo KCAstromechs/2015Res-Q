@@ -39,9 +39,6 @@ public class teleopUMKC extends OpMode {
 
 	AstroRobotBaseInterface robotBase;
 
-	boolean isRightZiplineDown = false;
-	boolean isLeftZiplineDown = false;
-
 	public teleopUMKC() {
 
 	}
@@ -126,8 +123,12 @@ public class teleopUMKC extends OpMode {
 			right2=0;
 		}
 
+		if (gamepad2.right_bumper){
+			right2 /= 5.0;
+		}
+
 		if (gamepad2.left_bumper){
-			right2 /= 10.0;
+			right2 /= 5.0;
 		}
 
 		if(gamepad2.x){
@@ -138,27 +139,20 @@ public class teleopUMKC extends OpMode {
 			robotBase.setMjolnirUp();
 		}
 
-		if(gamepad2.left_trigger>0.9){
-
-			//this.
-			if(isRightZiplineDown){
-				robotBase.setRightZiplineUp();
-				isRightZiplineDown = false;
-			} else {
-				robotBase.setRightZiplineDown();
-				isRightZiplineDown = true;
-			}
-
+		if(gamepad1.left_bumper){
+			robotBase.setLeftZiplineUp();
 		}
 
-		if(gamepad2.right_trigger>0.9){
-			if(isLeftZiplineDown){
-				robotBase.setLeftZiplineUp();
-				isLeftZiplineDown = false;
-			} else {
-				robotBase.setLeftZiplineDown();
-				isLeftZiplineDown = true;
-			}
+		if(gamepad1.right_bumper){
+			robotBase.setRightZiplineUp();
+		}
+
+		if(gamepad1.left_trigger>0.75){
+			robotBase.setLeftZiplineDown();
+		}
+
+		if(gamepad1.right_trigger>0.75){
+			robotBase.setRightZiplineDown();
 		}
 
 		robotBase.updateWinchAndDrawerSlide(right2, left2);

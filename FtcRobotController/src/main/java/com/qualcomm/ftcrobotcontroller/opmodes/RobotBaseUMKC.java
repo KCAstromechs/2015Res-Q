@@ -291,7 +291,7 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
     }
 
     public void setLeftZiplineUp() {
-        leftZipline.setPosition(0.4);
+        leftZipline.setPosition(0.45);
     }
 
     public void setLeftZiplineDown() {
@@ -343,12 +343,12 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
 
     @Override
     public void setRightHookUp(){
-        setRightHookPosition(0.1);
+        setRightHookPosition(0.25);
     }
 
     @Override
     public void setLeftHookUp(){
-        setLeftHookPosition(0.9);
+        setLeftHookPosition(0.75);
     }
 
     @Override

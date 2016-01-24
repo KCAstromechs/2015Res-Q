@@ -125,7 +125,7 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
     }
 
     public void cameraSetup() throws InterruptedException {
-        callingOpMode.telemetry.addData("cameraStatus", "cameraSetup");
+        //callingOpMode.telemetry.addData("cameraStatus", "cameraSetup");
         //finds back camera
         //mounted screen up, using back camera with mirror
         int numOfCameras = Camera.getNumberOfCameras();
@@ -141,12 +141,12 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
                     camera.setPreviewTexture(texture);
                     picDone = getPicCallback();
                     System.out.println("Found Camera");
-                    callingOpMode.telemetry.addData("cameraStatus", "Found Camera");
+                    //callingOpMode.telemetry.addData("cameraStatus", "Found Camera");
                     Thread.sleep(2000);
                 }
                 catch (Exception e){
                     System.out.println("cameraSetup Failed");
-                    callingOpMode.telemetry.addData("cameraStatus", "cameraSetup Failed");
+                    //callingOpMode.telemetry.addData("cameraStatus", "cameraSetup Failed");
                 }
             }
         }
@@ -192,7 +192,7 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
             @Override
             public void onPictureTaken(byte[] data, Camera camera) {
                 System.out.println("got Data");
-                callingOpMode.telemetry.addData("cameraStatus", "got Data");
+                //callingOpMode.telemetry.addData("cameraStatus", "got Data");
                 Bitmap picture = BitmapFactory.decodeByteArray(data, 0, data.length);
 
                 System.out.println("width: " + picture.getWidth());
@@ -223,7 +223,7 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
                     fos.close();
                 } catch (Exception e) {
                     System.out.println("Camera: " + "failed to save pic, exception" + e.getMessage());
-                    callingOpMode.telemetry.addData("Status", "Failed to save pic, Exception" + e.getMessage());
+                    //callingOpMode.telemetry.addData("Status", "Failed to save pic, Exception" + e.getMessage());
                 }
                 for (int x = 0; x < picture.getWidth(); x++) {
                     for (int y = 0; y < picture.getHeight(); y++) {
@@ -253,8 +253,8 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
                 yRedAvg = yRedSum / totalRed;
 
                 if (yBlueAvg < yRedAvg) {
-                    callingOpMode.telemetry.addData("Blue Side", "Left");
-                    callingOpMode.telemetry.addData("Red Side", "Right");
+                    //callingOpMode.telemetry.addData("Blue Side", "Left");
+                   //callingOpMode.telemetry.addData("Red Side", "Right");
                     System.out.println("==>   Blue | Red      avgBlueY:" + yBlueAvg + " avgRedY:" + yRedAvg);
 
                 }
@@ -307,7 +307,7 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
     }
 
     public void setMjolnirDown(){
-        mjolnir.setPosition(1);
+        mjolnir.setPosition(0.9);
     }
 
     public void setMjolnirUp(){
@@ -503,8 +503,12 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
     }
 
     @Override
-    public void updateWinchAndDrawerSlide(float winch, float DrawerSlide) {
+    public void updateWinch(float winch) {
         motorWinch.setPower(winch);
+    }
+
+    @Override
+    public void updateDrawerSlide(float DrawerSlide){
         motorDrawerSlide.setPower(DrawerSlide);
     }
 }

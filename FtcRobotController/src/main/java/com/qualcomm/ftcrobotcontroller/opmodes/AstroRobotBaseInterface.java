@@ -74,5 +74,9 @@ public interface AstroRobotBaseInterface {
 
     void setRightHookPosition(double position);
 
-    void updateWinchAndDrawerSlide(float winch, float DrawerSlide);
+    //void updateWinchAndDrawerSlide(float winch, float DrawerSlide);
+
+    void updateWinch(float winch);
+
+    void updateDrawerSlide(float DrawerSlide);
 }

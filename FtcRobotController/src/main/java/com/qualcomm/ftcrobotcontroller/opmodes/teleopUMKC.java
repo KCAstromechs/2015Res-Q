@@ -151,11 +151,19 @@ public class teleopUMKC extends OpMode {
 			robotBase.setLeftZiplineDown();
 		}
 
-		if(gamepad1.right_trigger>0.75){
+		if(gamepad1.right_trigger>0.75) {
 			robotBase.setRightZiplineDown();
 		}
 
-		robotBase.updateWinchAndDrawerSlide(right2, left2);
+		if(gamepad1.dpad_down){
+			robotBase.updateDrawerSlide(0.75f);
+		} else if (gamepad1.dpad_up) {
+			robotBase.updateDrawerSlide(-0.75f);
+		} else {
+			robotBase.updateDrawerSlide(left2);
+		}
+
+		robotBase.updateWinch(-right2);
 
 	}
 

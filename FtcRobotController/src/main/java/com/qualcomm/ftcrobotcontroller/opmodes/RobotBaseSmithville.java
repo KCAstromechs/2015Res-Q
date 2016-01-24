@@ -541,9 +541,7 @@ public class RobotBaseSmithville implements AstroRobotBaseInterface {
         rightHook.setPosition(position);
     }
 
-    @Override
-    public void updateWinchAndDrawerSlide(float winch, float DrawerSlide){
-        motorWinch.setPower(winch);
-        motorDrawerSlide.setPower(DrawerSlide);
-    }
+    public void updateWinch(float winch){}
+
+    public void updateDrawerSlide(float DrawerSlide){}
 }

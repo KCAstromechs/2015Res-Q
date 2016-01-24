@@ -64,7 +64,7 @@ public class FtcOpModeRegister implements OpModeRegister {
 
     manager.register ("Auto Blue Position 2", BluePos2.class);
 
-    //manager.register("Auto Blue Position 2 Play Nice", BluePos2Wait.class);
+    manager.register("Auto Blue Position 2 Play Nice", BluePos2Wait.class);
 
     manager.register ("Auto Red Position 1", RedPos1.class);
 
@@ -76,7 +76,7 @@ public class FtcOpModeRegister implements OpModeRegister {
 
     //manager.register("Old Tele Op", tankDriveSpinnerLifterThing.class);
 
-    manager.register("Tele Op", teleopUMKC.class);
+    //manager.register("Tele Op", teleopUMKC.class);
 
     manager.register("cameraTestUMKC", cameraTestUMKC.class);
   }

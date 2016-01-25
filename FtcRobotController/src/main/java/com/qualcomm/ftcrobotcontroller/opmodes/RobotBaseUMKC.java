@@ -114,10 +114,10 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
 
     public void snapPic(){
         camera.startPreview();
-        callingOpMode.telemetry.addData("cameraStatus", "Preview Started");
+        //callingOpMode.telemetry.addData("cameraStatus", "Preview Started");
         System.out.println("Preview Started");
         camera.takePicture(null, null, picDone);
-        callingOpMode.telemetry.addData("cameraStatus", "Picture requested");
+        //callingOpMode.telemetry.addData("cameraStatus", "Picture requested");
         System.out.println("Picture requested");
     }
 
@@ -128,21 +128,28 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
         int numOfCameras = Camera.getNumberOfCameras();
         for (int i = 0; i < numOfCameras; i++){
             CameraInfo info = new CameraInfo();
-            Camera.getCameraInfo(i,info);
+            System.out.println("CameraInfo defined");
+            Camera.getCameraInfo(i, info);
+            System.out.println("CameraInfo initialized");
             if(info.facing == CameraInfo.CAMERA_FACING_BACK){
                 CameraID = i;
+                System.out.println("CameraID: " + CameraID);
 
                 try {
                     texture = new SurfaceTexture(0);
+                    System.out.println("Texture intitialized");
                     camera = Camera.open(CameraID);
+                    System.out.println("Camera.open");
                     camera.setPreviewTexture(texture);
+                    System.out.println("setPreviewTexture");
                     picDone = getPicCallback();
                     System.out.println("Found Camera");
                     //callingOpMode.telemetry.addData("cameraStatus", "Found Camera");
                     Thread.sleep(2000);
                 }
                 catch (Exception e){
-                    System.out.println("cameraSetup Failed");
+                    System.out.println("cameraSetup Failed, exception " + e.getMessage());
+                    System.out.println("CameraID: " + CameraID);
                     //callingOpMode.telemetry.addData("cameraStatus", "cameraSetup Failed");
                 }
             }
@@ -184,7 +191,7 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
     }
 
     public PictureCallback getPicCallback(){
-        callingOpMode.telemetry.addData("cameraStatus", "Starting callback");
+        //callingOpMode.telemetry.addData("cameraStatus", "Starting callback");
         PictureCallback picture = new PictureCallback() {
             @Override
             public void onPictureTaken(byte[] data, Camera camera) {
@@ -251,19 +258,19 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
                 yRedAvg = yRedSum / totalRed;
 
                 if (yBlueAvg < yRedAvg) {
-                    //callingOpMode.telemetry.addData("Blue Side", "Left");
-                   //callingOpMode.telemetry.addData("Red Side", "Right");
+                    System.out.println("Blue Side: " + "Left");
+                    System.out.println("Red Side: " + "Right");
                     System.out.println("==>   Blue | Red      avgBlueY:" + yBlueAvg + " avgRedY:" + yRedAvg);
 
                 } else {
-                    callingOpMode.telemetry.addData("Blue Side", "Right");
-                    callingOpMode.telemetry.addData("Red Side", "Left");
+                    System.out.println("Blue Side: " + "Right");
+                    System.out.println("Red Side: " + "Left");
                     System.out.println("==>   Red | Blue      avgBlueY:" + yBlueAvg + " avgRedY:" + yRedAvg);
                 }
             }
         };
 
-        callingOpMode.telemetry.addData("Status", "PictureCallback is done");
+        //callingOpMode.telemetry.addData("Status", "PictureCallback is done");
         return picture;
 
     }

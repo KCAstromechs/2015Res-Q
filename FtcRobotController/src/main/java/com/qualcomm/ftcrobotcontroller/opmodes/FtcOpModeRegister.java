@@ -60,13 +60,15 @@ public class FtcOpModeRegister implements OpModeRegister {
 
     manager.register ("Auto Blue Position 1", BluePos1.class);
 
-    manager.register("Auto Blue Position 1 Play Nice", BluePos1Wait.class);
+    //manager.register("Auto Blue Position 1 Play Nice", BluePos1Wait.class);
 
     manager.register ("Auto Blue Position 2", BluePos2.class);
 
     manager.register("Auto Blue Position 2 Play Nice", BluePos2Wait.class);
 
     manager.register ("Auto Red Position 1", RedPos1.class);
+
+    manager.register("RedPos1 w/Camera", RedPos1Camera.class);
 
     manager.register("Auto Red Position 1 Play Nice", RedPos1Wait.class);
 

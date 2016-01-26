@@ -544,4 +544,16 @@ public class RobotBaseSmithville implements AstroRobotBaseInterface {
     public void updateWinch(float winch){}
 
     public void updateDrawerSlide(float DrawerSlide){}
+
+    public Boolean get_cameraProcessDone(){
+       return false;
+    }
+
+    public int get_yRedAvg(){
+        return -1;
+    }
+
+    public int get_yBlueAvg(){
+        return -1;
+    }
 }

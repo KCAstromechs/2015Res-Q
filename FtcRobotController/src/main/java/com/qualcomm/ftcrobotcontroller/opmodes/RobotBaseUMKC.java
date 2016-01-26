@@ -58,13 +58,20 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
 
     LinearOpMode callingOpMode;
 
-    //camera
+    //camera init
     Camera camera;
     PictureCallback picDone;
     int CameraID = -1;
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
     SurfaceTexture texture;
+
+    //camera processing
+    int yRedAvg = 0;
+    int yBlueAvg = 0;
+    boolean cameraProcessDone = false;
+
+
 
     public RobotBaseUMKC(HardwareMap hardwareMap, LinearOpMode _callingOpMode) {
         this.initializeVariables(hardwareMap);
@@ -211,10 +218,10 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
 
                 int totalRed = 0;
                 int yRedSum = 0;
-                int yRedAvg = 0;
+
                 int totalBlue = 0;
                 int yBlueSum = 0;
-                int yBlueAvg = 0;
+
                 int currentPixel = 0;
 
 
@@ -237,27 +244,33 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
                         if (Color.blue(currentPixel) < 80 || Color.green(currentPixel) > 60) { //filters through noise
                             continue;
                         }
+                        /*
                         System.out.println("Pixel (x,y): " + "(" + x + "," + y + ")");  //location of pixel
                         System.out.print(Color.red(currentPixel));
                         System.out.print(",");
                         System.out.print(Color.green(currentPixel));
                         System.out.print(",");
                         System.out.println(Color.blue(currentPixel));
+                        */
                         if (Color.red(currentPixel) < Color.blue(currentPixel)) {
                             totalBlue++;
                             yBlueSum += y;
-                            System.out.println("Current pixel is Blue");
+                            //System.out.println("Current pixel is Blue");
                         } else {
                             totalRed++;
                             yRedSum += y;
-                            System.out.println("Current pixel is Red");
+                            //System.out.println("Current pixel is Red");
                         }
                     }
                 }
-                yBlueAvg = yBlueSum / totalBlue;
-                yRedAvg = yRedSum / totalRed;
-
-                if (yBlueAvg < yRedAvg) {
+                if(totalBlue!=0){
+                    yBlueAvg = yBlueSum / totalBlue;
+                }
+                if(totalRed!=0) {
+                    yRedAvg = yRedSum / totalRed;
+                }
+                /*
+                if (yBlueAvg > yRedAvg) {
                     System.out.println("Blue Side: " + "Left");
                     System.out.println("Red Side: " + "Right");
                     System.out.println("==>   Blue | Red      avgBlueY:" + yBlueAvg + " avgRedY:" + yRedAvg);
@@ -267,12 +280,29 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
                     System.out.println("Red Side: " + "Left");
                     System.out.println("==>   Red | Blue      avgBlueY:" + yBlueAvg + " avgRedY:" + yRedAvg);
                 }
+                */
+                cameraProcessDone = true;
             }
         };
 
         //callingOpMode.telemetry.addData("Status", "PictureCallback is done");
         return picture;
 
+    }
+
+    @Override
+    public int get_yRedAvg(){
+        return yRedAvg;
+    }
+
+    @Override
+    public int get_yBlueAvg() {
+        return yBlueAvg;
+    }
+
+    @Override
+    public Boolean get_cameraProcessDone(){
+        return cameraProcessDone;
     }
 
     public void calibrateGyro()throws InterruptedException{
@@ -333,7 +363,7 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
         System.out.println("Mjolnir last sleep done");
     }
 
-    public void setLeftLockOpen(){
+    public void setLeftLockOpen() {
         leftLock.setPosition(0.2);
     }
 
@@ -350,22 +380,22 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
     }
 
     @Override
-    public void setRightHookUp(){
-        setRightHookPosition(0.25);
+    public void setRightHookUp() {
+        setRightHookPosition(0.15);
     }
 
     @Override
-    public void setLeftHookUp(){
-        setLeftHookPosition(0.75);
+    public void setLeftHookUp() {
+        setLeftHookPosition(0.90);
     }
 
     @Override
-    public void setRightHookDown(){
+    public void setRightHookDown() {
         setRightHookPosition(0.9);
     }
 
     @Override
-    public void setLeftHookDown(){
+    public void setLeftHookDown() {
         setLeftHookPosition(0.1);
     }
 

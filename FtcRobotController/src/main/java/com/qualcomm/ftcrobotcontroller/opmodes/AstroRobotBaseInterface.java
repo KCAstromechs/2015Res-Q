@@ -20,6 +20,12 @@ public interface AstroRobotBaseInterface {
 
     Camera.PictureCallback getPicCallback();
 
+    int get_yRedAvg();
+
+    int get_yBlueAvg();
+
+    Boolean get_cameraProcessDone();
+
     void calibrateGyro()throws InterruptedException;
 
     void setGrabberUp();

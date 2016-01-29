@@ -318,6 +318,10 @@ public class RobotBaseSmithville implements AstroRobotBaseInterface {
         mjolnir.setPosition(0.1);
     }
 
+    public void setPushUp(){}
+
+    public void setPushDown(){}
+
     @Override
     public void hammerTime() throws InterruptedException {
         setMjolnirUp();

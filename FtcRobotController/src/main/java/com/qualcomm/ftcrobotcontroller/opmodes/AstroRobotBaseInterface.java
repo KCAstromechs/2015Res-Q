@@ -64,6 +64,10 @@ public interface AstroRobotBaseInterface {
 
     void setLeftHookDown();
 
+    void setPushDown();
+
+    void setPushUp();
+
     void initializeServos();
 
     void setRightPower(double rightPower);

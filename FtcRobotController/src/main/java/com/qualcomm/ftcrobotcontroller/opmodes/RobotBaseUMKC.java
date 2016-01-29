@@ -50,6 +50,7 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
     Servo rightLock;
     Servo leftHook;
     Servo rightHook;
+    Servo push;
 
     //sensors
     GyroSensor gyro;
@@ -70,6 +71,9 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
     int yRedAvg = 0;
     int yBlueAvg = 0;
     boolean cameraProcessDone = false;
+
+    //time catch
+    double driveTime;
 
 
 
@@ -100,6 +104,7 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
         leftZipline=hardwareMap.servo.get("leftZipline");
         rightZipline=hardwareMap.servo.get("rightZipline");
         mjolnir=hardwareMap.servo.get("box");
+        push = hardwareMap.servo.get("push");
 
         //sensor init
         gyro=hardwareMap.gyroSensor.get("gyro");
@@ -110,6 +115,9 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
         motorRight = hardwareMap.dcMotor.get("left");
         motorLeft = hardwareMap.dcMotor.get("right");
         encoderMotor = motorLeft;
+        motorRight.setDirection(DcMotor.Direction.REVERSE);
+        motorLeft.setDirection(DcMotor.Direction.FORWARD);
+        //callingOpMode.sleep(250);
     }
 
     @Override
@@ -117,6 +125,8 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
         motorRight = hardwareMap.dcMotor.get("right");
         motorLeft = hardwareMap.dcMotor.get("left");
         encoderMotor = motorLeft;
+        motorRight.setDirection(DcMotor.Direction.REVERSE);
+        motorLeft.setDirection(DcMotor.Direction.FORWARD);
     }
 
     public void snapPic(){
@@ -313,7 +323,7 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
             Thread.sleep(50);
         }
         // check calibrate gyro
-        System.out.println("gyro (PreCalibration" + gyro.getHeading());
+        System.out.println("gyro (PreCalibration) = " + gyro.getHeading());
     }
 
     public void setGrabberUp() {
@@ -399,12 +409,23 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
         setLeftHookPosition(0.1);
     }
 
+    @Override
+    public void setPushDown(){
+        push.setPosition(.7);
+    }
+
+    @Override
+    public void setPushUp(){
+        push.setPosition(0);
+    }
+
     public void initializeServos() {
         setLeftZiplineUp();
         setRightZiplineUp();
         setMjolnirDown();
         setRightHookUp();
         setLeftHookUp();
+        setPushUp();
 
     }
 
@@ -480,6 +501,12 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
         double localLeftPower = power;
         double localRightPower=power;
 
+        //time limiting
+        double startTime = System.currentTimeMillis();
+        System.out.println("Drive start: " + startTime);
+
+
+
         //reset encoders
         encoderMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
 
@@ -522,11 +549,16 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
                 callingOpMode.waitForNextHardwareCycle();
 
             }
+            driveTime = System.currentTimeMillis()-startTime;
+            if(driveTime>5000){
+                break;
+            }
 
         }
         System.out.println("End Encoder= " +encoderMotor.getCurrentPosition());
         motorRight.setPower(0);
         motorLeft.setPower(0);
+        System.out.println("final driveTIme: " + driveTime);
         Thread.sleep(100);
     }
 

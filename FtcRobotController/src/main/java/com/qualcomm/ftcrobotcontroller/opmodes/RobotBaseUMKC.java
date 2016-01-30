@@ -494,7 +494,7 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
     @Override
     public void driveStraightEncoder(int dist, double power, int heading, float direction)throws InterruptedException {
         //gyro stabilization - PID
-        float proportionalConst = 0.05f;
+        float proportionalConst = 0.1f;
         int degErr;
         float correction;
         int lastDegErr;
@@ -550,7 +550,7 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
 
             }
             driveTime = System.currentTimeMillis()-startTime;
-            if(driveTime>5000){
+            if(driveTime>5000){ //
                 break;
             }
 

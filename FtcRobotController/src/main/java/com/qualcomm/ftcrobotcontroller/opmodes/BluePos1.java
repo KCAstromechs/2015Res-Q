@@ -48,9 +48,9 @@ public class BluePos1 extends LinearOpMode {
     AstroRobotBaseInterface robotBase;
 
     //Drive Constants
-    private static final double klongDrive = 94.0;
+    private static final double klongDrive = 106.0;
     private static final double kClearWall = 5.5;
-    private static final double kSlowApproach = 42.0;
+    private static final double kSlowApproach = 23.0;
 
 
     @Override

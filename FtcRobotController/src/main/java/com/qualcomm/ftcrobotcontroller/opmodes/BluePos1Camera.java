@@ -47,9 +47,9 @@ public class BluePos1Camera extends LinearOpMode {
     AstroRobotBaseInterface robotBase;
 
     //Drive Constants
-    private static final double klongDrive = 94.0;
+    private static final double klongDrive = 106.0;
     private static final double kClearWall = 5.5;
-    private static final double kSlowApproach = 42.0;
+    private static final double kSlowApproach = 23.0;
 
 
     @Override
@@ -78,19 +78,19 @@ public class BluePos1Camera extends LinearOpMode {
             System.out.println("Blue Side: " + "Left");
             System.out.println("Red Side: " + "Right");
             System.out.println("==>   Blue | Red      avgBlueY:" + robotBase.get_yBlueAvg() + " avgRedY:" + robotBase.get_yRedAvg());
-            robotBase.driveStraight(kSlowApproach, 0.5, 74, 1.0f); //approaches safety beacon
+            robotBase.driveStraight(kSlowApproach, 0.5, 84, 1.0f); //approaches safety beacon
             robotBase.setDriveReverse();
             sleep(1000);
-            robotBase.driveStraight(kSlowApproach - 2.5, 0.5, 74, 1.0f); //backs away from beacon
+            robotBase.driveStraight(kSlowApproach - 2.5, 0.5, 84, 1.0f); //backs away from beacon
             robotBase.setDriveForward();
             robotBase.setPushUp();
-            robotBase.turn(80, 1);
-            robotBase.driveStraight(kSlowApproach, 0.5, 80, 1.0f); //approaches safety beacon
+            robotBase.turn(90, 1);
+            robotBase.driveStraight(kSlowApproach, 0.5, 90, 1.0f); //approaches safety beacon
         } else {
             System.out.println("Blue Side: " + "Right");
             System.out.println("Red Side: " + "Left");
             System.out.println("==>   Red | Blue      avgBlueY:" + robotBase.get_yBlueAvg() + " avgRedY:" + robotBase.get_yRedAvg());
-            robotBase.driveStraight(kSlowApproach - 2.5, 0.5, 86, 1.0f); //approaches safety beacon
+            robotBase.driveStraight(kSlowApproach - 2.5, 0.5, 93, 1.0f); //approaches safety beacon
         }
 
         robotBase.hammerTime();

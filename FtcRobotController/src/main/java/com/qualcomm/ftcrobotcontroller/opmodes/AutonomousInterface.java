@@ -98,25 +98,94 @@ public class AutonomousInterface  extends LinearOpMode {
             }
 
             if(redSide){
-                telemetry.addData("Side:", "Red");
+                if(isPos1){
+                    telemetry.addData("Position:", "Red 1");
+                }
+                if(isPos2){
+                    telemetry.addData("Position:", "Red 2");
+                }
             }
             if(blueSide){
-                telemetry.addData("Side:", "Blue");
+                if(isPos1){
+                    telemetry.addData("Position:", "Blue 1");
+                }
+                if(isPos2){
+                    telemetry.addData("Position:", "Blue 2");
+                }
             }
-            if(isPos1){
-                telemetry.addData("Position:", 1);
-            }
-            if(isPos2){
-                telemetry.addData("Position:", 2);
-            }
+
             telemetry.addData("Camera:", isCameraOn);
             telemetry.addData("Wait:", isWaitOn);
 
             waitForNextHardwareCycle();
         }
 
-        waitForStart();
+        telemetry.clearData();
         
+        if(redSide){
+            if(isPos1){
+                if(isCameraOn){
+                    if(isWaitOn){
+                        telemetry.addData("Selection Loop Exited. Program Queued", "Red Position 1 with Camera and Wait");
+                    } else {
+                        telemetry.addData("Selection Loop Exited. Program Queued", "Red Position 1 with Camera");
+                    }
+                } else {
+                    if(isWaitOn){
+                        telemetry.addData("Selection Loop Exited. Program Queued", "Red Position 1 with Wait");
+                    } else {
+                        telemetry.addData("Selection Loop Exited. Program Queued", "Red Position 1");
+                    }
+                }
+            } else if (isPos2) {
+                if(isCameraOn){
+                    if(isWaitOn){
+                        telemetry.addData("Selection Loop Exited. Program Queued", "Red Position 2 with Camera and Wait");
+                    } else {
+                        telemetry.addData("Selection Loop Exited. Program Queued", "Red Position 2 with Camera");
+                    }
+                } else {
+                    if(isWaitOn){
+                        telemetry.addData("Selection Loop Exited. Program Queued", "Red Position 2 with Wait");
+                    } else {
+                        telemetry.addData("Selection Loop Exited. Program Queued", "Red Position 2");
+                    }
+                }
+            }
+
+            } else if (blueSide) {
+            if (isPos1) {
+                if (isCameraOn) {
+                    if (isWaitOn) {
+                        telemetry.addData("Selection Loop Exited. Program Queued", "Blue Position 1 with Camera and Wait");
+                    } else {
+                        telemetry.addData("Selection Loop Exited. Program Queued", "Blue Position 1 with Camera");
+                    }
+                } else {
+                    if (isWaitOn) {
+                        telemetry.addData("Selection Loop Exited. Program Queued", "Blue Position 1 with Wait");
+                    } else {
+                        telemetry.addData("Selection Loop Exited. Program Queued", "Blue Position 1");
+                    }
+                }
+            } else if (isPos2) {
+                if (isCameraOn) {
+                    if (isWaitOn) {
+                        telemetry.addData("Selection Loop Exited. Program Queued", "Blue Position 2 with Camera and Wait");
+                    } else {
+                        telemetry.addData("Selection Loop Exited. Program Queued", "Blue Position 2 with Camera");
+                    }
+                } else {
+                    if (isWaitOn) {
+                        telemetry.addData("Selection Loop Exited. Program Queued", "Blue Position 2 with Wait");
+                    } else {
+                        telemetry.addData("Selection Loop Exited. Program Queued", "Blue Position 2");
+                    }
+                }
+            }
+        }
+        waitForStart();
+
 
     }
 }

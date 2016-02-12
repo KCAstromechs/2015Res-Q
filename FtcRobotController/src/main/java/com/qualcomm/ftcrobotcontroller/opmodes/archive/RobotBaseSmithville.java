@@ -1,4 +1,4 @@
-package com.qualcomm.ftcrobotcontroller.opmodes;
+package com.qualcomm.ftcrobotcontroller.opmodes.archive;
 
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
@@ -11,6 +11,7 @@ import android.os.Environment;
 import java.io.File;
 import java.io.FileOutputStream;
 
+import com.qualcomm.ftcrobotcontroller.opmodes.AstroRobotBaseInterface;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;

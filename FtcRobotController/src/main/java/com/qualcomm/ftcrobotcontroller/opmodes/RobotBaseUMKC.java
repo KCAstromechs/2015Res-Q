@@ -95,12 +95,16 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
         boolean rightZiplineDown = false;
         boolean leftZiplineDown = false;
 
-                //motor init
+        //motor init
         hardwareMap = _hardwareMap;
         setDriveForward();
         motorRight.setDirection(DcMotor.Direction.REVERSE);
         motorWinch = hardwareMap.dcMotor.get("Winch");
         motorDrawerSlide = hardwareMap.dcMotor.get("DrawerSlide");
+
+        //color controls
+        //redLED = hardwareMap.dcMotor.get("red");
+       // blueLED = hardwareMap.dcMotor.get("blue");
 
         //Servo init
         leftHook=hardwareMap.servo.get("leftHook");

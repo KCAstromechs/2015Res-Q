@@ -123,6 +123,7 @@ public class AutonomousInterface  extends LinearOpMode {
         telemetry.clearData();
         
         if(redSide){
+            //Switch LED to red
             if(isPos1){
                 if(isCameraOn){
                     if(isWaitOn){
@@ -154,6 +155,7 @@ public class AutonomousInterface  extends LinearOpMode {
             }
 
             } else if (blueSide) {
+            //switch LED to blue
             if (isPos1) {
                 if (isCameraOn) {
                     if (isWaitOn) {

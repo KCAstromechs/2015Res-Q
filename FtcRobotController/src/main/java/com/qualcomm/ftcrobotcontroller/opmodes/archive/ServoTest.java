@@ -1,6 +1,7 @@
-package com.qualcomm.ftcrobotcontroller.opmodes;
+package com.qualcomm.ftcrobotcontroller.opmodes.archive;
 
-import com.qualcomm.ftcrobotcontroller.opmodes.RobotBaseSmithville;
+import com.qualcomm.ftcrobotcontroller.opmodes.AstroRobotBaseInterface;
+import com.qualcomm.ftcrobotcontroller.opmodes.RobotBaseUMKC;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 /**

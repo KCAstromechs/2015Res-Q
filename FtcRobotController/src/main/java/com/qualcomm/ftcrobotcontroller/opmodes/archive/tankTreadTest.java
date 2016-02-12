@@ -29,26 +29,28 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
-package com.qualcomm.ftcrobotcontroller.opmodes;
+package com.qualcomm.ftcrobotcontroller.opmodes.archive;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
 
-public class tankDriveSpinnerLifterThing extends OpMode {
+public class tankTreadTest extends OpMode {
+	DcMotor motorRight;
+	DcMotor motorLeft;
 
-	RobotBaseSmithville robotBaseSmithville;
 
-	public tankDriveSpinnerLifterThing() {
+
+	public tankTreadTest() {
 
 	}
 
 
 	@Override
 	public void init() {
-
-		robotBaseSmithville = new RobotBaseSmithville(hardwareMap);
-		robotBaseSmithville.initializeServos();
-
+		motorRight = hardwareMap.dcMotor.get("right");
+		motorLeft = hardwareMap.dcMotor.get("left");
+		motorRight.setDirection(DcMotor.Direction.REVERSE);
 	}
 	@Override
 	public void loop() {
@@ -75,78 +77,10 @@ public class tankDriveSpinnerLifterThing extends OpMode {
 		left =  (float)scaleInput(left);
 
 		// write the values to the motors
-		robotBaseSmithville.motorFrontRight.setPower(right);
-		robotBaseSmithville.motorFrontLeft.setPower(left);
-		robotBaseSmithville.motorBackRight.setPower(right);
-		robotBaseSmithville.motorBackLeft.setPower(left);
+		motorRight.setPower(right);
+		motorLeft.setPower(left);
 
-		// update the position of the arm.
 
-		float right2 = gamepad2.right_stick_y;
-		float left2 = gamepad2.left_stick_y;
-
-		if (Math.abs(left2)<0.1){
-			left2=0.0f;
-		}
-		if (Math.abs(right2)<0.1){
-			right2=0;
-		}
-		if (gamepad2.right_bumper)
-		{
-			robotBaseSmithville.setGrabberUp();
-		}
-		if (gamepad2.right_trigger>0.75)
-		{
-			robotBaseSmithville.setGrabberMiddle();
-		}
-
-		if (gamepad2.left_trigger>0.75)
-		{
-			robotBaseSmithville.setGrabberDown();
-		}
-		telemetry.addData("leftT", gamepad2.left_trigger);
-
-		if (gamepad2.left_bumper){
-			right2 /= 10.0;
-		}
-		telemetry.addData("right2", right2);
-
-		if(gamepad1.a){
-			robotBaseSmithville.setLeftZiplineDown();
-		}
-
-		if(gamepad1.b){
-			robotBaseSmithville.setRightZiplineDown();
-		}
-
-		if(gamepad1.x){
-			robotBaseSmithville.setLeftZiplineUp();
-		}
-
-		if(gamepad1.y){
-			robotBaseSmithville.setRightZiplineUp();
-		}
-
-		if(gamepad2.a){
-			robotBaseSmithville.setMjolnirUp();
-		}
-
-		if(gamepad2.b){
-			robotBaseSmithville.setMjolnirDown();
-		}
-
-		if(gamepad2.x){
-			robotBaseSmithville.setLeftLockClosed();
-			robotBaseSmithville.setRightLockClosed();
-		}
-
-		if(gamepad2.y){
-			robotBaseSmithville.setLeftLockOpen();
-			robotBaseSmithville.setRightLockOpen();
-		}
-
-		robotBaseSmithville.motorWinch.setPower(right2);
-		robotBaseSmithville.motorDrawerSlide.setPower(left2);
 
 	}
 

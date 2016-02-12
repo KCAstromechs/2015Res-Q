@@ -41,6 +41,10 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
     public DcMotor motorLeft;
     public DcMotor encoderMotor;
 
+    //LED control
+    public DcMotor redLED;
+    public DcMotor blueLED;
+
     //Servos
     Servo mjolnir;
     Servo grabber;
@@ -322,8 +326,28 @@ public class RobotBaseUMKC implements AstroRobotBaseInterface {
         while (gyro.isCalibrating()) {
             Thread.sleep(50);
         }
-        // check calibrate gyro
+        // checks drift rate
+        gyroDriftCatch();
         System.out.println("gyro (PreCalibration) = " + gyro.getHeading());
+    }
+
+    @Override
+    public void gyroDriftCatch() throws InterruptedException{
+        int initial = gyro.getHeading();
+        Thread.sleep(15000);
+        int current = gyro.getHeading();
+
+        int driftChange = current - initial;
+        float driftRate = driftChange/15f; //degrees per second
+        callingOpMode.telemetry.addData("Drift Rate", driftRate);
+
+        if (driftRate < 0.0333){
+            gyro.resetZAxisIntegrator();
+            callingOpMode.telemetry.addData("gyro", "Calibrated");
+        }
+        else{
+            calibrateGyro();
+        }
     }
 
     public void setGrabberUp() {

@@ -28,6 +28,8 @@ public interface AstroRobotBaseInterface {
 
     void calibrateGyro()throws InterruptedException;
 
+    void gyroDriftCatch() throws InterruptedException;
+
     void setGrabberUp();
 
     void setGrabberMiddle();
